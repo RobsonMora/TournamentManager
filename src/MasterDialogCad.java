@@ -173,7 +173,7 @@ public class MasterDialogCad extends JInternalFrame {
 		toolbar.setAlignmentY(TOP_ALIGNMENT);
 
 		//Botao Search
-		btnSearch = new JButton("Buscar", new ImageIcon(System.getProperty("user.dir") + "\\images\\22x22\\localizar.png"));
+		btnSearch = new JButton("Buscar", new ImageIcon(System.getProperty("user.dir") + "\\images\\icon\\067-filter.png"));
 		btnSearch.addActionListener(actSearch);
 		btnSearch.setHorizontalAlignment(SwingConstants.LEFT);
 		btnSearch.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -182,7 +182,7 @@ public class MasterDialogCad extends JInternalFrame {
 
 
 		// Botao Add
-		btnAdd = new JButton("Adicionar", new ImageIcon(System.getProperty("user.dir") + "\\images\\22x22\\adicionar.png"));
+		btnAdd = new JButton("Adicionar", new ImageIcon(System.getProperty("user.dir") + "\\images\\icon\\043-plus.png"));
 		btnAdd.addActionListener(actAdd);
 		btnAdd.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAdd.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -190,7 +190,7 @@ public class MasterDialogCad extends JInternalFrame {
 		//getContentPane().add(btnAdd);
 
 		// Botao Delete
-		btnDelete = new JButton("Remover", new ImageIcon(System.getProperty("user.dir") + "\\images\\22x22\\remover.png"));
+		btnDelete = new JButton("Remover", new ImageIcon(System.getProperty("user.dir") + "\\images\\icon\\042-minus.png"));
 		btnDelete.addActionListener(actDel);
 		btnDelete.setHorizontalAlignment(SwingConstants.LEFT);
 		btnDelete.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -198,7 +198,7 @@ public class MasterDialogCad extends JInternalFrame {
 		//getContentPane().add(btnDelete);
 
 		// Botao Save
-		btnSave = new JButton("Salvar", new ImageIcon(System.getProperty("user.dir") + "\\images\\22x22\\salvar.png"));
+		btnSave = new JButton("Salvar", new ImageIcon(System.getProperty("user.dir") + "\\images\\icon\\120-diskette.png"));
 		btnSave.addActionListener(actSave);
 		btnSave.setHorizontalAlignment(SwingConstants.LEFT);
 		btnSave.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -206,7 +206,7 @@ public class MasterDialogCad extends JInternalFrame {
 		//getContentPane().add(btnSave);
 
 		// Botao Cancel
-		btnCancel = new JButton("Cancelar", new ImageIcon(System.getProperty("user.dir") + "\\images\\22x22\\cancelar.png"));
+		btnCancel = new JButton("Cancelar", new ImageIcon(System.getProperty("user.dir") + "\\images\\icon\\034-cancel.png"));
 		btnCancel.addActionListener(actCancel);		
 		btnCancel.setHorizontalAlignment(SwingConstants.LEFT);
 		btnCancel.setHorizontalTextPosition(SwingConstants.RIGHT);
