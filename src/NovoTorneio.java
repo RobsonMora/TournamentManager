@@ -1,6 +1,11 @@
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+
+import dao.ConexaoDAO;
 
 
 public class NovoTorneio extends JInternalFrame  {
@@ -13,6 +18,8 @@ public class NovoTorneio extends JInternalFrame  {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
+		
+		
 		setVisible(true);
 
 	}

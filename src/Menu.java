@@ -6,6 +6,9 @@ import java.text.ParseException;
 
 import javax.swing.*;
 
+import dao.BaseDAO;
+import dao.ConexaoDAO;
+
 @SuppressWarnings("serial")
 public class Menu extends JFrame {
 
@@ -14,7 +17,7 @@ public class Menu extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu faturas, faturamento, matricular, sistema, torneios, processos, utilitarios, ajuda;
 	private JMenuItem alunos, gerarF, realizaP, consultarF, planos, usuarios, sair, novo_torneio, torneio_andamento,
-			utility, help, faturasemaberto, faturaspagas, backupRestore;
+			utility, help, faturasemaberto, faturaspagas, backupRestore, testeConexao;
 	// Classes/frames
 	private Usuarios fUsuario;
 	private Sair fSair;
@@ -22,17 +25,11 @@ public class Menu extends JFrame {
 	private TorneioAndamento fTorneioAndamento;
 	private Planos fPlanos;
 	private MatricularAlunos fMatricularAlunos;
-	private Faturamento fFaturamento;
-	private Faturas fFaturas;
 	private Utilitarios fUtilitarios;
 	private Ajuda fAjuda;
-	private GerarFaturas fGerarFaturas;
 	private ConsultarFaturas fConsultarFaturas;
 	private PagamentosFaturas fPagamentosFaturas;
 	private NovoTorneio fNovoTorneio;
-	private FaturasAberto fFaturasAberto;
-	private FaturasPagas fFaturasPagas;
-	private ControleAlunos fControleAlunos;
 	private BuscarAluno fBuscarAluno;
 	private BackupRestore fBackupRestore;
 	private String perfil, usuario;
@@ -60,6 +57,21 @@ public class Menu extends JFrame {
 		}
 
 		desktopPane = new JDesktopPane();
+		
+		testeConexao = new JMenuItem("Testar Conexão");
+		testeConexao.addActionListener(new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					new ConexaoDAO();
+					JOptionPane.showMessageDialog(null, "Conectado com sucesso!");
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Conexão falhou! verifique o servidor ou usuario");
+				}
+				
+			}
+		});
 
 		usuarios = new JMenuItem("Usuários");
 		usuarios.addActionListener(new ActionListener() {
@@ -80,8 +92,10 @@ public class Menu extends JFrame {
 				fUsuario.setPosicao();
 			}
 		});
-
-		sair = new JMenuItem("Sair");
+		
+		
+		
+		sair = new JMenuItem("Sair");		
 		sair.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent evt) {
@@ -278,6 +292,7 @@ public class Menu extends JFrame {
 		if (perfil.equals("Completo"))
 			sistema.add(usuarios);
 		sistema.add(sair);
+		sistema.add(testeConexao);
 		menuBar.add(sistema);
 
 		torneios = new JMenu("Torneios");
@@ -383,11 +398,11 @@ public class Menu extends JFrame {
 			break;
 
 		case 7:
-			fFaturamento.dispose();
+			//fFaturamento.dispose();
 			break;
 
 		case 9:
-			fFaturas.dispose();
+//			fFaturas.dispose();
 			break;
 		case 10:
 			fUtilitarios.dispose();
@@ -399,7 +414,7 @@ public class Menu extends JFrame {
 			fMatricularAlunos.dispose();
 			break;
 		case 13:
-			fGerarFaturas.dispose();
+//			fGerarFaturas.dispose();
 			break;
 		case 14:
 			fConsultarFaturas.dispose();
@@ -411,10 +426,10 @@ public class Menu extends JFrame {
 			fNovoTorneio.dispose();
 			break;
 		case 17:
-			fFaturasAberto.dispose();
+//			fFaturasAberto.dispose();
 			break;
 		case 18:
-			fFaturasPagas.dispose();
+//			fFaturasPagas.dispose();
 			break;
 		case 20:
 			fBuscarAluno.dispose();
