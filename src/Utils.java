@@ -1,3 +1,4 @@
+
 import java.awt.Component;
 import java.awt.Container;
 import java.text.Collator;
@@ -15,17 +16,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 
 public class Utils {
-
-	//Descontinuado - Foi melhorado para usar os objetos Class
-	// Insira as classes dos componentes para serem desabilitados
-	/*
-	private String targets[] = {
-			"javax.swing.JTextField",
-			"javax.swing.JComboBox",
-			"javax.swing.JFormattedTextField",
-			"javax.swing.JTextArea"
-	};
-	 */
 
 	// Insira as classes dos componentes para serem desabilitados
 	// Note que para Classes como a JComboBox, deve ser implementado uma forma
@@ -122,22 +112,22 @@ public class Utils {
 		}
 		return false;
 	}
-	
+
 	public boolean containsIgnoreCase(String str, String searchStr)     {
-	    if(str == null || searchStr == null) return false;
+		if(str == null || searchStr == null) return false;
 
-	    final int length = searchStr.length();
-	    if (length == 0)
-	        return true;
-	    
-	    if (length > str.length())
-	    	return false;
+		final int length = searchStr.length();
+		if (length == 0)
+			return true;
 
-	    for (int i = str.length() - length; i >= 0; i--) {
-	        if (str.regionMatches(true, i, searchStr, 0, length))
-	            return true;
-	    }
-	    return false;
+		if (length > str.length())
+			return false;
+
+		for (int i = str.length() - length; i >= 0; i--) {
+			if (str.regionMatches(true, i, searchStr, 0, length))
+				return true;
+		}
+		return false;
 	}
 
 	public boolean compareStrings(String strA, String StrB) {
@@ -148,18 +138,18 @@ public class Utils {
 		return coll.compare(strA, StrB) == 0;
 
 	}
-	
+
 	public boolean tableContains(JTable table, int column, String str) {
 		DefaultTableModel model = ((DefaultTableModel) table.getModel());
-		
+
 		for(int i = 0; i < model.getRowCount(); i++) {
-			
+
 			if (model.getValueAt(i, column).toString().equals(str)) {
 				return true;
 			}
-			
+
 		}
-		
+
 		return false;		
 	}
 

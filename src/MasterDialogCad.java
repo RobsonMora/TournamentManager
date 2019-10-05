@@ -1,3 +1,4 @@
+
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -64,18 +65,19 @@ public class MasterDialogCad extends JInternalFrame {
 	};
 
 	protected WindowAdapter eventWindowSearchClosed = new WindowAdapter() {
-		
+
+		@Override
 		public void windowClosed(WindowEvent e) {
-			
+
 			if(afterSearch()) {
 				clean();
 				fillFields();
 				isInserting = false;
 				setFieldsEnabled(true);
 			}
-			
+
 		}		
-			
+
 	};
 
 	protected AbstractAction actSave = new AbstractAction() {
@@ -113,10 +115,6 @@ public class MasterDialogCad extends JInternalFrame {
 			}
 		}
 	};
-
-	public static void main(String Args[]) {
-		new MasterDialogCad();
-	}
 
 	public MasterDialogCad() {
 
@@ -221,14 +219,10 @@ public class MasterDialogCad extends JInternalFrame {
 		toolbar.add(btnSave);
 		toolbar.addSeparator();
 		toolbar.add(btnCancel);
-		
+
 		toolbar.setBounds(10, 10, 600, 40);		
-		getContentPane().add(toolbar);
-		
-		
-		
-		
-		
+		getContentPane().add(toolbar);	
+
 
 	}
 

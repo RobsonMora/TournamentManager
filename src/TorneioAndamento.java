@@ -1,7 +1,9 @@
+
 import java.awt.Dimension;
 
 import javax.swing.JInternalFrame;
 
+@SuppressWarnings("serial")
 public class TorneioAndamento  extends JInternalFrame {
 
 
