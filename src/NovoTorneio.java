@@ -18,7 +18,7 @@ public class NovoTorneio extends MasterDialogCad  {
 	private JButton BtnCriar;
 	
 	public NovoTorneio() {
-
+		
 		setSize(300, 400);
 		setTitle("Novo Torneio");
 		setLayout(null);
@@ -26,6 +26,7 @@ public class NovoTorneio extends MasterDialogCad  {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
 		setVisible(true);
+		
 	}
 	
 	
@@ -60,6 +61,8 @@ public class NovoTorneio extends MasterDialogCad  {
 		BtnCriar = new JButton("Criar Torneio");
 		BtnCriar.setBounds(10, 320, 150, 26);
 		getContentPane().add(BtnCriar);
+		
+		childContainer = getContentPane();
 	
 		
 	}
