@@ -3,28 +3,30 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
+import javax.swing.ScrollPaneConstants;
 
 @SuppressWarnings("serial")
 public class NovoTorneio extends MasterDialogCad {
 
-	private JLabel LblJogo, CodTorneio, NomeTorneio, QtdTimes, Obs;
-	private JTextField txtCodTorneio, txtNomeTorneio, txtQtdTimes, txtObs;
+	private JLabel LblJogo, LblCodTorneio, LblNomeTorneio, LblQtdTimes, LblObs;
+	private JTextField txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
+	private JTextArea txtAObs;
 	private JComboBox<String> ComboJogo;
 	private JButton BtnCriar;
 
-
 	private void create() {
 
-		setSize(375, 285);
+		setSize(373, 359);
 		setTitle("Novo Torneio");
 		setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
-		setVisible(true);		
-		
+		setVisible(true);
+
 	}
 
 	public NovoTorneio() {
@@ -33,61 +35,62 @@ public class NovoTorneio extends MasterDialogCad {
 
 	}
 
-
 	@Override
 	protected void subComponents() {
 
+		LblCodTorneio = new JLabel("Código do torneio:");
+		LblCodTorneio.setBounds(30, 20, 200, 100);
+		getContentPane().add(LblCodTorneio);
 
-		CodTorneio = new JLabel("Código do torneio:");		
-		CodTorneio.setBounds(30, 20, 200, 100);
-		getContentPane().add(CodTorneio);
+		LblNomeTorneio = new JLabel("Nome do Torneio:");
+		LblNomeTorneio.setBounds(32, 50, 200, 100);
+		getContentPane().add(LblNomeTorneio);
 
-		NomeTorneio = new JLabel("Nome do Torneio:");		
-		NomeTorneio.setBounds(32, 50, 200, 100);
-		getContentPane().add(NomeTorneio);
+		LblQtdTimes = new JLabel("Quantidade de Times:");
+		LblQtdTimes.setBounds(10, 80, 200, 100);
+		getContentPane().add(LblQtdTimes);
 
-		QtdTimes = new JLabel("Quantidade de Times:");		
-		QtdTimes.setBounds(10, 80, 200, 100);
-		getContentPane().add(QtdTimes);
-
-		LblJogo = new JLabel("Tipo de jogo:");		
+		LblJogo = new JLabel("Tipo de jogo:");
 		LblJogo.setBounds(58, 110, 200, 100);
 		getContentPane().add(LblJogo);
 
 		ComboJogo = new JComboBox<String>();
 		ComboJogo.addItem("--Selecione--");
-		ComboJogo.setBounds(150, 147, 150, 26);
+		ComboJogo.setBounds(150, 147, 201, 26);
 		getContentPane().add(ComboJogo);
 
-		Obs = new JLabel("Observação:");
-		Obs.setBounds(59, 140, 200, 100);
-		getContentPane().add(Obs);
+		LblObs = new JLabel("Observação:");
+		LblObs.setBounds(59, 140, 200, 100);
+		getContentPane().add(LblObs);
 
 		BtnCriar = new JButton("Criar Torneio");
-		BtnCriar.setBounds(150, 210, 120, 36);
+		BtnCriar.setBounds(10, 283, 120, 36);
 		getContentPane().add(BtnCriar);
-		
-		txtCodTorneio = new JTextField();
-		txtCodTorneio.setBounds(150, 57, 150, 26);
-		getContentPane().add(txtCodTorneio);
-		
-		txtNomeTorneio = new JTextField();
-		txtNomeTorneio.setBounds(150, 87, 150, 26);
-		getContentPane().add(txtNomeTorneio);
-		
-		txtQtdTimes = new JTextField();
-		txtQtdTimes.setBounds(150, 117, 150, 26);
-		getContentPane().add(txtQtdTimes);
-		
-		txtObs = new JTextField();
-		txtObs.setBounds(150, 177, 150, 26);
-		getContentPane().add(txtObs);
-		
+
+		txtFCodTorneio = new JTextField();
+		txtFCodTorneio.setBounds(150, 57, 201, 26);
+		getContentPane().add(txtFCodTorneio);
+
+		txtFNomeTorneio = new JTextField();
+		txtFNomeTorneio.setBounds(150, 87, 201, 26);
+		getContentPane().add(txtFNomeTorneio);
+
+		txtFQtdTimes = new JTextField();
+		txtFQtdTimes.setBounds(150, 117, 201, 26);
+		getContentPane().add(txtFQtdTimes);
+
+		txtAObs = new JTextArea();
+		getContentPane().add(txtAObs);
+		txtAObs.setLineWrap(true);
+
+		JScrollPane sp = new JScrollPane(txtAObs);
+		sp.setBounds(9, 207, 342, 70);
+		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		this.getContentPane().add(sp);
+
 		childContainer = getContentPane();
 
-
 	}
-
 
 	public void setPosicao() {
 
