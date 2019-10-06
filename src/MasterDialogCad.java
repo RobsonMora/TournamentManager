@@ -220,7 +220,7 @@ public class MasterDialogCad extends JInternalFrame {
 		toolbar.addSeparator();
 		toolbar.add(btnCancel);
 
-		toolbar.setBounds(10, 10, 600, 40);		
+		toolbar.setBounds(10, 10, 340, 40);		
 		getContentPane().add(toolbar);	
 
 
