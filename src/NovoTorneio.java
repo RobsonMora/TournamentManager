@@ -17,7 +17,7 @@ public class NovoTorneio extends MasterDialogCad {
 
 	private void create() {
 
-		setSize(640, 285);
+		setSize(375, 285);
 		setTitle("Novo Torneio");
 		setLayout(null);
 		setResizable(false);
