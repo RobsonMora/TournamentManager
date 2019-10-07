@@ -15,11 +15,10 @@ public class NovoTorneio extends MasterDialogCad {
 	private JTextField txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
 	private JTextArea txtAObs;
 	private JComboBox<String> ComboJogo;
-	private JButton BtnCriar;
 
 	private void create() {
 
-		setSize(373, 359);
+		setSize(550, 319);
 		setTitle("Novo Torneio");
 		setLayout(null);
 		setResizable(false);
@@ -56,27 +55,23 @@ public class NovoTorneio extends MasterDialogCad {
 
 		ComboJogo = new JComboBox<String>();
 		ComboJogo.addItem("--Selecione--");
-		ComboJogo.setBounds(150, 147, 201, 26);
+		ComboJogo.setBounds(150, 147, 377, 26);
 		getContentPane().add(ComboJogo);
 
 		LblObs = new JLabel("Observação:");
 		LblObs.setBounds(59, 140, 200, 100);
 		getContentPane().add(LblObs);
 
-		BtnCriar = new JButton("Criar Torneio");
-		BtnCriar.setBounds(10, 283, 120, 36);
-		getContentPane().add(BtnCriar);
-
 		txtFCodTorneio = new JTextField();
-		txtFCodTorneio.setBounds(150, 57, 201, 26);
+		txtFCodTorneio.setBounds(150, 57, 377, 26);
 		getContentPane().add(txtFCodTorneio);
 
 		txtFNomeTorneio = new JTextField();
-		txtFNomeTorneio.setBounds(150, 87, 201, 26);
+		txtFNomeTorneio.setBounds(150, 87, 377, 26);
 		getContentPane().add(txtFNomeTorneio);
 
 		txtFQtdTimes = new JTextField();
-		txtFQtdTimes.setBounds(150, 117, 201, 26);
+		txtFQtdTimes.setBounds(150, 117, 377, 26);
 		getContentPane().add(txtFQtdTimes);
 
 		txtAObs = new JTextArea();
@@ -84,7 +79,7 @@ public class NovoTorneio extends MasterDialogCad {
 		txtAObs.setLineWrap(true);
 
 		JScrollPane sp = new JScrollPane(txtAObs);
-		sp.setBounds(9, 207, 342, 70);
+		sp.setBounds(9, 207, 519, 70);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getContentPane().add(sp);
 
