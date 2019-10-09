@@ -103,7 +103,7 @@ public class NovoTorneio extends MasterDialogCad {
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getContentPane().add(sp);
 		
-		String colunas[] = { "Código do Torneio", "Nome do time" };
+		String colunas[] = { "Código ", "time" };
 
 		model = new DefaultTableModel(colunas, 0);
 
@@ -117,7 +117,7 @@ public class NovoTorneio extends MasterDialogCad {
 		this.getContentPane().add(scrollPane);
 		table.getTableHeader().setEnabled(false);
 		
-		lblTip = new JLabel("Duplo clique na linha de graduação para remové-la.");
+		lblTip = new JLabel("Duplo clique na linha para remové-la.");
 		lblTip.setBounds(11, 350, 350, 570);
 		getContentPane().add(lblTip);
 		

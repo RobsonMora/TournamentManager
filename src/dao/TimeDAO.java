@@ -44,13 +44,13 @@ public class TimeDAO extends BaseDAO{
 		}
 	}
 
-	public void createTorneioTime(TimeModel time) throws SQLException {
+	public void createTime(TimeModel time) throws SQLException {
 		this.insertInto("times", "nome")
 		.values(time.getNome())
 		.commit();
 	}
 
-	public void updateTorneioTime(TimeModel time) throws SQLException {
+	public void updateTime(TimeModel time) throws SQLException {
 		this.update("times")
 		.setValue(
 				" nome = "+time.getNome()				)
@@ -58,7 +58,7 @@ public class TimeDAO extends BaseDAO{
 		.commit();
 	}
 
-	public void deleteTorneioTime(Integer id) throws SQLException {
+	public void deleteTime(Integer id) throws SQLException {
 		this.delete()
 		.from("times")
 		.where("id", "=", id.toString())
