@@ -16,8 +16,8 @@ import javax.swing.table.DefaultTableModel;
 @SuppressWarnings("serial")
 public class NovoTorneio extends MasterDialogCad {
 
-	private JLabel LblJogo, LblCodTorneio, LblNomeTorneio, LblQtdTimes, LblObs;
-	private JTextField txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
+	private JLabel LblTime, LblJogo, LblCodTorneio, LblNomeTorneio, LblQtdTimes, LblObs, lblTip;
+	private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
 	private JTextArea txtAObs;
 	private JComboBox<String> ComboJogo;
 	private DefaultTableModel model;
@@ -26,7 +26,7 @@ public class NovoTorneio extends MasterDialogCad {
 
 	private void create() {
 
-		setSize(550,763);
+		setSize(550,684);
 		setTitle("Novo Torneio");
 		setLayout(null);
 		setResizable(false);
@@ -45,6 +45,10 @@ public class NovoTorneio extends MasterDialogCad {
 	@Override
 	protected void subComponents() {
 
+		LblTime = new JLabel("Nome do time:");
+		LblTime.setBounds(11, 247, 200, 100);
+		getContentPane().add(LblTime);
+		
 		LblCodTorneio = new JLabel("Código do torneio:");
 		LblCodTorneio.setBounds(30, 20, 200, 100);
 		getContentPane().add(LblCodTorneio);
@@ -63,7 +67,7 @@ public class NovoTorneio extends MasterDialogCad {
 
 		ComboJogo = new JComboBox<String>();
 		ComboJogo.addItem("--Selecione--");
-		ComboJogo.setBounds(150, 147, 377, 26);
+		ComboJogo.setBounds(140, 147, 387, 26);
 		getContentPane().add(ComboJogo);
 
 		LblObs = new JLabel("Observação:");
@@ -71,15 +75,15 @@ public class NovoTorneio extends MasterDialogCad {
 		getContentPane().add(LblObs);
 
 		txtFCodTorneio = new JTextField();
-		txtFCodTorneio.setBounds(150, 57, 377, 26);
+		txtFCodTorneio.setBounds(140, 57, 387, 26);
 		getContentPane().add(txtFCodTorneio);
 
 		txtFNomeTorneio = new JTextField();
-		txtFNomeTorneio.setBounds(150, 87, 377, 26);
+		txtFNomeTorneio.setBounds(140, 87, 387, 26);
 		getContentPane().add(txtFNomeTorneio);
 
 		txtFQtdTimes = new JTextField();
-		txtFQtdTimes.setBounds(150, 117, 377, 26);
+		txtFQtdTimes.setBounds(140, 117, 387, 26);
 		getContentPane().add(txtFQtdTimes);
 
 		txtAObs = new JTextArea();
@@ -87,9 +91,12 @@ public class NovoTorneio extends MasterDialogCad {
 		txtAObs.setLineWrap(true);
 		
 		btnAdd = new JButton("Adicionar time");
-		btnAdd.setBounds(10, 695, 107, 26);
+		btnAdd.setBounds(420, 285, 107, 26);
 		getContentPane().add(btnAdd);
 		
+		txtTime = new JTextField();
+		txtTime.setBounds(100, 285, 310, 26);
+		getContentPane().add(txtTime);
 		
 		JScrollPane sp = new JScrollPane(txtAObs);
 		sp.setBounds(9, 207, 519, 70);
@@ -105,10 +112,14 @@ public class NovoTorneio extends MasterDialogCad {
 		table.setEnabled(true);
 
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(9, 287, 519, 400);
+		scrollPane.setBounds(9, 320, 519, 300);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.getContentPane().add(scrollPane);
 		table.getTableHeader().setEnabled(false);
+		
+		lblTip = new JLabel("Duplo clique na linha de graduação para remové-la.");
+		lblTip.setBounds(11, 350, 350, 570);
+		getContentPane().add(lblTip);
 		
 		childContainer = getContentPane();
 
