@@ -1,6 +1,7 @@
 package dao;
 
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,10 +11,14 @@ import model.TorneioModel;
 
 public class TorneioDAO extends BaseDAO {
 
+	public TorneioDAO(Connection conn) {
+		super(conn);
+	}
+
 	public ArrayList<TorneioModel> getAllTorneios() throws SQLException {
 		ResultSet result = null;
 		result = this.select("*")
-				.from("alunos")
+				.from("torneios")
 				.apply();
 		ArrayList<TorneioModel> torneioList = new ArrayList<TorneioModel>();
 		while(result.next()) {
@@ -27,7 +32,7 @@ public class TorneioDAO extends BaseDAO {
 		return torneioList;
 	}
 
-	public TorneioModel getOneAluno(Integer id) throws SQLException {
+	public TorneioModel getOneTorneio(Integer id) throws SQLException {
 		ResultSet result = null;
 		result = this.select("*")
 				.from("torneios")
@@ -45,7 +50,7 @@ public class TorneioDAO extends BaseDAO {
 		}
 	}
 
-	public void createAluno(TorneioModel torneio) throws SQLException {
+	public void createTorneio(TorneioModel torneio) throws SQLException {
 		String fields = " nome "+ ((torneio.getInicioDate().compareTo(new Date(0))==0)? "" : ", inicio ")+ ((torneio.getFimDate().compareTo(new Date(0))==0)? "" : ", fim ");
 		this.insertInto("torneios", fields)
 		.values("'"+torneio.getNome()+
@@ -55,7 +60,7 @@ public class TorneioDAO extends BaseDAO {
 		.commit();
 	}
 
-	public void updateAluno(TorneioModel torneio) throws SQLException {
+	public void updateTorneio(TorneioModel torneio) throws SQLException {
 		this.update("torneios")
 		.setValue(
 				"nome = '"+torneio.getNome()+"' "+
@@ -66,7 +71,7 @@ public class TorneioDAO extends BaseDAO {
 		.commit();
 	}
 
-	public void deleteAluno(Integer id) throws SQLException {
+	public void deleteTorneio(Integer id) throws SQLException {
 		this.delete()
 		.from("torneios")
 		.where("id", "=", id.toString())
