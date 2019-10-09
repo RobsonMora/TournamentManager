@@ -105,7 +105,7 @@ public class NovoTorneio extends MasterDialogCad {
 		
 		String colunas[] = { "Código do Torneio", "Nome do time" };
 
-		model = new DefaultTableModel(colunas, 50);
+		model = new DefaultTableModel(colunas, 0);
 
 		table = new JTable(model);
 		table.setBorder(BorderFactory.createLineBorder(Color.black));
