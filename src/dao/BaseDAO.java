@@ -9,10 +9,10 @@ import java.sql.Types;
 import database.ConnectionFactory;
 
 public abstract class BaseDAO {
-	
-	public BaseDAO() {
 		
-		connection();
+	public BaseDAO(Connection conn) {
+		
+		this.conn = conn;
 		
 	}
 	
@@ -75,8 +75,12 @@ public abstract class BaseDAO {
 		return this;
 	}
 	
-	protected BaseDAO filter(String statement, String operator, String value) {
-		setWhereFilter(statement +" "+ operator +" "+ value);
+	protected BaseDAO filter(String statement, String operator, String value, boolean ignoreZero) {
+		if(!value.trim().isEmpty()) {
+			if(ignoreZero || (statement.substring(0, 1) != "id") || (statement.substring(0, 1).equals("id")&&Integer.parseInt(value) > 0)) {
+				setWhereFilter(statement +" "+ operator +" "+ value);				
+			}
+		}
 		return this;
 	}
 	
@@ -92,11 +96,6 @@ public abstract class BaseDAO {
 	
 	protected BaseDAO join(String statement) {
 		this.setSql(this.getSql() + " JOIN " + statement);
-		return this;
-	}
-	
-	protected BaseDAO innerJoin(String statement) {
-		this.setSql(this.getSql() + "INNER JOIN " + statement);
 		return this;
 	}
 	
@@ -176,7 +175,7 @@ public abstract class BaseDAO {
 	protected ResultSet excecuteQuery() throws SQLException {
 		PreparedStatement prepStatement = null;
 		
-		this.connection();
+		//this.connection();
 		
 		prepStatement = conn.prepareStatement(this.getSql());
 		clean();
@@ -186,7 +185,7 @@ public abstract class BaseDAO {
 	protected int excecuteUpdate() throws SQLException {
 		PreparedStatement prepStatement = null;
 		
-		this.connection();
+		//this.connection();
 		
 		prepStatement = conn.prepareStatement(this.getSql());
 		clean();
@@ -199,7 +198,7 @@ public abstract class BaseDAO {
 		group = "";
 	}
 	
-	protected void connection() {
+	protected Connection connection() {
 		conn = ConnectionFactory.getConnection
 				(
 					"master", 
@@ -209,13 +208,15 @@ public abstract class BaseDAO {
 		try {
 			conn.setAutoCommit(true);
 			System.out.println("Conectado com sucesso!");
+			return conn;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 	
 	//Util
-	public String quoteStr(String str) {
+	protected String quoteStr(String str) {
 		return "'"+str+"'";
 	}
 

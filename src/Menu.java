@@ -3,10 +3,12 @@
 import java.awt.*;
 
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.*;
 
-import dao.ConexaoDAO;
+import database.ConnectionFactory;
 
 @SuppressWarnings("serial")
 public class Menu extends JFrame {
@@ -21,8 +23,30 @@ public class Menu extends JFrame {
 	private Sair fSair;
 	private TorneioAndamento fTorneioAndamento;
 	private NovoTorneio fNovoTorneio;
+	private Connection conn;
 
 	private int janelaAberta = 0;
+	
+	protected Connection connection() {
+		conn = ConnectionFactory.getConnection
+				(
+					"master", 
+					"admin", 
+					"admin"
+				);
+		try {
+			conn.setAutoCommit(true);
+			System.out.println("Conectado com sucesso!");
+			return conn;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Connection getConn() {
+		return conn;
+	}
 
 	public Menu(String Perfil, String Usuario) {
 
@@ -42,6 +66,8 @@ public class Menu extends JFrame {
 			e1.printStackTrace();
 		}
 
+		connection();
+		
 		desktopPane = new JDesktopPane();
 
 		testeConexao = new JMenuItem("Testar Conexão");
@@ -50,7 +76,7 @@ public class Menu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new ConexaoDAO();
+					connection();
 					JOptionPane.showMessageDialog(null, "Conectado com sucesso!");
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "Conexão falhou! verifique o servidor ou usuario");
@@ -105,7 +131,7 @@ public class Menu extends JFrame {
 				fecharJanelaAberta();
 				janelaAberta = 4;
 
-				fTorneioAndamento = new TorneioAndamento();
+				fTorneioAndamento = new TorneioAndamento(conn);
 				desktopPane.add(fTorneioAndamento);
 				fTorneioAndamento.setVisible(true);
 				fTorneioAndamento.setPosicao();
