@@ -1,12 +1,17 @@
 
+import java.awt.Color;
 import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class NovoTorneio extends MasterDialogCad {
@@ -15,10 +20,13 @@ public class NovoTorneio extends MasterDialogCad {
 	private JTextField txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
 	private JTextArea txtAObs;
 	private JComboBox<String> ComboJogo;
+	private DefaultTableModel model;
+	private JTable table;
+	private JButton btnAdd;
 
 	private void create() {
 
-		setSize(550, 319);
+		setSize(550,763);
 		setTitle("Novo Torneio");
 		setLayout(null);
 		setResizable(false);
@@ -77,12 +85,31 @@ public class NovoTorneio extends MasterDialogCad {
 		txtAObs = new JTextArea();
 		getContentPane().add(txtAObs);
 		txtAObs.setLineWrap(true);
-
+		
+		btnAdd = new JButton("Adicionar time");
+		btnAdd.setBounds(10, 695, 107, 26);
+		getContentPane().add(btnAdd);
+		
+		
 		JScrollPane sp = new JScrollPane(txtAObs);
 		sp.setBounds(9, 207, 519, 70);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getContentPane().add(sp);
+		
+		String colunas[] = { "Código do Torneio", "Nome do time" };
 
+		model = new DefaultTableModel(colunas, 50);
+
+		table = new JTable(model);
+		table.setBorder(BorderFactory.createLineBorder(Color.black));
+		table.setEnabled(true);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(9, 287, 519, 400);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		this.getContentPane().add(scrollPane);
+		table.getTableHeader().setEnabled(false);
+		
 		childContainer = getContentPane();
 
 	}
