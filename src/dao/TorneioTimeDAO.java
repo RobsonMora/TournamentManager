@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import model.TimeModel;
 import model.TorneioTimeModel;
 
 public class TorneioTimeDAO extends BaseDAO {
@@ -18,6 +19,7 @@ public class TorneioTimeDAO extends BaseDAO {
 		result = this.select("*")
 				.from("torneio_times")
 				.where("id_torneio", "=", idTorneio.toString())
+				.orderBy("id_time")
 				.apply();
 		ArrayList<TorneioTimeModel> torneioTimeList = new ArrayList<TorneioTimeModel>();
 		while(result.next()) {
@@ -28,6 +30,23 @@ public class TorneioTimeDAO extends BaseDAO {
 		}
 		return torneioTimeList;
 	}
+	
+	public ArrayList<TimeModel> getAllTimes(Integer idTorneio) throws SQLException {
+		ResultSet result = null;
+		result = this.select("t.id, t.nome")
+				.from("torneio_times tt")
+				.leftJoin(" times t on t.id = tt.id_time")
+				.apply();
+		ArrayList<TimeModel> timeList = new ArrayList<TimeModel>();
+		while(result.next()) {
+			timeList.add(new TimeModel()
+							.setId(result.getInt("id"))
+							.setNome(result.getString("nome"))
+							);
+		}
+		return timeList;
+	}
+
 
 	public TorneioTimeModel getOneTorneioTime(Integer idTorneio, Integer idTime) throws SQLException {
 		ResultSet result = null;

@@ -4,6 +4,16 @@ public class TorneioPartidaModel {
 	
 	private Integer id, idTorneio, idTime1, idTime2, pontos1, pontos2, fase;
 
+	public TorneioPartidaModel() {
+		setId(0);
+		setIdTorneio(0);
+		setIdTime1(0);
+		setIdTime2(0);
+		setPontos1(0);
+		setPontos2(0);
+		setFase(0);
+	}
+	
 	public Integer getId() {
 		return id;
 	}
