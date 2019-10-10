@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,6 +14,12 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.CategoriasDAO;
+import dao.JogoDAO;
+import dao.TimeDAO;
+import dao.TorneioDAO;
+import dao.TorneioTimeDAO;
+
 @SuppressWarnings("serial")
 public class NovoTorneio extends MasterDialogCad {
 
@@ -23,6 +30,10 @@ public class NovoTorneio extends MasterDialogCad {
 	private DefaultTableModel model;
 	private JTable table;
 	private JButton btnAdd;
+	private TimeDAO timeDao;
+	private JogoDAO jogoDao;
+	private TorneioDAO torneioDao;
+	private TorneioTimeDAO torneioTimeDao;
 
 	private void create() {
 
@@ -36,8 +47,13 @@ public class NovoTorneio extends MasterDialogCad {
 
 	}
 
-	public NovoTorneio() {
+	public NovoTorneio(Connection conn) {
 
+		super(conn);
+		jogoDao = new JogoDAO(conn);
+		timeDao = new TimeDAO(conn);
+		torneioDao = new TorneioDAO(conn);
+		torneioTimeDao = new TorneioTimeDAO(conn);
 		create();
 
 	}
@@ -65,6 +81,8 @@ public class NovoTorneio extends MasterDialogCad {
 		LblJogo.setBounds(58, 110, 200, 100);
 		getContentPane().add(LblJogo);
 
+		
+		
 		ComboJogo = new JComboBox<String>();
 		ComboJogo.addItem("--Selecione--");
 		ComboJogo.setBounds(140, 147, 387, 26);

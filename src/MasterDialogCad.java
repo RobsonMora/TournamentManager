@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -24,6 +25,8 @@ public class MasterDialogCad extends JInternalFrame {
 	protected JButton btnCancel;
 	protected Container childContainer;
 	protected Utils utils;
+	
+	protected Connection conn;
 
 	protected boolean isInserting;
 	protected AbstractAction actDel = new AbstractAction() {
@@ -116,13 +119,15 @@ public class MasterDialogCad extends JInternalFrame {
 		}
 	};
 
-	public MasterDialogCad() {
+	public MasterDialogCad(Connection conn) {
 
+		this.conn = conn;
+		
 		utils = new Utils();
 		Componnents();
 		subComponents();
 		setFieldsEnabled(false);
-
+super
 	}
 
 	protected void setFieldsEnabled(boolean enabled) {

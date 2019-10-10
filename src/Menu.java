@@ -111,7 +111,7 @@ public class Menu extends JFrame {
 				janelaAberta = 3;
 
 				try {
-					fNovoTorneio = new NovoTorneio();				
+					fNovoTorneio = new NovoTorneio(conn);				
 				} catch (Exception e) {
 					System.out.println(" erro: "+e.getMessage());
 				}
