@@ -81,8 +81,6 @@ public class NovoTorneio extends MasterDialogCad {
 		LblJogo = new JLabel("Tipo de jogo:");
 		LblJogo.setBounds(58, 110, 200, 100);
 		getContentPane().add(LblJogo);
-
-		
 		
 		ComboJogo = new JComboBox<String>();
 		ComboJogo.addItem("--Selecione--");

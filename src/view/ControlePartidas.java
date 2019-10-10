@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.sql.Connection;
 
@@ -17,21 +18,21 @@ import dao.TimeDAO;
 import dao.TorneioDAO;
 import dao.TorneioTimeDAO;
 
-public class ControlePartidas extends JFrame {
+public class ControlePartidas extends JInternalFrame {
 
 	private JLabel LblTorneio, LblPartida, LblVS;
-	private JTextField txtFTorneio, txtFPartida;
+	private JTextField txtFTorneio, txtFPartida, txtFtime1, txtFtime2;
 	private JButton btnCarregar, btnAnterior, btnProximo, btnSalvar;
 	private JPanel panel1, panel2;
 
-	public ControlePartidas() {
+	public ControlePartidas(Connection conn) {
 
-		setSize(535, 480);
+		setSize(535, 535);
 		setTitle("Controle de Partidas");
 		setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		/* setClosable(true); */
+		setClosable(true);
 		Componnents();
 		setVisible(true);
 	}
@@ -39,13 +40,12 @@ public class ControlePartidas extends JFrame {
 	public void Componnents() {
 
 		LblTorneio = new JLabel("Torneio");
-		LblTorneio.setBounds(12, 20, 200, 100);
+		LblTorneio.setBounds(12, 0, 200, 100);
 		getContentPane().add(LblTorneio);
 
 		LblPartida = new JLabel();
-		LblPartida.setBounds(10, 100, 500, 269);
+		LblPartida.setBounds(10, 100, 500, 330);
 		LblPartida.setBorder(BorderFactory.createTitledBorder("Partida"));
-
 		getContentPane().add(LblPartida);
 
 		LblVS = new JLabel("VS");
@@ -53,23 +53,33 @@ public class ControlePartidas extends JFrame {
 		getContentPane().add(LblVS);
 
 		txtFTorneio = new JTextField();
-		txtFTorneio.setBounds(70, 57, 187, 26);
+		txtFTorneio.setBounds(70, 40, 187, 26);
 		getContentPane().add(txtFTorneio);
 
+		txtFtime1 = new JTextField();
+		txtFtime1.setBounds(32, 332, 195, 26);
+		txtFtime1.disable();
+		getContentPane().add(txtFtime1);
+
+		txtFtime2 = new JTextField();
+		txtFtime2.setBounds(292, 332, 195, 26);
+		txtFtime2.disable();
+		getContentPane().add(txtFtime2);
+
 		btnCarregar = new JButton("Carregar");
-		btnCarregar.setBounds(273, 57, 107, 26);
+		btnCarregar.setBounds(273, 40, 107, 26);
 		getContentPane().add(btnCarregar);
 
 		btnAnterior = new JButton("Anterior");
-		btnAnterior.setBounds(75, 320, 107, 26);
+		btnAnterior.setBounds(75, 375, 107, 26);
 		getContentPane().add(btnAnterior);
 
 		btnProximo = new JButton("Próximo");
-		btnProximo.setBounds(335, 320, 107, 26);
+		btnProximo.setBounds(335, 375, 107, 26);
 		getContentPane().add(btnProximo);
 
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(205, 390, 107, 26);
+		btnSalvar.setBounds(205, 450, 107, 26);
 		getContentPane().add(btnSalvar);
 
 		panel1 = new JPanel();
@@ -84,8 +94,10 @@ public class ControlePartidas extends JFrame {
 
 	}
 
-	public static void main(String args[]) {
+	public void setPosicao() {
 
-		new ControlePartidas();
+		Dimension d = this.getDesktopPane().getSize();
+		this.setLocation((d.width - this.getSize().width) / 2, (d.height - this.getSize().height) / 2);
+
 	}
 }

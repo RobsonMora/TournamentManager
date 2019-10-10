@@ -17,7 +17,7 @@ public class Menu extends JFrame {
 	public JDesktopPane desktopPane;
 	private JMenuBar menuBar;
 	private JMenu sistema, torneios;
-	private JMenuItem sair, novo_torneio, torneio_andamento, testeConexao;
+	private JMenuItem sair, novo_torneio, torneio_andamento, controle_partidas, testeConexao;
 	// Classes/frames
 	private Usuarios fUsuario;
 	private Sair fSair;
@@ -133,7 +133,24 @@ public class Menu extends JFrame {
 
 			}
 		});
+		
+		controle_partidas = new JMenuItem("Controle de Partidas");
+		controle_partidas.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+
+				fecharJanelaAberta();
+				janelaAberta = 4;
+
+				fControlePartidas = new ControlePartidas(conn);
+				desktopPane.add(fControlePartidas);
+				fControlePartidas.setVisible(true);
+				fControlePartidas.setPosicao();
+
+			}
+		});
+		
 		setContentPane(desktopPane);
 
 		menuBar = new JMenuBar();
@@ -147,7 +164,8 @@ public class Menu extends JFrame {
 
 		torneios.add(novo_torneio);
 		torneios.add(torneio_andamento);
-
+		torneios.add(controle_partidas);
+		
 		menuBar.add(torneios);
 
 		new JMenu("Processos");
