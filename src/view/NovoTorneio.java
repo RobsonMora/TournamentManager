@@ -122,7 +122,7 @@ public class NovoTorneio extends MasterDialogCad {
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getContentPane().add(sp);
 		
-		String colunas[] = { "Código ", "time" };
+		String colunas[] = { "Código ", "Time" };
 
 		model = new DefaultTableModel(colunas, 0);
 
