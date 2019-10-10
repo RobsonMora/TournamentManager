@@ -1,6 +1,5 @@
 package view;
 
-
 import java.awt.*;
 
 import java.awt.event.*;
@@ -24,17 +23,13 @@ public class Menu extends JFrame {
 	private Sair fSair;
 	private TorneioAndamento fTorneioAndamento;
 	private NovoTorneio fNovoTorneio;
+	private ControlePartidas fControlePartidas;
 	private Connection conn;
 
 	private int janelaAberta = 0;
-	
+
 	protected Connection connection() {
-		conn = ConnectionFactory.getConnection
-				(
-					"master", 
-					"admin", 
-					"admin"
-				);
+		conn = ConnectionFactory.getConnection("master", "admin", "admin");
 		try {
 			conn.setAutoCommit(true);
 			System.out.println("Conectado com sucesso!");
@@ -68,7 +63,7 @@ public class Menu extends JFrame {
 		}
 
 		connection();
-		
+
 		desktopPane = new JDesktopPane();
 
 		testeConexao = new JMenuItem("Testar Conexão");
@@ -86,8 +81,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-
-		sair = new JMenuItem("Sair");		
+		sair = new JMenuItem("Sair");
 		sair.addActionListener(new ActionListener() {
 
 			@Override
@@ -112,9 +106,9 @@ public class Menu extends JFrame {
 				janelaAberta = 3;
 
 				try {
-					fNovoTorneio = new NovoTorneio(conn);				
+					fNovoTorneio = new NovoTorneio(conn);
 				} catch (Exception e) {
-					System.out.println(" erro: "+e.getMessage());
+					System.out.println(" erro: " + e.getMessage());
 				}
 				desktopPane.add(fNovoTorneio);
 				fNovoTorneio.setVisible(true);
@@ -158,7 +152,6 @@ public class Menu extends JFrame {
 
 		new JMenu("Processos");
 
-
 		setJMenuBar(menuBar);
 		setTitle("Liu Kang Academy System");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -173,7 +166,6 @@ public class Menu extends JFrame {
 		setVisible(true);
 		/* FramePrincipal(); */
 	}
-
 
 	public void mostrarJanela(boolean o) {
 
