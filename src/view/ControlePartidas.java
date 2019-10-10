@@ -33,11 +33,11 @@ public class ControlePartidas extends JInternalFrame {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
-		Componnents();
+		Components();
 		setVisible(true);
 	}
 
-	public void Componnents() {
+	public void Components() {
 
 		LblTorneio = new JLabel("Torneio");
 		LblTorneio.setBounds(12, 0, 200, 100);

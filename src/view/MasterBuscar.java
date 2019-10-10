@@ -27,10 +27,7 @@ public class MasterBuscar extends JFrame {
 	protected DefaultTableModel model;
 	protected Connection conn;
 	
-	
 	JComboBox<String> campos;
-
-	
 
 	public MasterBuscar(Connection conn) {
 		this.conn = conn;

@@ -22,7 +22,7 @@ import dao.TorneioDAO;
 import dao.TorneioTimeDAO;
 
 @SuppressWarnings("serial")
-public class NovoTorneio extends MasterDialogCad {
+public class CadastroTorneios extends MasterDialogCad {
 
 	private JLabel LblTime, LblJogo, LblCodTorneio, LblNomeTorneio, LblQtdTimes, LblObs, lblTip;
 	private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
@@ -48,7 +48,7 @@ public class NovoTorneio extends MasterDialogCad {
 
 	}
 
-	public NovoTorneio(Connection conn) {
+	public CadastroTorneios(Connection conn) {
 
 		super(conn);
 		jogoDao = new JogoDAO(conn);

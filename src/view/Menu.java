@@ -16,14 +16,18 @@ public class Menu extends JFrame {
 	// Painéis e items do menu
 	public JDesktopPane desktopPane;
 	private JMenuBar menuBar;
-	private JMenu sistema, torneios;
-	private JMenuItem sair, novo_torneio, torneio_andamento, controle_partidas, testeConexao;
+	private JMenu sistema, torneios, cadastros;
+	private JMenuItem sair, novo_torneio, torneio_andamento, controle_partidas, times, cadastro_jogos, categoria,
+			testeConexao;
 	// Classes/frames
 	private Usuarios fUsuario;
 	private Sair fSair;
 	private TorneioAndamento fTorneioAndamento;
-	private NovoTorneio fNovoTorneio;
+	private CadastroTorneios fNovoTorneio;
 	private ControlePartidas fControlePartidas;
+	private Times fTimes;
+	private CadastroJogos fCadastroJogos;
+	private Categoria fCategoria;
 	private Connection conn;
 
 	private int janelaAberta = 0;
@@ -62,7 +66,7 @@ public class Menu extends JFrame {
 			e1.printStackTrace();
 		}
 
-		connection();
+		/* connection(); */
 
 		desktopPane = new JDesktopPane();
 
@@ -88,7 +92,7 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent evt) {
 
 				fecharJanelaAberta();
-				janelaAberta = 2;
+				janelaAberta = 1;
 
 				fSair = new Sair();
 				fSair.setVisible(true);
@@ -96,17 +100,17 @@ public class Menu extends JFrame {
 			}
 		});
 
-		novo_torneio = new JMenuItem("Novo Torneio");
+		novo_torneio = new JMenuItem("Cadastro de Torneio");
 		novo_torneio.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 
 				fecharJanelaAberta();
-				janelaAberta = 3;
+				janelaAberta = 2;
 
 				try {
-					fNovoTorneio = new NovoTorneio(conn);
+					fNovoTorneio = new CadastroTorneios(conn);
 				} catch (Exception e) {
 					System.out.println(" erro: " + e.getMessage());
 				}
@@ -124,7 +128,7 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent evt) {
 
 				fecharJanelaAberta();
-				janelaAberta = 4;
+				janelaAberta = 3;
 
 				fTorneioAndamento = new TorneioAndamento(conn);
 				desktopPane.add(fTorneioAndamento);
@@ -133,7 +137,7 @@ public class Menu extends JFrame {
 
 			}
 		});
-		
+
 		controle_partidas = new JMenuItem("Controle de Partidas");
 		controle_partidas.addActionListener(new ActionListener() {
 
@@ -150,7 +154,58 @@ public class Menu extends JFrame {
 
 			}
 		});
-		
+
+		times = new JMenuItem("Times");
+		times.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+
+				fecharJanelaAberta();
+				janelaAberta = 5;
+
+				fTimes = new Times(conn);
+				desktopPane.add(fTimes);
+				fTimes.setVisible(true);
+				fTimes.setPosicao();
+
+			}
+		});
+
+		cadastro_jogos = new JMenuItem("Cadastro de Jogos");
+		cadastro_jogos.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+
+				fecharJanelaAberta();
+				janelaAberta = 6;
+
+				fCadastroJogos = new CadastroJogos(conn);
+				desktopPane.add(fCadastroJogos);
+				fCadastroJogos.setVisible(true);
+				fCadastroJogos.setPosicao();
+
+			}
+		});
+
+		categoria = new JMenuItem("Categorias");
+		categoria.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+
+				fecharJanelaAberta();
+				janelaAberta = 7;
+
+				fCategoria = new Categoria(conn);
+				desktopPane.add(fCategoria);
+				fCategoria.setVisible(true);
+				fCategoria.setPosicao();
+
+			}
+		});
+
 		setContentPane(desktopPane);
 
 		menuBar = new JMenuBar();
@@ -158,6 +213,7 @@ public class Menu extends JFrame {
 
 		sistema.add(sair);
 		sistema.add(testeConexao);
+
 		menuBar.add(sistema);
 
 		torneios = new JMenu("Torneios");
@@ -165,13 +221,21 @@ public class Menu extends JFrame {
 		torneios.add(novo_torneio);
 		torneios.add(torneio_andamento);
 		torneios.add(controle_partidas);
-		
+
 		menuBar.add(torneios);
+
+		cadastros = new JMenu("Cadastros");
+
+		cadastros.add(times);
+		cadastros.add(cadastro_jogos);
+		cadastros.add(categoria);
+
+		menuBar.add(cadastros);
 
 		new JMenu("Processos");
 
 		setJMenuBar(menuBar);
-		setTitle("Liu Kang Academy System");
+		setTitle("Tournament Manager");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);
 		setBackground(null);
@@ -191,26 +255,39 @@ public class Menu extends JFrame {
 	}
 
 	private void fecharJanelaAberta() {
+		
 		switch (janelaAberta) {
+		
 		case 1:
-			fUsuario.dispose();
-			break;
-		case 2:
 			fSair.dispose();
+			break;
+		
+		case 2:
+			fNovoTorneio.dispose();
 			break;
 
 		case 3:
-			fNovoTorneio.dispose();
+			fTorneioAndamento.dispose();
 			break;
 
 		case 4:
-			fTorneioAndamento.dispose();
+			fControlePartidas.dispose();
 			break;
-		case 16:
-			fNovoTorneio.dispose();
+		
+		case 5:
+			fTimes.dispose();
 			break;
-
+		
+		case 6:
+			fCadastroJogos.dispose();
+			break;
+		
+		case 7:
+			fCategoria.dispose();
+			break;
+			
 		default:
+
 			break;
 		}
 	}
