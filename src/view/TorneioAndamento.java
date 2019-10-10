@@ -2,8 +2,10 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -13,7 +15,10 @@ import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 
 import dao.TorneioPartidaDAO;
+import dao.TorneioTimeDAO;
+import model.TimeModel;
 import model.TorneioPartidaModel;
+import model.TorneioTimeModel;
 
 @SuppressWarnings("serial")
 public class TorneioAndamento  extends JInternalFrame {
@@ -22,7 +27,10 @@ public class TorneioAndamento  extends JInternalFrame {
 	private JTextField txtTorneio;
 	
 	private ArrayList<TorneioPartidaModel> partidas;
+	private ArrayList<TimeModel> times;
 	private TorneioPartidaDAO torneioPartidaDAO;
+	private TorneioTimeDAO torneioTimeDAO;
+	
 	
 	public TorneioAndamento(Connection conn){
 
@@ -47,7 +55,7 @@ public class TorneioAndamento  extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if(!txtTorneio.getText().isEmpty()) {
+				if(!txtTorneio.getText().isEmpty()) {					
 					gerarFase(Integer.parseInt(txtTorneio.getText()));					
 				}
 				
@@ -75,14 +83,49 @@ public class TorneioAndamento  extends JInternalFrame {
 		
 	}
 	
+	private void createSquare(Image logo, int x, int y) {
+		
+		
+		
+	}
+	
 	private void desenhar() {
 		getGraphics().drawLine(20, 30, 50, 30);
 	}
 	
-	private void gerarFase(int idTorneio) {
+	private void iniciaPartidas(Integer idTorneio) {
+		try {
+			
+			times = torneioTimeDAO.getAllTimes(idTorneio);
+			
+			if(times!=null) {
+				partidas = new ArrayList<TorneioPartidaModel>();
+				for(int i = 0; i < times.size(); i = i + 2) {
+					partidas.add(new TorneioPartidaModel()
+								.setIdTorneio(idTorneio)							
+								.setIdTime1(times.get(i).getId())
+								.setIdTime2(times.get(i+1).getId())
+								);					
+				}
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	private void gerarFase(Integer idTorneio) {
 	
 		try {
-			partidas = torneioPartidaDAO.getAllTorneioPartidas(idTorneio);
+			ResultSet result = torneioPartidaDAO.freeSqlQuery(" select (Max(coalesce(fase,0)) + 1) as fase from torneio_partidas where id_torneio = "+idTorneio.toString());
+			if(!result.next()||result.getInt(0) == 1) {
+				iniciaPartidas(idTorneio);			
+			}else {
+				result = torneioPartidaDAO.freeSqlQuery(" select ");
+			}
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 		

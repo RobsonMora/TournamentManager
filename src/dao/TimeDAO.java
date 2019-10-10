@@ -27,7 +27,7 @@ public class TimeDAO extends BaseDAO{
 		}
 		return timeList;
 	}
-
+	
 	public TimeModel getOneTime(Integer id) throws SQLException {
 		ResultSet result = null;
 		result = this.select("*")

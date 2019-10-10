@@ -13,11 +13,13 @@ public class TorneioPartidaDAO extends BaseDAO {
 		super(conn);
 	}
 
-	public ArrayList<TorneioPartidaModel> getAllTorneioPartidas(Integer idTorneio) throws SQLException {
+	public ArrayList<TorneioPartidaModel> getAllTorneioPartidas(Integer idTorneio, Integer fase) throws SQLException {
 		ResultSet result = null;
 		result = this.select("*")
 				.from("torneio_partidas")
-				.where("id_torneio", "=", idTorneio.toString())
+				.filter("id_torneio", "=", idTorneio.toString(), true)
+				.filter("fase", "=", fase.toString(), false)
+				.where()
 				.orderBy("id")
 				.apply();
 		ArrayList<TorneioPartidaModel> torneioPartidaList = new ArrayList<TorneioPartidaModel>();
@@ -60,10 +62,10 @@ public class TorneioPartidaDAO extends BaseDAO {
 		this.insertInto("torneio_partidas", "id_torneio, id_time1, id_time2, fase")
 		.values(torneioPartida.getIdTorneio().toString()+", "+
 				torneioPartida.getIdTime1().toString()+", "+
-				torneioPartida.getIdTime2().toString()+", "+
+				torneioPartida.getIdTime2().toString()+
 //				torneioPartida.getPontos1().toString()+", "+
 //				torneioPartida.getPontos2().toString()+", "+
-				torneioPartida.getFase().toString())
+				((torneioPartida.getFase() == 0) ? ", "+torneioPartida.getFase().toString() : ""))
 		.commit();
 	}
 
@@ -76,7 +78,7 @@ public class TorneioPartidaDAO extends BaseDAO {
 		.where("id", "=", torneioPartida.getId().toString())
 		.commit();
 	}
-
+	
 	public void deleteTorneioPartida(Integer id) throws SQLException {
 		this.delete()
 		.from("torneio_partidas")
