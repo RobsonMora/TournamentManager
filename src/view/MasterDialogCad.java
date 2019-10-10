@@ -1,3 +1,4 @@
+package view;
 
 import java.awt.Container;
 import java.awt.Cursor;
@@ -127,7 +128,6 @@ public class MasterDialogCad extends JInternalFrame {
 		Componnents();
 		subComponents();
 		setFieldsEnabled(false);
-super
 	}
 
 	protected void setFieldsEnabled(boolean enabled) {
