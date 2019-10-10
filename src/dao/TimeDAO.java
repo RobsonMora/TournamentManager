@@ -46,14 +46,14 @@ public class TimeDAO extends BaseDAO{
 
 	public void createTime(TimeModel time) throws SQLException {
 		this.insertInto("times", "nome")
-		.values(time.getNome())
+		.values(quoteStr(time.getNome()))
 		.commit();
 	}
 
 	public void updateTime(TimeModel time) throws SQLException {
 		this.update("times")
 		.setValue(
-				" nome = "+time.getNome()				)
+				" nome = "+ quoteStr(time.getNome()))
 		.where("id", "=", time.getId().toString())
 		.commit();
 	}
