@@ -100,12 +100,12 @@ public abstract class BaseDAO {
 	}
 	
 	protected BaseDAO leftJoin(String statement) {
-		this.setSql(this.getSql() + "LEFT JOIN " + statement);
+		this.setSql(this.getSql() + " LEFT JOIN " + statement);
 		return this;
 	}
 	
 	protected BaseDAO rightJoin(String statement) {
-		this.setSql(this.getSql() + "RIGHT JOIN " + statement);
+		this.setSql(this.getSql() + " RIGHT JOIN " + statement);
 		return this;
 	}
 	

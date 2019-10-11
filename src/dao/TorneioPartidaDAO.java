@@ -27,10 +27,10 @@ public class TorneioPartidaDAO extends BaseDAO {
 			torneioPartidaList.add(new TorneioPartidaModel()
 							.setId(result.getInt("id"))
 							.setIdTorneio(result.getInt("id_torneio"))
-							.setIdTime1(result.getInt("id_time1"))
-							.setIdTime2(result.getInt("id_time2"))
-							.setPontos1(result.getInt("pontos1"))
-							.setPontos2(result.getInt("pontos2"))
+							.setIdTime1(result.getInt("id_time_1"))
+							.setIdTime2(result.getInt("id_time_2"))
+							.setPontos1(result.getInt("pontos_1"))
+							.setPontos2(result.getInt("pontos_2"))
 							.setFase(result.getInt("fase"))
 							);
 		}
@@ -48,10 +48,10 @@ public class TorneioPartidaDAO extends BaseDAO {
 			TorneioPartidaModel torneioPartida = new TorneioPartidaModel();
 			return torneioPartida.setId(result.getInt("id"))
 					.setIdTorneio(result.getInt("id_torneio"))
-					.setIdTime1(result.getInt("id_time1"))
-					.setIdTime2(result.getInt("id_time2"))
-					.setPontos1(result.getInt("pontos1"))
-					.setPontos2(result.getInt("pontos2"))
+					.setIdTime1(result.getInt("id_time_1"))
+					.setIdTime2(result.getInt("id_time_2"))
+					.setPontos1(result.getInt("pontos_1"))
+					.setPontos2(result.getInt("pontos_2"))
 					.setFase(result.getInt("fase"));
 		}else {
 			return null;
@@ -59,12 +59,10 @@ public class TorneioPartidaDAO extends BaseDAO {
 	}
 
 	public void createTorneioPartida(TorneioPartidaModel torneioPartida) throws SQLException {
-		this.insertInto("torneio_partidas", "id_torneio, id_time1, id_time2, fase")
+		this.insertInto("torneio_partidas", "id_torneio, id_time_1, id_time_2, fase")
 		.values(torneioPartida.getIdTorneio().toString()+", "+
 				torneioPartida.getIdTime1().toString()+", "+
 				torneioPartida.getIdTime2().toString()+
-//				torneioPartida.getPontos1().toString()+", "+
-//				torneioPartida.getPontos2().toString()+", "+
 				((torneioPartida.getFase() == 0) ? ", "+torneioPartida.getFase().toString() : ""))
 		.commit();
 	}
@@ -72,8 +70,8 @@ public class TorneioPartidaDAO extends BaseDAO {
 	public void updateTorneioPartida(TorneioPartidaModel torneioPartida) throws SQLException {
 		this.update("torneio_partidas")
 		.setValue(
-				"  pontos1 = "+torneioPartida.getPontos1()+
-				", pontos2 = "+torneioPartida.getPontos2()
+				"  pontos_1 = "+torneioPartida.getPontos1()+
+				", pontos_2 = "+torneioPartida.getPontos2()
 				)
 		.where("id", "=", torneioPartida.getId().toString())
 		.commit();
