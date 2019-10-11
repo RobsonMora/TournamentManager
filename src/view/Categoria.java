@@ -15,7 +15,7 @@ public class Categoria extends MasterDialogCad {
 
 	private void create() {
 
-		setSize(550, 684);
+		setSize(550, 154);
 		setTitle("Categorias");
 		setLayout(null);
 		setResizable(false);

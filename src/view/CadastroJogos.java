@@ -17,7 +17,7 @@ public class CadastroJogos extends MasterDialogCad {
 
 	private void create() {
 
-		setSize(550, 684);
+		setSize(550, 184);
 		setTitle("Cadastro de Jogos");
 		setLayout(null);
 		setResizable(false);
