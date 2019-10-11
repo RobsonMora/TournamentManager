@@ -74,21 +74,17 @@ public class CadastroTorneios extends MasterDialogCad {
 		LblNomeTorneio.setBounds(32, 50, 200, 100);
 		getContentPane().add(LblNomeTorneio);
 
-		LblQtdTimes = new JLabel("Quantidade de Times:");
-		LblQtdTimes.setBounds(10, 80, 200, 100);
-		getContentPane().add(LblQtdTimes);
-
 		LblJogo = new JLabel("Tipo de jogo:");
-		LblJogo.setBounds(58, 110, 200, 100);
+		LblJogo.setBounds(58, 80, 200, 100);
 		getContentPane().add(LblJogo);
 		
 		ComboJogo = new JComboBox<String>();
 		ComboJogo.addItem("--Selecione--");
-		ComboJogo.setBounds(140, 147, 387, 26);
+		ComboJogo.setBounds(140, 117, 387, 26);
 		getContentPane().add(ComboJogo);
 
 		LblObs = new JLabel("Observação:");
-		LblObs.setBounds(59, 140, 200, 100);
+		LblObs.setBounds(59, 110, 200, 100);
 		getContentPane().add(LblObs);
 
 		txtFCodTorneio = new JTextField();
@@ -98,10 +94,6 @@ public class CadastroTorneios extends MasterDialogCad {
 		txtFNomeTorneio = new JTextField();
 		txtFNomeTorneio.setBounds(140, 87, 387, 26);
 		getContentPane().add(txtFNomeTorneio);
-
-		txtFQtdTimes = new JTextField();
-		txtFQtdTimes.setBounds(140, 117, 387, 26);
-		getContentPane().add(txtFQtdTimes);
 
 		txtAObs = new JTextArea();
 		getContentPane().add(txtAObs);
