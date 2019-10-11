@@ -179,11 +179,12 @@ public abstract class BaseDAO {
 	}
 	
 	protected int excecuteUpdate() throws SQLException {
-		PreparedStatement prepStatement =
+		PreparedStatement prepStatement = null;
 				
 		prepStatement = conn.prepareStatement(this.getSql());
 		clean();
-		return prepStatement.executeUpdate();
+		int row = prepStatement.executeUpdate(); 
+		return row;
 	}
 	
 	public void clean() {

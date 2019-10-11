@@ -106,6 +106,7 @@ public class TorneioAndamento  extends JInternalFrame {
 															.setIdTorneio(idTorneio)							
 															.setIdTime1(times.get(i).getId())
 															.setIdTime2(times.get(i+1).getId())
+															.setFase(1)
 															);					
 				}				
 			}
