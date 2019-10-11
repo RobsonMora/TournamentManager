@@ -29,6 +29,7 @@ CREATE TABLE public.torneios
 (
     id serial NOT NULL,
     nome text NOT NULL,
+    observacao text,
     inicio date,
     fim date,
     id_jogo integer NOT NULL,
