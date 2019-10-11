@@ -38,7 +38,7 @@ public class CadastroTorneios extends MasterDialogCad {
 
 	private void create() {
 
-		setSize(550,684);
+		setSize(550,654);
 		setTitle("Novo Torneio");
 		setLayout(null);
 		setResizable(false);
@@ -63,7 +63,7 @@ public class CadastroTorneios extends MasterDialogCad {
 	protected void subComponents() {
 
 		LblTime = new JLabel("Nome do time:");
-		LblTime.setBounds(11, 247, 200, 100);
+		LblTime.setBounds(11, 217, 200, 100);
 		getContentPane().add(LblTime);
 		
 		LblCodTorneio = new JLabel("Código do torneio:");
@@ -100,15 +100,15 @@ public class CadastroTorneios extends MasterDialogCad {
 		txtAObs.setLineWrap(true);
 		
 		btnAdd = new JButton("Adicionar time");
-		btnAdd.setBounds(420, 285, 107, 26);
+		btnAdd.setBounds(420, 255, 107, 26);
 		getContentPane().add(btnAdd);
 		
 		txtTime = new JTextField();
-		txtTime.setBounds(100, 285, 310, 26);
+		txtTime.setBounds(100, 255, 310, 26);
 		getContentPane().add(txtTime);
 		
 		JScrollPane sp = new JScrollPane(txtAObs);
-		sp.setBounds(9, 207, 519, 70);
+		sp.setBounds(9, 177, 519, 70);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getContentPane().add(sp);
 		
@@ -121,13 +121,13 @@ public class CadastroTorneios extends MasterDialogCad {
 		table.setEnabled(true);
 
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(9, 320, 519, 300);
+		scrollPane.setBounds(9, 290, 519, 300);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.getContentPane().add(scrollPane);
 		table.getTableHeader().setEnabled(false);
 		
 		lblTip = new JLabel("Duplo clique na linha para remové-la.");
-		lblTip.setBounds(11, 350, 350, 570);
+		lblTip.setBounds(11, 320, 350, 570);
 		getContentPane().add(lblTip);
 		
 		childContainer = getContentPane();
