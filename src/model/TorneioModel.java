@@ -12,8 +12,18 @@ public class TorneioModel{
 	private Date fim;
 	
 	public TorneioModel() {
-				
-	}	
+		setId(0);
+		setIdJogo(0);
+		setNome("");
+		setObservacao("");
+	}
+	
+	public TorneioModel(TorneioModel torneio) {
+		setId(torneio.getId());
+		setIdJogo(torneio.getIdJogo());
+		setNome(torneio.getNome());
+		setObservacao(torneio.getObservacao());
+	}
 	
 	public Integer getId() {
 		return id;
