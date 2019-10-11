@@ -32,7 +32,7 @@ import model.TorneioTimeModel;
 public class CadastroTorneios extends MasterDialogCad {
 
 	private JLabel LblTime, LblJogo, LblCodTorneio, LblNomeTorneio, LblQtdTimes, LblObs, lblTip;
-	private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
+	private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes;
 	private JTextArea txtAObs;
 	private JComboBox<String> ComboJogo;
 	private DefaultTableModel model;
@@ -156,7 +156,8 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		txtFCodTorneio.setText(Integer.toString(torneio.getId()));
 		txtFNomeTorneio.setText(torneio.getNome());
-		txtFObs.setText(torneio.getObservacao());
+		String stq = torneio.getObservacao();
+		txtAObs.setText(stq);
 		try {
 			jogo = jogoDao.getOneJogo(torneio.getIdJogo());
 		} catch (SQLException e) {

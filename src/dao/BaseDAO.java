@@ -183,7 +183,7 @@ public abstract class BaseDAO {
 				
 		prepStatement = conn.prepareStatement(this.getSql());
 		clean();
-		return 0;//prepStatement.executeUpdate();
+		return prepStatement.executeUpdate();
 	}
 	
 	public void clean() {
