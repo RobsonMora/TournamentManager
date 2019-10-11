@@ -1,5 +1,7 @@
 package view;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 
 import javax.swing.JLabel;
@@ -45,13 +47,31 @@ public class Times extends MasterDialogCad{
 		
 		txtFCodigoID = new JTextField();
 		txtFCodigoID.setBounds(130, 57, 397, 26);
+		txtFCodigoID.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == e.VK_ENTER) {
+					txtFTime.requestFocus();
+				}
+
+			}
+		});
 		getContentPane().add(txtFCodigoID);
 
 		txtFTime = new JTextField();
 		txtFTime.setBounds(130, 87, 397, 26);
+		txtFTime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == e.VK_ENTER) {
+					btnSave.doClick();
+				}
+
+			}
+		});
 		getContentPane().add(txtFTime);
-		
-		
 		childContainer = getContentPane();
 	}
 
