@@ -153,26 +153,20 @@ public class CadastroTorneios extends MasterDialogCad {
 	
 	@Override
 	protected void fillFields() {
-		// TODO Auto-generated method stub
-		/*private JLabel LblTime, LblJogo, LblCodTorneio, LblNomeTorneio, LblQtdTimes, LblObs, lblTip;
-		private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes, txtFObs;
-		private JTextArea txtAObs;
-		private JComboBox<String> ComboJogo;
-		private DefaultTableModel model;
-		private JTable table;
-		private JButton btnAdd;
-		private TimeDAO timeDao;
-		private JogoDAO jogoDao;
-		private TorneioDAO torneioDao;
-		private TorneioTimeDAO torneioTimeDao;
-		private TorneioModel torneio, torneioChange;
-		private BuscarTorneio busca;*/
-		
+
 		txtFCodTorneio.setText(Integer.toString(torneio.getId()));
 		txtFNomeTorneio.setText(torneio.getNome());
-		//txtFObs.setText(torneio.getObservacao);
-		//ComboJogo.add(torneio.get);
+		txtFObs.setText(torneio.getObservacao());
+		try {
+			jogo = jogoDao.getOneJogo(torneio.getIdJogo());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ComboJogo.addItem(jogo.getNome());
 		findGrad();
+		
+		torneioChange = new TorneioModel(torneio);
 	}
 	
 	private void findGrad() {
