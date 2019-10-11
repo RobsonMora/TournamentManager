@@ -66,7 +66,7 @@ public class Menu extends JFrame {
 			e1.printStackTrace();
 		}
 
-        connection();
+		connection();
 
 		desktopPane = new JDesktopPane();
 
