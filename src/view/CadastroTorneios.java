@@ -156,14 +156,15 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		txtFCodTorneio.setText(Integer.toString(torneio.getId()));
 		txtFNomeTorneio.setText(torneio.getNome());
-		txtFObs.setText(torneio.getObservacao());
+		txtAObs.setText(torneio.getObservacao());
 		try {
 			jogo = jogoDao.getOneJogo(torneio.getIdJogo());
+			ComboJogo.addItem(jogo.getNome());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ComboJogo.addItem(jogo.getNome());
+
 		findGrad();
 		
 		torneioChange = new TorneioModel(torneio);
