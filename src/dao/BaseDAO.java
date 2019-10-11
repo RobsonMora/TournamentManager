@@ -156,7 +156,6 @@ public abstract class BaseDAO {
 	
 	protected ResultSet apply() throws SQLException {
 		ResultSet result = this.excecuteQuery();
-		this.conn.close();
 		return result;
 	}
 	
@@ -167,26 +166,21 @@ public abstract class BaseDAO {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		conn.close();
 		return false;
 		
 	}
 	
 	protected ResultSet excecuteQuery() throws SQLException {
 		PreparedStatement prepStatement = null;
-		
-		//this.connection();
-		
+				
 		prepStatement = conn.prepareStatement(this.getSql());
 		clean();
 		return prepStatement.executeQuery();
 	}
 	
 	protected int excecuteUpdate() throws SQLException {
-		PreparedStatement prepStatement = null;
-		
-		//this.connection();
-		
+		PreparedStatement prepStatement =
+				
 		prepStatement = conn.prepareStatement(this.getSql());
 		clean();
 		return prepStatement.executeUpdate();
