@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 
 import javax.swing.JLabel;
@@ -41,10 +43,30 @@ public class Categoria extends MasterDialogCad {
 		
 		txtFCodigoID = new JTextField();
 		txtFCodigoID.setBounds(140, 57, 387, 26);
+		txtFCodigoID.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == e.VK_ENTER) {
+					txtFCategoria.requestFocus();
+				}
+
+			}
+		});
 		getContentPane().add(txtFCodigoID);
 
 		txtFCategoria = new JTextField();
 		txtFCategoria.setBounds(140, 87, 387, 26);
+		txtFCategoria.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == e.VK_ENTER) {
+					btnSave.doClick();
+				}
+
+			}
+		});
 		getContentPane().add(txtFCategoria);
 		
 		childContainer = getContentPane();
