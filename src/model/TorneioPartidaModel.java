@@ -3,6 +3,9 @@ package model;
 public class TorneioPartidaModel {
 	
 	private Integer id, idTorneio, idTime1, idTime2, pontos1, pontos2, fase;
+	
+	private String nomeTime;
+
 
 	public TorneioPartidaModel() {
 		setId(0);
@@ -18,6 +21,14 @@ public class TorneioPartidaModel {
 		return id;
 	}
 
+	public String getNomeTime() {
+		return nomeTime;
+	}
+
+	public void setNomeTime(String nomeTime) {
+		this.nomeTime = nomeTime;
+	}
+	
 	public TorneioPartidaModel setId(Integer id) {
 		this.id = id;
 		return this;

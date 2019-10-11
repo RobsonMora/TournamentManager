@@ -34,7 +34,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	
 	public TorneioAndamento(Connection conn){
 
-		setSize(1440, 900);
+		setSize(1200, 800);
 		setTitle("Torneios em Andamento");
 		setLayout(null);
 		setResizable(false);
@@ -42,6 +42,7 @@ public class TorneioAndamento  extends JInternalFrame {
 		setClosable(true);
 		
 		torneioPartidaDAO = new TorneioPartidaDAO(conn);
+		torneioTimeDAO = new TorneioTimeDAO(conn);
 		
 		componentes();
 		setVisible(true);		
@@ -101,13 +102,12 @@ public class TorneioAndamento  extends JInternalFrame {
 			if(times!=null) {
 				partidas = new ArrayList<TorneioPartidaModel>();
 				for(int i = 0; i < times.size(); i = i + 2) {
-					partidas.add(new TorneioPartidaModel()
-								.setIdTorneio(idTorneio)							
-								.setIdTime1(times.get(i).getId())
-								.setIdTime2(times.get(i+1).getId())
-								);					
-				}
-				
+					torneioPartidaDAO.createTorneioPartida(new TorneioPartidaModel()
+															.setIdTorneio(idTorneio)							
+															.setIdTime1(times.get(i).getId())
+															.setIdTime2(times.get(i+1).getId())
+															);					
+				}				
 			}
 			
 		} catch (SQLException e) {
@@ -119,12 +119,15 @@ public class TorneioAndamento  extends JInternalFrame {
 	
 		try {
 			ResultSet result = torneioPartidaDAO.freeSqlQuery(" select (Max(coalesce(fase,0)) + 1) as fase from torneio_partidas where id_torneio = "+idTorneio.toString());
-			if(!result.next()||result.getInt(0) == 1) {
-				iniciaPartidas(idTorneio);			
+			if(result.next()) {
+				if(result.getInt(1) == 0) {
+					iniciaPartidas(idTorneio);			
+				}
 			}else {
 				result = torneioPartidaDAO.freeSqlQuery(" select ");
 			}
 			
+						
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
