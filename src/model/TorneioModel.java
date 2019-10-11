@@ -5,21 +5,21 @@ import java.text.SimpleDateFormat;
 
 public class TorneioModel{
 	
-	private int id; 
-	private String nome;
+	private Integer id, idJogo; 
+	private String nome, observacao;
+	
 	private Date inicio;
 	private Date fim;
 	
 	public TorneioModel() {
 				
-	}
+	}	
 	
-	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public TorneioModel setId(int id) {
+	public TorneioModel setId(Integer id) {
 		this.id = id;
 		return this;
 	}
@@ -57,6 +57,25 @@ public class TorneioModel{
 	public TorneioModel setFim(Date fim) {
 		this.fim = fim;
 		return this;
+	}	
+	
+	public Integer getIdJogo() {
+		return idJogo;
 	}
+
+	public TorneioModel setIdJogo(Integer idJogo) {
+		this.idJogo = idJogo;
+		return this;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public TorneioModel setObservacao(String observacao) {
+		this.observacao = observacao;
+		return this;
+	}
+
 
 }
