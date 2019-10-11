@@ -59,11 +59,11 @@ public class TorneioPartidaDAO extends BaseDAO {
 	}
 
 	public void createTorneioPartida(TorneioPartidaModel torneioPartida) throws SQLException {
-		this.insertInto("torneio_partidas", "id_torneio, id_time_1, id_time_2, fase")
+		this.insertInto("torneio_partidas", "id_torneio, id_time_1, id_time_2 "+(torneioPartida.getFase() > 0 ? ", fase ": "" ))
 		.values(torneioPartida.getIdTorneio().toString()+", "+
 				torneioPartida.getIdTime1().toString()+", "+
 				torneioPartida.getIdTime2().toString()+
-				((torneioPartida.getFase() == 0) ? ", "+torneioPartida.getFase().toString() : ""))
+				((torneioPartida.getFase() > 0) ? ", "+torneioPartida.getFase().toString() : ""))
 		.commit();
 	}
 
