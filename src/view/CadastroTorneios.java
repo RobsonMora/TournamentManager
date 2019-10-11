@@ -158,16 +158,30 @@ public class CadastroTorneios extends MasterDialogCad {
 		txtFNomeTorneio.setText(torneio.getNome());
 		String stq = torneio.getObservacao();
 		txtAObs.setText(stq);
+		fillJogos();
+		findGrad();
+		
+		torneioChange = new TorneioModel(torneio);
+	}
+	
+	public void fillJogos() {
+		
+		ComboJogo.removeAllItems();
+		ComboJogo.addItem("--Selecione--");
+		
+		ArrayList<JogoModel> jogos = null;
 		try {
-			jogo = jogoDao.getOneJogo(torneio.getIdJogo());
+			jogos = jogoDao.getAllJogos();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ComboJogo.addItem(jogo.getNome());
-		findGrad();
+		if(jogos != null) {
+			for(JogoModel jogo: jogos) {
+				ComboJogo.addItem(jogo.getNome());			
+			}
+		}
 		
-		torneioChange = new TorneioModel(torneio);
 	}
 	
 	private void findGrad() {
@@ -205,7 +219,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		LblNomeTorneio.setBounds(32, 50, 200, 100);
 		getContentPane().add(LblNomeTorneio);
 
-		LblJogo = new JLabel("Tipo de jogo:");
+		LblJogo = new JLabel("Jogo:");
 		LblJogo.setBounds(58, 80, 200, 100);
 		getContentPane().add(LblJogo);
 
