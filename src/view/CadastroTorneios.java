@@ -2,7 +2,9 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -123,6 +125,11 @@ public class CadastroTorneios extends MasterDialogCad {
 		if(torneioChange!=null) {
 			try {
 				if(isInserting) {
+					torneioChange.setId(Integer.parseInt(txtFCodTorneio.getText()));
+					torneioChange.setNome(txtFNomeTorneio.getText());
+					torneioChange.setObservacao(txtAObs.getText());
+					torneioChange.setInicio(new Date(0));
+					torneioChange.setFim(new Date(0));
 					torneioDao.createTorneio(torneioChange);
 					System.out.println("salvoo");
 				}else {
@@ -156,6 +163,7 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		txtFCodTorneio.setText(Integer.toString(torneio.getId()));
 		txtFNomeTorneio.setText(torneio.getNome());
+
 		String stq = torneio.getObservacao();
 		txtAObs.setText(stq);
 		fillJogos();
@@ -176,11 +184,15 @@ public class CadastroTorneios extends MasterDialogCad {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+
+		findGrad();
 		if(jogos != null) {
 			for(JogoModel jogo: jogos) {
 				ComboJogo.addItem(jogo.getNome());			
 			}
 		}
+
 		
 	}
 	
@@ -244,7 +256,14 @@ public class CadastroTorneios extends MasterDialogCad {
 		getContentPane().add(txtAObs);
 		txtAObs.setLineWrap(true);
 
-		btnAdd = new JButton("Adicionar time");
+		btnAdd = new JButton(new AbstractAction("Adicionar Time") {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				model.addRow(new String[] {txtTime.getText()});
+			}
+		});
 		btnAdd.setBounds(420, 255, 107, 26);
 		getContentPane().add(btnAdd);
 
