@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -22,15 +23,12 @@ public class MasterBuscar extends JFrame {
 
 	protected JTextField jTxtBusca;
 	private JButton btnOk;
-	protected JTable table;	
+	protected JTable table;
 	protected Utils utils;
 	protected DefaultTableModel model;
 	protected Connection conn;
-	
-	
-	JComboBox<String> campos;
 
-	
+	JComboBox<String> campos;
 
 	public MasterBuscar(Connection conn) {
 		this.conn = conn;
@@ -40,25 +38,25 @@ public class MasterBuscar extends JFrame {
 		setLayout(null);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(HIDE_ON_CLOSE);	
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		createComponnents();
-		
+
 		setVisible(true);
-		
+
 	}
-	
-	protected void clean() {	
-		model.setRowCount(0);		
+
+	protected void clean() {
+		model.setRowCount(0);
 	}
 
 	public void createComponnents() {
 
-		campos = new JComboBox<String>();		
+		campos = new JComboBox<String>();
 		campos.setBounds(10, 8, 110, 26);
 		getContentPane().add(campos);
 
 		jTxtBusca = new JTextField();
-		
+
 		jTxtBusca.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -70,20 +68,20 @@ public class MasterBuscar extends JFrame {
 
 			}
 		});
-		
+
 		jTxtBusca.setBounds(129, 8, 200, 26);
 		getContentPane().add(jTxtBusca);
 
 		btnOk = new JButton(new AbstractAction("Buscar") {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				buscar();
 			}
 		});
-		btnOk.setBounds(338, 8, 100, 26);	
-		getContentPane().add(btnOk);		
+		btnOk.setBounds(338, 8, 100, 26);
+		getContentPane().add(btnOk);
 
 		String colunas1[] = { "Código", "Nome" };
 		model = new DefaultTableModel(colunas1, 0);
@@ -96,12 +94,12 @@ public class MasterBuscar extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 
 			public void mousePressed(MouseEvent mouseEvent) {
-		        JTable table =(JTable) mouseEvent.getSource();
-		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-		            setReturn();
-		            dispose();
-		        }
-		    }
+				JTable table = (JTable) mouseEvent.getSource();
+				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+					setReturn();
+					dispose();
+				}
+			}
 
 		});
 
@@ -114,26 +112,26 @@ public class MasterBuscar extends JFrame {
 		this.getContentPane().add(scrollPane);
 		table.getTableHeader().setEnabled(false);
 
-	}	
+	}
 
 	protected void InsertRow(String str1, String str2) {
-		if(str2.trim().isEmpty()) {
-			model.addRow(new String[]{str1});
-		}else {
-			model.addRow(new String[]{str1,str2});
+		if (str2.trim().isEmpty()) {
+			model.addRow(new String[] { str1 });
+		} else {
+			model.addRow(new String[] { str1, str2 });
 		}
 	}
-	
+
 	protected void buscar() {
-		
+
 	}
-	
+
 	protected void setReturn() {
-		
+
 	}
-	
+
 	protected void updateComp(String[] campos) {
-		for(int i = 0; i < campos.length; i++) {
+		for (int i = 0; i < campos.length; i++) {
 			this.campos.addItem(campos[i]);
 		}
 		table.setModel(model);
