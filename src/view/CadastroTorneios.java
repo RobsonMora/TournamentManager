@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -45,14 +46,17 @@ public class CadastroTorneios extends MasterDialogCad {
 	private TorneioDAO torneioDao;
 	private TorneioTimeDAO torneioTimeDao;
 	private TorneioModel torneio, torneioChange;
+	private TorneioTimeModel torneioTime;
+	private String oldTorneio;
+
 	private JogoModel jogo;
 	private BuscarTorneio busca;
-	private ArrayList<TorneioTimeModel> times, timesChange;
+	private BuscarTime buscaTime;
+	private ArrayList<TorneioTimeModel> torneioTimes, torneioTimesChange;
 
 	private void create() {
 
-
-		setSize(550,654);
+		setSize(550, 654);
 		setTitle("Cadastro Torneio");
 		setLayout(null);
 		setResizable(false);
@@ -82,11 +86,13 @@ public class CadastroTorneios extends MasterDialogCad {
 			busca = null;
 		}
 	}
-	
+
 	@Override
 	protected boolean afterSearch() {
-		if(busca.torneioReturn!=null) {
+		if (busca.torneioReturn != null) {
+			torneioTime = new TorneioTimeModel();
 			torneio = busca.torneioReturn;
+			oldTorneio = torneio.getNome();
 			return true;
 		}
 		return false;
@@ -97,6 +103,9 @@ public class CadastroTorneios extends MasterDialogCad {
 		if ((torneio != null) && (!isInserting)) {
 			try {
 				torneioDao.deleteTorneio(torneio.getId());
+				for (TorneioTimeModel torneioTime : torneioTimesChange) {
+					torneioTimeDao.deleteTorneioTime(torneioChange.getId(), torneioTime.getIdTime());
+				}
 				return true;
 			} catch (SQLException e) {
 				return false;
@@ -107,57 +116,63 @@ public class CadastroTorneios extends MasterDialogCad {
 	}
 
 	@Override
+	protected boolean actionSave() {
+		try {
+			TorneioTimeModel tor = new TorneioTimeModel();
+			tor.setIdTime(1);
+			tor.setIdTorneio(0);
+			torneioTimesChange.add(tor);
+			getFields();
+			if (torneioTimesChange.size() >= 0) {
+				if (isInserting) {
+					torneioDao.createTorneio(torneioChange);
+				} else {
+					if (torneio.getNome().trim().equals(oldTorneio.trim())) {
+						torneioDao.updateTorneio(torneioChange);
+					}
+				}
+				for (TorneioTimeModel torneioTime : torneioTimes) {
+					torneioTimeDao.createTorneioTime(torneioTime);
+				}
+				return true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Insira ao um time");
+				return false;
+			}
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	@Override
 	protected boolean actionAdd() {
-		if(!isInserting) {
+		if (!isInserting) {
 			try {
 				torneio = new TorneioModel();
+				torneioTime = new TorneioTimeModel();
+				torneioTimes = new ArrayList<TorneioTimeModel>();
 				return true;
 			} catch (Exception e) {
 				return false;
-			}			
-		}else {
-			return false;
-		}
-	}
-	
-	@Override
-	protected boolean actionSave() {
-		if(torneioChange!=null) {
-			try {
-				if(isInserting) {
-					torneioChange.setId(Integer.parseInt(txtFCodTorneio.getText()));
-					torneioChange.setNome(txtFNomeTorneio.getText());
-					torneioChange.setObservacao(txtAObs.getText());
-					torneioChange.setInicio(new Date(0));
-					torneioChange.setFim(new Date(0));
-					torneioDao.createTorneio(torneioChange);
-					System.out.println("salvoo");
-				}else {
-					torneioDao.updateTorneio(torneioChange);
-				}
-			} catch (SQLException e) {
-				return false;
 			}
-
-			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	
+
 	@Override
 	protected boolean actionCancel() {
-		try {		
-			if(isInserting) {
+		try {
+			if (isInserting) {
 				torneio = null;
 			}
-			torneioChange = null;			
-		}catch (Exception e) {
+			torneioChange = null;
+		} catch (Exception e) {
 			return false;
-		}				
-		return true;	
+		}
+		return true;
 	}
-	
+
 	@Override
 	protected void fillFields() {
 
@@ -168,15 +183,15 @@ public class CadastroTorneios extends MasterDialogCad {
 		txtAObs.setText(stq);
 		fillJogos();
 		findGrad();
-		
+
 		torneioChange = new TorneioModel(torneio);
 	}
-	
+
 	public void fillJogos() {
-		
+
 		ComboJogo.removeAllItems();
 		ComboJogo.addItem("--Selecione--");
-		
+
 		ArrayList<JogoModel> jogos = null;
 		try {
 			jogos = jogoDao.getAllJogos();
@@ -185,35 +200,55 @@ public class CadastroTorneios extends MasterDialogCad {
 			e.printStackTrace();
 		}
 
-
 		findGrad();
-		if(jogos != null) {
-			for(JogoModel jogo: jogos) {
-				ComboJogo.addItem(jogo.getNome());			
+		if (jogos != null) {
+			for (JogoModel jogo : jogos) {
+				ComboJogo.addItem(jogo.getNome());
 			}
 		}
 
-		
 	}
-	
+
 	private void findGrad() {
 		try {
-			if(!torneio.getNome().trim().isEmpty()) {
-				times = torneioTimeDao.getAllTorneioTimes(torneio.getId());				
-				timesChange = times;
+			if (!torneio.getNome().trim().isEmpty()) {
+				torneioTimes = torneioTimeDao.getAllTorneioTimes(torneio.getId());
+				torneioTimesChange = torneioTimes;
 				fillTable();
 			}
 		} catch (SQLException e) {
-		}		
+		}
 	}
 
 	private void fillTable() throws SQLException {
 		model.setRowCount(0);
 		TimeModel timeAux = new TimeModel();
-		for(TorneioTimeModel timTorneioTimeModel : timesChange) {
+		for (TorneioTimeModel timTorneioTimeModel : torneioTimesChange) {
 			timeAux = timeDao.getOneTime(timTorneioTimeModel.getIdTime());
-			model.addRow(new String[] {timeAux.getNome()});
+			model.addRow(new String[] { timeAux.getNome() });
 		}
+	}
+	
+	private void getFields() {
+		torneioChange.setId(Integer.parseInt(txtFCodTorneio.getText()));
+		torneioChange.setNome(txtFNomeTorneio.getText());
+		ArrayList<JogoModel> jogos = null;
+		int i=0;
+		if (jogos != null) {
+			for (JogoModel jogo : jogos) {
+				i++;
+				if(ComboJogo.getSelectedItem().toString().equalsIgnoreCase(jogo.getNome())) {
+					torneioChange.setIdJogo(i);
+				}
+			}
+		}
+		torneioChange.setObservacao(txtAObs.getText());
+		TorneioTimeModel aux = new TorneioTimeModel();
+		for(i=0; i < model.getRowCount(); i++) {
+			aux.setIdTime(Integer.parseInt((String) model.getValueAt(i, 0)));
+			aux.setIdTorneio(torneioChange.getId());
+		}
+
 	}
 
 	@Override
@@ -257,11 +292,14 @@ public class CadastroTorneios extends MasterDialogCad {
 		txtAObs.setLineWrap(true);
 
 		btnAdd = new JButton(new AbstractAction("Adicionar Time") {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				model.addRow(new String[] {txtTime.getText()});
+				buscaTime = new BuscarTime(conn);
+				if (buscaTime.timeReturn != null) {
+					model.addRow(new String[] { Integer.toString(buscaTime.timeReturn.getId()), buscaTime.timeReturn.getNome()});
+				}
 			}
 		});
 		btnAdd.setBounds(420, 255, 107, 26);

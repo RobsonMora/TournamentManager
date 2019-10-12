@@ -43,9 +43,9 @@ public class BuscarTorneio extends MasterBuscar {
 			} else {
 				if (jTxtBusca.getText().matches("[0123456789]+")) {
 					torneioList = new ArrayList<TorneioModel>();
-					TorneioModel alunoResult = torneioDao.getOneTorneio(Integer.parseInt(jTxtBusca.getText().trim()));
-					if (alunoResult != null) {
-						torneioList.add(alunoResult);
+					TorneioModel timeResult = torneioDao.getOneTorneio(Integer.parseInt(jTxtBusca.getText().trim()));
+					if (timeResult != null) {
+						torneioList.add(timeResult);
 						InsertRow(Integer.toString(torneioList.get(0).getId()), torneioList.get(0).getNome());
 					}
 				} else {

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.TimeModel;
+import model.TorneioModel;
 import model.TorneioTimeModel;
 
 public class TorneioTimeDAO extends BaseDAO {
@@ -94,4 +95,6 @@ public class TorneioTimeDAO extends BaseDAO {
 		.where()
 		.commit();
 	}
+
+
 }
