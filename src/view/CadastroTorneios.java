@@ -66,7 +66,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
 		for(Component c : getComponents()){
-		        if (c instanceof Component){
+		        if (c instanceof BasicInternalFrameTitlePane){
 		        		for (MouseMotionListener m : c.getMouseMotionListeners()){
 		        			  c.removeMouseMotionListener(m);
 		        		}

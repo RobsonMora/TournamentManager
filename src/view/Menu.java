@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import database.ConnectionFactory;
 
@@ -234,14 +233,6 @@ public class Menu extends JFrame {
 		menuBar.add(cadastros);
 
 		new JMenu("Processos");
-		setResizable(false);
-		addComponentListener(new ComponentAdapter() {
-			public void componentMoved(ComponentEvent e) {
-				
-				setEnabled(false);
-
-			}
-		});
 
 		setJMenuBar(menuBar);
 		setTitle("Tournament Manager");
@@ -249,8 +240,8 @@ public class Menu extends JFrame {
 		setLocationRelativeTo(null);
 		setBackground(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
-
+		setResizable(true);
+		setUndecorated(true);
 		/* setContentPane(CreateContentPane()); */
 		/* FramePrincipal(); */
 		ImageIcon imagemTituloJanela = new ImageIcon("Images/48x48/icon.jpg");
@@ -265,13 +256,13 @@ public class Menu extends JFrame {
 	}
 
 	private void fecharJanelaAberta() {
-
+		
 		switch (janelaAberta) {
-
+		
 		case 1:
 			fSair.dispose();
 			break;
-
+		
 		case 2:
 			fNovoTorneio.dispose();
 			break;
@@ -283,19 +274,19 @@ public class Menu extends JFrame {
 		case 4:
 			fControlePartidas.dispose();
 			break;
-
+		
 		case 5:
 			fTimes.dispose();
 			break;
-
+		
 		case 6:
 			fCadastroJogos.dispose();
 			break;
-
+		
 		case 7:
 			fCategoria.dispose();
 			break;
-
+			
 		default:
 
 			break;
