@@ -1,8 +1,14 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -19,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.table.DefaultTableModel;
 
 import dao.CategoriasDAO;
@@ -62,6 +69,14 @@ public class CadastroTorneios extends MasterDialogCad {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
+		for(Component c : getComponents()){
+		        if (c instanceof BasicInternalFrameTitlePane){
+		        		for (MouseMotionListener m : c.getMouseMotionListeners()){
+		        			  c.removeMouseMotionListener(m);
+		        		}
+		        		break;
+		        }
+		}
 		setVisible(true);
 
 	}
@@ -331,6 +346,8 @@ public class CadastroTorneios extends MasterDialogCad {
 		lblTip = new JLabel("Duplo clique na linha para remové-la.");
 		lblTip.setBounds(11, 320, 350, 570);
 		getContentPane().add(lblTip);
+		
+		
 
 		childContainer = getContentPane();
 

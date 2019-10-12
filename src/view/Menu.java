@@ -66,7 +66,7 @@ public class Menu extends JFrame {
 			e1.printStackTrace();
 		}
 
-        connection();
+		connection();
 
 		desktopPane = new JDesktopPane();
 
@@ -241,6 +241,7 @@ public class Menu extends JFrame {
 		setBackground(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
+		setUndecorated(true);
 		/* setContentPane(CreateContentPane()); */
 		/* FramePrincipal(); */
 		ImageIcon imagemTituloJanela = new ImageIcon("Images/48x48/icon.jpg");
