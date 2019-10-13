@@ -1,11 +1,14 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +18,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JTextField;import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import dao.TimeDAO;
 import dao.TorneioPartidaDAO;
@@ -55,6 +59,7 @@ public class TorneioAndamento  extends JInternalFrame {
 		torneioTimeDAO = new TorneioTimeDAO(conn);
 		timeDAO = new TimeDAO(conn);
 		
+			
 		chaveContainer = new Container();
 		getContentPane().add(chaveContainer);
 
@@ -102,9 +107,14 @@ public class TorneioAndamento  extends JInternalFrame {
 
 	private void createSquare(TimeModel time, String pontos, int x, int y) {
 
-		getGraphics().drawRect(x, y, 200, 30);
+		Graphics g = getGraphics();
+		g.setColor(Color.GREEN);
+		g.fillRect(x, y, 200, 30);
+		g.setColor(Color.BLACK);
+		g.drawRect(x, y, 200, 30);
 		//TODO colocar logo
-		printText((time.getNome() + "          ").substring(0, 10)+"  :  "+pontos, x + 20, y + 18);		
+		printText((time.getNome() + "               ").substring(0, 15), x + 40, y + 18);		
+		printText(pontos, x + 180, y + 18);		
 
 	}
 	
@@ -116,6 +126,8 @@ public class TorneioAndamento  extends JInternalFrame {
 	        g2.drawString(text, x, y);; 
 	    }		
 	}
+	
+	
 
 
 	private void carregaFases(Integer idTorneio) {
@@ -132,7 +144,8 @@ public class TorneioAndamento  extends JInternalFrame {
 				partidas = torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i);
 				if(partidas != null) {
 					ultimaFase = i;
-					x = ultimaFase * 100;
+					x = ((ultimaFase - 1) * 300) + 100;
+					j = 80;
 
 					for(TorneioPartidaModel partida : partidas) {
 
@@ -186,6 +199,8 @@ public class TorneioAndamento  extends JInternalFrame {
 			if(result.next()) {
 				if(result.getInt(1) == 0) {
 					iniciaPartidas(idTorneio);			
+				}else {
+					carregaFases(idTorneio);
 				}
 			}else {
 				result = torneioPartidaDAO.freeSqlQuery(" select ");

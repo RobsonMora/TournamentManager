@@ -118,9 +118,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		if ((torneio != null) && (!isInserting)) {
 			try {
 				torneioDao.deleteTorneio(torneio.getId());
-				for (TorneioTimeModel torneioTime : torneioTimesChange) {
-					torneioTimeDao.deleteTorneioTime(torneioChange.getId(), torneioTime.getIdTime());
-				}
+				torneioTimeDao.deleteTorneioTime(torneioChange.getId(), 0);
 				return true;
 			} catch (SQLException e) {
 				return false;
@@ -194,8 +192,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		txtFCodTorneio.setText(Integer.toString(torneio.getId()));
 		txtFNomeTorneio.setText(torneio.getNome());
 
-		String stq = torneio.getObservacao();
-		txtAObs.setText(stq);
+		txtAObs.setText(torneio.getObservacao());
 		fillJogos();
 		findGrad();
 
@@ -215,7 +212,6 @@ public class CadastroTorneios extends MasterDialogCad {
 			e.printStackTrace();
 		}
 
-		findGrad();
 		if (jogos != null) {
 			for (JogoModel jogo : jogos) {
 				ComboJogo.addItem(jogo.getNome());
@@ -228,7 +224,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		try {
 			if (!torneio.getNome().trim().isEmpty()) {
 				torneioTimes = torneioTimeDao.getAllTorneioTimes(torneio.getId());
-				torneioTimesChange = torneioTimes;
+				torneioTimesChange = (ArrayList<TorneioTimeModel>)torneioTimes.clone();
 				fillTable();
 			}
 		} catch (SQLException e) {
