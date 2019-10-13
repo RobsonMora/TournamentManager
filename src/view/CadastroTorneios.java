@@ -1,14 +1,8 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -25,7 +19,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.table.DefaultTableModel;
 
 import dao.CategoriasDAO;
@@ -69,14 +62,6 @@ public class CadastroTorneios extends MasterDialogCad {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
-		for(Component c : getComponents()){
-		        if (c instanceof BasicInternalFrameTitlePane){
-		        		for (MouseMotionListener m : c.getMouseMotionListeners()){
-		        			  c.removeMouseMotionListener(m);
-		        		}
-		        		break;
-		        }
-		}
 		setVisible(true);
 
 	}
@@ -131,10 +116,10 @@ public class CadastroTorneios extends MasterDialogCad {
 	@Override
 	protected boolean actionSave() {
 		try {
-			TorneioTimeModel tor = new TorneioTimeModel();
-			tor.setIdTime(1);
-			tor.setIdTorneio(0);
-			torneioTimesChange.add(tor);
+			TorneioTimeModel time = new TorneioTimeModel();
+			time.setIdTime(0);
+			time.setIdTorneio(0);
+			torneioTimesChange.add(time);
 			getFields();
 			if (torneioTimesChange.size() >= 0) {
 				if (isInserting) {
@@ -239,26 +224,25 @@ public class CadastroTorneios extends MasterDialogCad {
 			model.addRow(new String[] { timeAux.getNome() });
 		}
 	}
-	
-	private void getFields() {
-		torneioChange.setId(Integer.parseInt(txtFCodTorneio.getText()));
+
+	private void getFields() throws SQLException {
 		torneioChange.setNome(txtFNomeTorneio.getText());
-		ArrayList<JogoModel> jogos = null;
-		int i=0;
-		if (jogos != null) {
-			for (JogoModel jogo : jogos) {
-				i++;
-				if(ComboJogo.getSelectedItem().toString().equalsIgnoreCase(jogo.getNome())) {
-					torneioChange.setIdJogo(i);
-				}
+		ArrayList<JogoModel> jogos = jogoDao.getAllJogos();
+		int i = 0;
+		for (JogoModel jogo : jogos) {
+			i++;
+			if (ComboJogo.getSelectedItem().toString().equalsIgnoreCase(jogo.getNome())) {
+				torneioChange.setIdJogo(i);
 			}
 		}
 		torneioChange.setObservacao(txtAObs.getText());
 		TorneioTimeModel aux = new TorneioTimeModel();
-		for(i=0; i < model.getRowCount(); i++) {
+		for (i = 0; i < model.getRowCount(); i++) {
 			aux.setIdTime(Integer.parseInt((String) model.getValueAt(i, 0)));
 			aux.setIdTorneio(torneioChange.getId());
 		}
+		torneioChange.setInicio(new Date(0));
+		torneioChange.setFim(new Date(0));
 
 	}
 
@@ -309,7 +293,8 @@ public class CadastroTorneios extends MasterDialogCad {
 				// TODO Auto-generated method stub
 				buscaTime = new BuscarTime(conn);
 				if (buscaTime.timeReturn != null) {
-					model.addRow(new String[] { Integer.toString(buscaTime.timeReturn.getId()), buscaTime.timeReturn.getNome()});
+					model.addRow(new String[] { Integer.toString(buscaTime.timeReturn.getId()),
+							buscaTime.timeReturn.getNome() });
 				}
 			}
 		});
@@ -342,8 +327,6 @@ public class CadastroTorneios extends MasterDialogCad {
 		lblTip = new JLabel("Duplo clique na linha para remové-la.");
 		lblTip.setBounds(11, 320, 350, 570);
 		getContentPane().add(lblTip);
-		
-		
 
 		childContainer = getContentPane();
 

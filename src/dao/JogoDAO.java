@@ -63,7 +63,7 @@ public class JogoDAO extends BaseDAO {
 		.commit();
 	}
 
-	public void deleteTime(Integer id) throws SQLException {
+	public void deleteJogo(Integer id) throws SQLException {
 		this.delete()
 		.from("jogos")
 		.where("id", "=", id.toString())
