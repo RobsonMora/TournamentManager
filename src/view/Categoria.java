@@ -4,14 +4,21 @@ import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import dao.CategoriasDAO;
+import model.CategoriaModel;
 
 public class Categoria extends MasterDialogCad {
 
 	private JLabel LblCodigoID, LblCategoria;
 	private JTextField txtFCodigoID, txtFCategoria;
+	private CategoriasDAO categoriaDao;
+	private BuscarCategoria busca;
+	private CategoriaModel categoria, categoriaChange;
 
 	private void create() {
 
@@ -28,7 +35,97 @@ public class Categoria extends MasterDialogCad {
 	public Categoria(Connection conn) {
 
 		super(conn);
+		categoriaDao = new CategoriasDAO(conn);
 		create();
+	}
+	
+	protected void actionSearch() {
+		busca = new BuscarCategoria(conn);
+		try {
+			busca.addWindowListener(eventWindowSearchClosed);
+		} catch (Exception e2) {
+			busca = null;
+		}
+	}
+
+	@Override
+	protected boolean afterSearch() {
+		if (busca.categoriaReturn != null) {
+			categoria = busca.categoriaReturn;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected boolean actionDelete() {
+		if ((categoria != null) && (!isInserting)) {
+			try {
+				categoriaDao.deleteCategoria(categoria.getId());
+				return true;
+			} catch (SQLException e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean actionSave() {
+		try {
+			getFields();
+			if (isInserting) {
+				categoriaDao.createCategoria(categoriaChange);
+
+			} else {
+				categoriaDao.updateCategoria(categoriaChange);
+			}
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean actionAdd() {
+		if (!isInserting) {
+			try {
+				categoria = new CategoriaModel();
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean actionCancel() {
+		try {
+			if (isInserting) {
+				categoria = null;
+			}
+			categoriaChange = null;
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	protected void fillFields() {
+
+		txtFCodigoID.setText(categoria.getId().toString());
+		txtFCategoria.setText(categoria.getNome());
+
+
+		categoriaChange = new CategoriaModel(categoria);
+	}
+	
+	private void getFields() {
+		categoriaChange.setNome(txtFCategoria.getText());
 	}
 
 	protected void subComponents() {

@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -11,12 +12,17 @@ import dao.JogoDAO;
 import dao.TimeDAO;
 import dao.TorneioDAO;
 import dao.TorneioTimeDAO;
+import model.JogoModel;
+import model.TimeModel;
 
 @SuppressWarnings("serial")
 public class Times extends MasterDialogCad{
 	
 	private JLabel LblCodigoID, LblTime;
 	private JTextField txtFCodigoID, txtFTime;
+	private TimeDAO timeDao;
+	private BuscarTime busca;
+	private TimeModel time, timeChange;
 			
 	private void create() {
 
@@ -33,8 +39,99 @@ public class Times extends MasterDialogCad{
 	public Times(Connection conn) {
 		
 		super(conn);
+		timeDao = new TimeDAO(conn);
 		create();
 	}
+	
+	protected void actionSearch() {
+		busca = new BuscarTime(conn);
+		try {
+			busca.addWindowListener(eventWindowSearchClosed);
+		} catch (Exception e2) {
+			busca = null;
+		}
+	}
+
+	@Override
+	protected boolean afterSearch() {
+		if (busca.timeReturn != null) {
+			time = busca.timeReturn;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected boolean actionDelete() {
+		if ((time != null) && (!isInserting)) {
+			try {
+				timeDao.deleteTime(time.getId());
+				return true;
+			} catch (SQLException e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean actionSave() {
+		try {
+			getFields();
+			if (isInserting) {
+				timeDao.createTime(timeChange);
+
+			} else {
+				timeDao.updateTime(timeChange);
+			}
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean actionAdd() {
+		if (!isInserting) {
+			try {
+				time = new TimeModel();
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean actionCancel() {
+		try {
+			if (isInserting) {
+				time = null;
+			}
+			timeChange = null;
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	protected void fillFields() {
+
+		txtFCodigoID.setText(time.getId().toString());
+		txtFTime.setText(time.getNome());
+
+
+		timeChange = new TimeModel(time);
+	}
+	
+	private void getFields() {
+		timeChange.setNome(txtFTime.getText());
+	}
+	
 	protected void subComponents() {
 		
 		LblCodigoID = new JLabel("Código do torneio:");
