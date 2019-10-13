@@ -118,10 +118,6 @@ public class CadastroTorneios extends MasterDialogCad {
 	@Override
 	protected boolean actionSave() {
 		try {
-			TorneioTimeModel time = new TorneioTimeModel();
-			time.setIdTime(0);
-			time.setIdTorneio(0);
-			torneioTimesChange.add(time);
 			getFields();
 			if (torneioTimesChange.size() >= 0) {
 				if (isInserting) {
@@ -131,8 +127,12 @@ public class CadastroTorneios extends MasterDialogCad {
 						torneioDao.updateTorneio(torneioChange);
 					}
 				}
-				for (TorneioTimeModel torneioTime : torneioTimes) {
-					torneioTimeDao.createTorneioTime(torneioTime);
+				int i = 0;
+				for (TorneioTimeModel torneioTime : torneioTimesChange) {
+					if(torneioTime.getIdTime() != torneioTimeDao.getOneTorneioTime(torneioTime.getIdTorneio(), torneioTime.getIdTime()).getIdTime() 
+							&& torneioTime.getIdTorneio() != torneioTimeDao.getOneTorneioTime(torneioTime.getIdTorneio(), torneioTime.getIdTime()).getIdTorneio()) {
+						torneioTimeDao.createTorneioTime(torneioTime);
+					}
 				}
 				return true;
 			} else {
@@ -225,7 +225,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		TimeModel timeAux = new TimeModel();
 		for (TorneioTimeModel timTorneioTimeModel : torneioTimesChange) {
 			timeAux = timeDao.getOneTime(timTorneioTimeModel.getIdTime());
-			model.addRow(new String[] { timeAux.getNome() });
+			model.addRow(new String[] { timeAux.getId().toString(),timeAux.getNome() });
 		}
 	}
 
@@ -240,10 +240,11 @@ public class CadastroTorneios extends MasterDialogCad {
 			}
 		}
 		torneioChange.setObservacao(txtAObs.getText());
-		TorneioTimeModel aux = new TorneioTimeModel();
+		TorneioTimeModel auxTime = new TorneioTimeModel();
 		for (i = 0; i < model.getRowCount(); i++) {
-			aux.setIdTime(Integer.parseInt((String) model.getValueAt(i, 0)));
-			aux.setIdTorneio(torneioChange.getId());
+			auxTime.setIdTime(Integer.parseInt((String) model.getValueAt(i, 0)));
+			auxTime.setIdTorneio(torneioChange.getId());
+			torneioTimesChange.add(auxTime);
 		}
 		torneioChange.setInicio(new Date(0));
 		torneioChange.setFim(new Date(0));

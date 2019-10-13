@@ -70,10 +70,10 @@ public class TorneioDAO extends BaseDAO {
 		this.update("torneios")
 		.setValue(
 				" nome = " + quoteStr(torneio.getNome())+
-				" id_jogo = " + torneio.getIdJogo().toString()+
-				" observacao = " + quoteStr(torneio.getObservacao())+ 
+				", observacao = " + quoteStr(torneio.getObservacao())+ 
 						((torneio.getInicioDate().compareTo(new Date(0))==0)? "" : (" , inicio = '"+torneio.getInicioDate()+"' "))+
-						((torneio.getFimDate().compareTo(new Date(0))==0)? "" : (" , fim = '"+torneio.getFimDate()+"' "))
+						((torneio.getFimDate().compareTo(new Date(0))==0)? "" : (" , fim = '"+torneio.getFimDate()+"' ") +
+				", id_jogo = " + torneio.getIdJogo().toString())
 				)
 		.where("id", "=", Integer.toString((torneio.getId())))
 		.commit();

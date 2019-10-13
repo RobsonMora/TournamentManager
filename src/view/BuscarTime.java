@@ -61,7 +61,6 @@ public class BuscarTime extends MasterBuscar {
 
 	protected void setReturn() {
 		timeReturn = timeList.get(table.getSelectedRow());
-		System.out.println(timeReturn.getNome());
 	}
 
 }
