@@ -1,8 +1,12 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -19,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.table.DefaultTableModel;
 
 import dao.CategoriasDAO;
@@ -277,6 +282,15 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		txtFCodTorneio = new JTextField();
 		txtFCodTorneio.setBounds(140, 57, 387, 26);
+		txtFCodTorneio.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		getContentPane().add(txtFCodTorneio);
 
 		txtFNomeTorneio = new JTextField();

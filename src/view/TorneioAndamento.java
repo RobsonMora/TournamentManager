@@ -1,12 +1,18 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +21,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import dao.GanhadorDAO;
 import dao.TimeDAO;
@@ -50,7 +57,14 @@ public class TorneioAndamento  extends JInternalFrame {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
-
+		for(Component c : getComponents()){
+	        if (c instanceof BasicInternalFrameTitlePane){
+	        		for (MouseMotionListener m : c.getMouseMotionListeners()){
+	        			  c.removeMouseMotionListener(m);
+	        		}
+	        		break;
+	        }
+		}
 		torneioPartidaDAO = new TorneioPartidaDAO(conn);
 		torneioTimeDAO = new TorneioTimeDAO(conn);
 		ganhadorDAO = new GanhadorDAO(conn);
@@ -97,6 +111,21 @@ public class TorneioAndamento  extends JInternalFrame {
 
 		txtTorneio = new JTextField();
 		txtTorneio.setBounds(10, 10, 50, 25);
+		txtTorneio.addFocusListener(new FocusAdapter() {
+			public void focusGained(final FocusEvent pE) {
+			
+				txtTorneio.selectAll();
+            }
+		});		
+		txtTorneio.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		getContentPane().add(txtTorneio);
 
 		btnSalvarFase = new JButton(new AbstractAction("Salvar Fase") {
