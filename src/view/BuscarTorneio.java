@@ -1,6 +1,7 @@
 package view;
 
 import java.sql.Connection;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -8,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.TorneioDAO;
 import model.TorneioModel;
-
+@SuppressWarnings("serial")
 public class BuscarTorneio extends MasterBuscar {
 
 	TorneioModel torneioReturn;

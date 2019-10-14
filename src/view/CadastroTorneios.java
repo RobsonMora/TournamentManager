@@ -1,12 +1,11 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -23,10 +22,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.table.DefaultTableModel;
-
-import dao.CategoriasDAO;
 import dao.JogoDAO;
 import dao.TimeDAO;
 import dao.TorneioDAO;
@@ -39,8 +35,8 @@ import model.TorneioTimeModel;
 @SuppressWarnings("serial")
 public class CadastroTorneios extends MasterDialogCad {
 
-	private JLabel LblTime, LblJogo, LblCodTorneio, LblNomeTorneio, LblQtdTimes, LblObs, lblTip;
-	private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio, txtFQtdTimes;
+	private JLabel LblTime, LblJogo, LblCodTorneio, LblNomeTorneio, LblObs, lblTip;
+	private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio;
 	private JTextArea txtAObs;
 	private JComboBox<String> ComboJogo;
 	private DefaultTableModel model;
@@ -53,8 +49,6 @@ public class CadastroTorneios extends MasterDialogCad {
 	private TorneioModel torneio, torneioChange;
 	private TorneioTimeModel torneioTime;
 	private String oldTorneio;
-
-	private JogoModel jogo;
 	private BuscarTorneio busca;
 	private BuscarTime buscaTime;
 	private ArrayList<TorneioTimeModel> torneioTimes, torneioTimesChange;
@@ -268,7 +262,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		getContentPane().add(LblNomeTorneio);
 
 		LblJogo = new JLabel("Jogo:");
-		LblJogo.setBounds(58, 80, 200, 100);
+		LblJogo.setBounds(99, 80, 200, 100);
 		getContentPane().add(LblJogo);
 
 		ComboJogo = new JComboBox<String>();
@@ -282,6 +276,8 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		txtFCodTorneio = new JTextField();
 		txtFCodTorneio.setBounds(140, 57, 387, 26);
+		txtFCodTorneio.setName("ignore");
+		txtFCodTorneio.setEnabled(false);
 		txtFCodTorneio.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();

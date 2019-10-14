@@ -2,6 +2,7 @@ package view;
 
 import java.awt.*;
 
+
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,7 +10,6 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 import database.ConnectionFactory;
-
 @SuppressWarnings("serial")
 public class Menu extends JFrame {
 
@@ -20,14 +20,13 @@ public class Menu extends JFrame {
 	private JMenuItem sair, novo_torneio, torneio_andamento, controle_partidas, times, cadastro_jogos, categoria,
 			testeConexao;
 	// Classes/frames
-	private Usuarios fUsuario;
 	private Sair fSair;
 	private TorneioAndamento fTorneioAndamento;
 	private CadastroTorneios fNovoTorneio;
 	private ControlePartidas fControlePartidas;
-	private Times fTimes;
+	private CadastroTimes fTimes;
 	private CadastroJogos fCadastroJogos;
-	private Categoria fCategoria;
+	private CadastroCategorias fCategoria;
 	private Connection conn;
 
 	private int janelaAberta = 0;
@@ -164,7 +163,7 @@ public class Menu extends JFrame {
 				fecharJanelaAberta();
 				janelaAberta = 5;
 
-				fTimes = new Times(conn);
+				fTimes = new CadastroTimes(conn);
 				desktopPane.add(fTimes);
 				fTimes.setVisible(true);
 				fTimes.setPosicao();
@@ -198,7 +197,7 @@ public class Menu extends JFrame {
 				fecharJanelaAberta();
 				janelaAberta = 7;
 
-				fCategoria = new Categoria(conn);
+				fCategoria = new CadastroCategorias(conn);
 				desktopPane.add(fCategoria);
 				fCategoria.setVisible(true);
 				fCategoria.setPosicao();

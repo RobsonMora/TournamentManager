@@ -1,27 +1,19 @@
 package view;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-
 import dao.CategoriasDAO;
 import dao.JogoDAO;
 import model.CategoriaModel;
 import model.JogoModel;
-import model.TorneioModel;
-import model.TorneioTimeModel;
-
+@SuppressWarnings("serial")
 public class CadastroJogos extends MasterDialogCad {
 
 	private JLabel LblCodigoID, LblCategoria, LblJogo;
@@ -179,11 +171,13 @@ public class CadastroJogos extends MasterDialogCad {
 
 		txtFCodigoID = new JTextField();
 		txtFCodigoID.setBounds(120, 57, 407, 26);
+		txtFCodigoID.setName("ignore");
+		txtFCodigoID.setEnabled(false);
 		txtFCodigoID.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == e.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					txtFNome.requestFocus();
 				}
 
@@ -192,11 +186,12 @@ public class CadastroJogos extends MasterDialogCad {
 		getContentPane().add(txtFCodigoID);
 
 		txtFNome = new JTextField();
+		txtFNome.setName("ignore");
 		txtFNome.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == e.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					ComboJogo.requestFocus();
 				}
 
@@ -217,7 +212,7 @@ public class CadastroJogos extends MasterDialogCad {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == e.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					btnSave.doClick();
 				}
 

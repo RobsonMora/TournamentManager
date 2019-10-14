@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.CategoriasDAO;
 import model.CategoriaModel;
-
+@SuppressWarnings("serial")
 public class BuscarCategoria extends MasterBuscar {
 
 	CategoriaModel categoriaReturn;

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -18,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
+@SuppressWarnings("serial")
 
 public class MasterBuscar extends JFrame {
 
@@ -61,7 +63,7 @@ public class MasterBuscar extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == e.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					btnOk.requestFocus();
 					btnOk.doClick();
 				}

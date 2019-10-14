@@ -1,5 +1,7 @@
 package view;
+
 import java.awt.Dimension;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -8,26 +10,21 @@ import java.sql.SQLException;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import dao.JogoDAO;
-import dao.TimeDAO;
-import dao.TorneioDAO;
-import dao.TorneioTimeDAO;
-import model.JogoModel;
-import model.TimeModel;
-
+import dao.CategoriasDAO;
+import model.CategoriaModel;
 @SuppressWarnings("serial")
-public class Times extends MasterDialogCad{
-	
-	private JLabel LblCodigoID, LblTime;
-	private JTextField txtFCodigoID, txtFTime;
-	private TimeDAO timeDao;
-	private BuscarTime busca;
-	private TimeModel time, timeChange;
-			
+public class CadastroCategorias extends MasterDialogCad {
+
+	private JLabel LblCodigoID, LblCategoria;
+	private JTextField txtFCodigoID, txtFCategoria;
+	private CategoriasDAO categoriaDao;
+	private BuscarCategoria busca;
+	private CategoriaModel categoria, categoriaChange;
+
 	private void create() {
 
-		setSize(550,154);
-		setTitle("Times");
+		setSize(550, 154);
+		setTitle("Categorias");
 		setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -35,16 +32,16 @@ public class Times extends MasterDialogCad{
 		setVisible(true);
 
 	}
-	
-	public Times(Connection conn) {
-		
+
+	public CadastroCategorias(Connection conn) {
+
 		super(conn);
-		timeDao = new TimeDAO(conn);
+		categoriaDao = new CategoriasDAO(conn);
 		create();
 	}
 	
 	protected void actionSearch() {
-		busca = new BuscarTime(conn);
+		busca = new BuscarCategoria(conn);
 		try {
 			busca.addWindowListener(eventWindowSearchClosed);
 		} catch (Exception e2) {
@@ -54,8 +51,8 @@ public class Times extends MasterDialogCad{
 
 	@Override
 	protected boolean afterSearch() {
-		if (busca.timeReturn != null) {
-			time = busca.timeReturn;
+		if (busca.categoriaReturn != null) {
+			categoria = busca.categoriaReturn;
 			return true;
 		}
 		return false;
@@ -63,9 +60,9 @@ public class Times extends MasterDialogCad{
 
 	@Override
 	protected boolean actionDelete() {
-		if ((time != null) && (!isInserting)) {
+		if ((categoria != null) && (!isInserting)) {
 			try {
-				timeDao.deleteTime(time.getId());
+				categoriaDao.deleteCategoria(categoria.getId());
 				return true;
 			} catch (SQLException e) {
 				return false;
@@ -80,10 +77,10 @@ public class Times extends MasterDialogCad{
 		try {
 			getFields();
 			if (isInserting) {
-				timeDao.createTime(timeChange);
+				categoriaDao.createCategoria(categoriaChange);
 
 			} else {
-				timeDao.updateTime(timeChange);
+				categoriaDao.updateCategoria(categoriaChange);
 			}
 			return true;
 		} catch (SQLException e) {
@@ -95,7 +92,7 @@ public class Times extends MasterDialogCad{
 	protected boolean actionAdd() {
 		if (!isInserting) {
 			try {
-				time = new TimeModel();
+				categoria = new CategoriaModel();
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -109,9 +106,9 @@ public class Times extends MasterDialogCad{
 	protected boolean actionCancel() {
 		try {
 			if (isInserting) {
-				time = null;
+				categoria = null;
 			}
-			timeChange = null;
+			categoriaChange = null;
 		} catch (Exception e) {
 			return false;
 		}
@@ -121,57 +118,62 @@ public class Times extends MasterDialogCad{
 	@Override
 	protected void fillFields() {
 
-		txtFCodigoID.setText(time.getId().toString());
-		txtFTime.setText(time.getNome());
+		txtFCodigoID.setText(categoria.getId().toString());
+		txtFCategoria.setText(categoria.getNome());
 
 
-		timeChange = new TimeModel(time);
+		categoriaChange = new CategoriaModel(categoria);
 	}
 	
 	private void getFields() {
-		timeChange.setNome(txtFTime.getText());
+		categoriaChange.setNome(txtFCategoria.getText());
 	}
-	
+
 	protected void subComponents() {
-		
-		LblCodigoID = new JLabel("Código do torneio:");
+
+		LblCodigoID = new JLabel("Código da categoria:");
 		LblCodigoID.setBounds(11, 20, 200, 100);
 		getContentPane().add(LblCodigoID);
 		
-		LblTime = new JLabel("Nome do time:");
-		LblTime.setBounds(33, 50, 200, 100);
-		getContentPane().add(LblTime);	
+		LblCategoria = new JLabel("Nome da categoria:");
+		LblCategoria.setBounds(18, 50, 200, 100);
+		getContentPane().add(LblCategoria);	
 		
 		txtFCodigoID = new JTextField();
-		txtFCodigoID.setBounds(130, 57, 397, 26);
+		txtFCodigoID.setBounds(140, 57, 387, 26);
+		txtFCodigoID.setName("ignore");
+		txtFCodigoID.setEnabled(false);
 		txtFCodigoID.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == e.VK_ENTER) {
-					txtFTime.requestFocus();
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					txtFCategoria.requestFocus();
 				}
 
 			}
 		});
 		getContentPane().add(txtFCodigoID);
 
-		txtFTime = new JTextField();
-		txtFTime.setBounds(130, 87, 397, 26);
-		txtFTime.addKeyListener(new KeyAdapter() {
+		txtFCategoria = new JTextField();
+		txtFCategoria.setBounds(140, 87, 387, 26);
+		txtFCategoria.setName("ignore");
+		txtFCategoria.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == e.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					btnSave.doClick();
 				}
 
 			}
 		});
-		getContentPane().add(txtFTime);
+		getContentPane().add(txtFCategoria);
+		
 		childContainer = getContentPane();
+	
 	}
-
+	
 	public void setPosicao() {
 
 		Dimension d = this.getDesktopPane().getSize();
