@@ -45,7 +45,7 @@ ALTER TABLE public.torneios
 	
 CREATE TABLE public.times
 (
-    id integer NOT NULL DEFAULT nextval('times_id_seq'::regclass),
+    id serial NOT NULL,
     nome text COLLATE pg_catalog."default" NOT NULL,
     logo bytea,
     CONSTRAINT time_pk PRIMARY KEY (id)
