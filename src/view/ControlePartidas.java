@@ -191,7 +191,7 @@ public class ControlePartidas extends JInternalFrame {
 				if(partidas == null) {
 					return;
 				}
-				
+							
 				for(TorneioPartidaModel partida: partidas) {
 					
 					try {
