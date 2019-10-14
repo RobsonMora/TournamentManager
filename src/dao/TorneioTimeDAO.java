@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.TimeModel;
-import model.TorneioModel;
 import model.TorneioTimeModel;
 
 public class TorneioTimeDAO extends BaseDAO {
@@ -73,23 +72,9 @@ public class TorneioTimeDAO extends BaseDAO {
 		.commit();
 	}
 
-	/*
-	public void updateTorneioTime(TorneioTimeModel torneioTime) throws SQLException {
-		this.update("torneio_times")
-		.setValue(
-				"id_torneio = "+torneioTime.getIdTorneio().toString()+
-				", id_time= "+torneioTime.getIdTime().toString()
-				)
-		.filter("id_torneio", "=", torneioTime.getIdTorneio().toString(), true)
-		.filter("id_time", "=", torneioTime.getIdTime().toString(), true)				
-		.where()
-		.commit();
-	}
-	*/
-
 	public void deleteTorneioTime(Integer idTorneio, Integer idTime) throws SQLException {
 		this.delete()
-		.from("torneioTimes")
+		.from("torneio_times")
 		.filter("id_torneio", "=", idTorneio.toString(), true)
 		.filter("id_time", "=", idTime.toString(), false)				
 		.where()
