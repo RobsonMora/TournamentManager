@@ -101,6 +101,23 @@ CREATE TABLE public.torneio_partidas
 ALTER TABLE public.torneio_partidas
     OWNER to postgres;
     
+CREATE TABLE public.ganhadores
+(
+    id_torneio integer NOT NULL,
+    id_time integer NOT NULL,
+    CONSTRAINT ganhadores_pk PRIMARY KEY (id_torneio, id_time),
+    CONSTRAINT ganhadores_torneio_fk FOREIGN KEY (id_torneio)
+        REFERENCES public.torneios (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT ganhadores_time_fk FOREIGN KEY (id_time)
+        REFERENCES public.times (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+ALTER TABLE public.ganhadores
+    OWNER to postgres;   
     
     
 CREATE FUNCTION public.tpartida_fase()
