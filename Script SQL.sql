@@ -119,26 +119,3 @@ CREATE TABLE public.ganhadores
 ALTER TABLE public.ganhadores
     OWNER to postgres;   
     
-    
-CREATE FUNCTION public.tpartida_fase()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-     NOT LEAKPROOF
-AS $BODY$
-begin
-	if (new.fase is null) then
-		new.fase = 1;
-	end if;
-	return null;
-end;
-$BODY$;
-
-ALTER FUNCTION public.tpartida_fase()
-    OWNER TO postgres;
-/*
-CREATE TRIGGER tpartidas_bi
-    BEFORE INSERT
-    ON public.torneio_partidas
-    FOR EACH ROW
-    EXECUTE PROCEDURE public.tpartida_fase();
-*/
