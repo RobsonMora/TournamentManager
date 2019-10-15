@@ -54,17 +54,25 @@ public class TorneioDAO extends BaseDAO {
 		}
 	}
 
-	public void createTorneio(TorneioModel torneio) throws SQLException {
+	public int createTorneio(TorneioModel torneio) throws SQLException {
 		String fields = " nome, id_jogo, observacao "+ ((torneio.getInicioDate().compareTo(new Date(0))==0)? "" : ", inicio ")+ ((torneio.getFimDate().compareTo(new Date(0))==0)? "" : ", fim");
-		this.insertInto("torneios", fields)
+		ResultSet result = this.insertInto("torneios", fields)
 		.values(quoteStr(torneio.getNome())+", "+
 				torneio.getIdJogo()+", "+
 				quoteStr(torneio.getObservacao()) + 			
 				((torneio.getInicioDate().compareTo(new Date(0))==0)? "" : ("," + quoteStr(torneio.getInicio())))+
 				((torneio.getFimDate().compareTo(new Date(0))==0)? "" : ("," + quoteStr(torneio.getFim())))
 				)
-		.commit();
+		.returning("Id_torneio")
+		.apply();
+		if(result.next()) {
+			return result.getInt(1);
+		}
+		else {
+			return 0;
+		}
 	}
+	
 
 	public void updateTorneio(TorneioModel torneio) throws SQLException {
 		this.update("torneios")

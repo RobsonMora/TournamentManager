@@ -53,15 +53,23 @@ public class CadastroTorneios extends MasterDialogCad {
 	private BuscarTorneio busca;
 	private BuscarTime buscaTime;
 	private ArrayList<TorneioTimeModel> torneioTimes, torneioTimesChange;
+	private TorneioTimeModel torneioTimeAux;
 	
 	protected WindowAdapter eventWindowSearchTimeClosed = new WindowAdapter() {
 
 		@Override
 		public void windowClosed(WindowEvent e) {
-
-			if (buscaTime.timeReturn != null) {				
-				model.addRow(new String[] { Integer.toString(buscaTime.timeReturn.getId()),
-						buscaTime.timeReturn.getNome() });
+			
+			torneioTimeAux = new TorneioTimeModel();
+			if(buscaTime.timeReturn!=null) {
+				if(!utils.tableContains(table, 0, buscaTime.timeReturn.getNome())){
+					torneioTimeAux.setIdTime(buscaTime.timeReturn.getId());
+					torneioTimeAux.setIdTorneio(0);
+					torneioTimesChange.add(torneioTimeAux);
+					insertTable(buscaTime.timeReturn);
+				}else {
+					JOptionPane.showMessageDialog(null, "Já existe");
+				}
 			}
 
 		}
@@ -132,18 +140,14 @@ public class CadastroTorneios extends MasterDialogCad {
 		try {
 			getFields();
 			if (torneioTimesChange.size() >= 0) {
+				int torneioId = torneioChange.getId();
 				if (isInserting) {
-					torneioDao.createTorneio(torneioChange);
+					torneioId = torneioDao.createTorneio(torneioChange);
 				} else {
 					if (torneio.getNome().trim().equals(oldTorneio.trim())) {
 						torneioDao.updateTorneio(torneioChange);
 					}
-				}
-				for (TorneioTimeModel torneioTime : torneioTimesChange) {
-					if(torneioTime.getIdTime() != torneioTimeDao.getOneTorneioTime(torneioTime.getIdTorneio(), torneioTime.getIdTime()).getIdTime() 
-							&& torneioTime.getIdTorneio() != torneioTimeDao.getOneTorneioTime(torneioTime.getIdTorneio(), torneioTime.getIdTime()).getIdTorneio()) {
-						torneioTimeDao.createTorneioTime(torneioTime);
-					}
+					torneioTimeDao.createTorneioTime(torneioTimesChange, torneioId);
 				}
 				return true;
 			} else {
@@ -252,13 +256,19 @@ public class CadastroTorneios extends MasterDialogCad {
 		}
 		torneioChange.setObservacao(txtAObs.getText());
 		TorneioTimeModel auxTime = new TorneioTimeModel();
-		for (i = 0; i < model.getRowCount(); i++) {
+		/*for (i = 0; i < model.getRowCount(); i++) {
 			auxTime.setIdTime(Integer.parseInt((String) model.getValueAt(i, 0)));
 			auxTime.setIdTorneio(torneioChange.getId());
 			torneioTimesChange.add(auxTime);
-		}
+		}*/
 		torneioChange.setInicio(new Date(0));
 		torneioChange.setFim(new Date(0));
+
+	}
+	
+	private void insertTable(TimeModel time) {
+
+		model.addRow(new String[] {time.getId().toString(), time.getNome()});		
 
 	}
 
@@ -320,6 +330,7 @@ public class CadastroTorneios extends MasterDialogCad {
 				// TODO Auto-generated method stub
 				buscaTime = new BuscarTime(conn);
 				buscaTime.addWindowListener(eventWindowSearchTimeClosed);
+				
 			}
 		});
 		btnAdd.setBounds(420, 255, 107, 26);
