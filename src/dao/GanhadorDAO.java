@@ -33,7 +33,7 @@ public class GanhadorDAO extends BaseDAO {
 		result = this.select("*")
 				.from("ganhadores")
 				.filter("id_torneio", "=", idTorneio.toString(), true)
-				.filter("id_time", "=", idTime.toString(), true)				
+				.filter("id_time", "=", idTime.toString(), false)				
 				.where()
 				.apply();
 		
@@ -49,6 +49,14 @@ public class GanhadorDAO extends BaseDAO {
 	public void createGanhador(GanhadorModel ganhador) throws SQLException {
 		this.insertInto("ganhadores", "id_torneio, id_time")
 		.values(ganhador.getIdTorneio().toString()+", "+ganhador.getIdTime().toString())
+		.commit();
+	}
+	
+	public void updateGanhador(GanhadorModel ganhador) throws SQLException {
+		this.update("ganhadores")
+		.setValue(
+				"  id_time = "+ ganhador.getIdTime())
+		.where("id_torneio", "=", ganhador.getIdTorneio().toString())
 		.commit();
 	}
 

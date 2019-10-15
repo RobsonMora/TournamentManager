@@ -18,7 +18,7 @@ public class TorneioPartidaDAO extends BaseDAO {
 		result = this.select("*")
 				.from("torneio_partidas")
 				.filter("id_torneio", "=", idTorneio.toString(), true)
-				.filter("fase", "=", fase.toString(), false)
+				.filter("fase", "=", fase.toString(), true)
 				.where()
 				.orderBy("id")
 				.apply();

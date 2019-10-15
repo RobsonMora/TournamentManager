@@ -77,7 +77,7 @@ public abstract class BaseDAO {
 	
 	protected BaseDAO filter(String statement, String operator, String value, boolean ignoreZero) {
 		if(!value.trim().isEmpty()) {
-			if(ignoreZero || (statement.substring(0, 1) != "id") || (statement.substring(0, 1).equals("id")&&Integer.parseInt(value) > 0)) {
+			if(ignoreZero || ((statement.substring(0, 1) != "id") && (statement.substring(0, 1).equals("id")&&Integer.parseInt(value) > 0))) {
 				setWhereFilter(statement +" "+ operator +" "+ value);				
 			}
 		}
