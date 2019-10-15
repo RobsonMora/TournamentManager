@@ -137,16 +137,7 @@ public class TorneioAndamento  extends JInternalFrame {
 		});
 		getContentPane().add(txtTorneio);
 
-		btnSalvarFase = new JButton(new AbstractAction("Salvar Fase") {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-
-			}
-		});
-		btnSalvarFase.setBounds(220, 40, 200, 25);
-		getContentPane().add(btnSalvarFase);
+		
 
 
 	}

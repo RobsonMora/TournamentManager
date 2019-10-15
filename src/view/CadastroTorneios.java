@@ -293,6 +293,16 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		ComboJogo = new JComboBox<String>();
 		ComboJogo.addItem("--Selecione--");
+		ComboJogo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					txtAObs.requestFocus();
+				}
+
+			}
+		});
 		ComboJogo.setBounds(140, 117, 387, 26);
 		getContentPane().add(ComboJogo);
 
@@ -317,6 +327,16 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		txtFNomeTorneio = new JTextField();
 		txtFNomeTorneio.setBounds(140, 87, 387, 26);
+		txtFNomeTorneio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					ComboJogo.requestFocus();
+				}
+
+			}
+		});
 		getContentPane().add(txtFNomeTorneio);
 
 		txtAObs = new JTextArea();
@@ -333,16 +353,37 @@ public class CadastroTorneios extends MasterDialogCad {
 				
 			}
 		});
-		btnAdd.setBounds(420, 255, 107, 26);
+		btnAdd.setBounds(392, 255, 135, 26);
 		getContentPane().add(btnAdd);
 
 		txtTime = new JTextField();
-		txtTime.setBounds(100, 255, 310, 26);
+		txtTime.setBounds(100, 255, 280, 26);
+		txtTime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					txtFNomeTorneio.requestFocus();
+				}
+
+			}
+		});
 		getContentPane().add(txtTime);
 
 		JScrollPane sp = new JScrollPane(txtAObs);
 		sp.setBounds(9, 177, 519, 70);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		txtAObs.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					txtTime.requestFocus();
+					
+				}
+
+			}
+		});
 		this.getContentPane().add(sp);
 
 		String colunas[] = { "Código ", "Time" };
