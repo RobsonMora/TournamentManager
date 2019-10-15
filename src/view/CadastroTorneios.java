@@ -43,7 +43,7 @@ public class CadastroTorneios extends MasterDialogCad {
 	private JComboBox<String> ComboJogo;
 	private DefaultTableModel model;
 	private JTable table;
-	private JButton btnAdd;
+	private JButton btnAddTime;
 	private TimeDAO timeDao;
 	private JogoDAO jogoDao;
 	private TorneioDAO torneioDao;
@@ -343,7 +343,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		getContentPane().add(txtAObs);
 		txtAObs.setLineWrap(true);
 
-		btnAdd = new JButton(new AbstractAction("Adicionar Time") {
+		btnAddTime = new JButton(new AbstractAction("Adicionar Time") {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -353,8 +353,20 @@ public class CadastroTorneios extends MasterDialogCad {
 				
 			}
 		});
-		btnAdd.setBounds(392, 255, 135, 26);
-		getContentPane().add(btnAdd);
+		btnAddTime.setBounds(392, 255, 135, 26);
+		btnAddTime.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					btnAdd.requestFocus();
+					btnAdd.doClick();
+					
+				}
+
+			}
+		});
+		getContentPane().add(btnAddTime);
 
 		txtTime = new JTextField();
 		txtTime.setBounds(100, 255, 280, 26);
@@ -363,7 +375,7 @@ public class CadastroTorneios extends MasterDialogCad {
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					txtFNomeTorneio.requestFocus();
+					btnAddTime.requestFocus();
 				}
 
 			}
@@ -384,6 +396,7 @@ public class CadastroTorneios extends MasterDialogCad {
 
 			}
 		});
+		
 		this.getContentPane().add(sp);
 
 		String colunas[] = { "Código ", "Time" };

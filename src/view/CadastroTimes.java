@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.Dimension;
 
 import java.awt.event.KeyAdapter;
@@ -6,22 +7,23 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import dao.TimeDAO;
 import model.TimeModel;
 
 @SuppressWarnings("serial")
-public class CadastroTimes extends MasterDialogCad{
-	
+public class CadastroTimes extends MasterDialogCad {
+
 	private JLabel LblCodigoID, LblTime;
 	private JTextField txtFCodigoID, txtFTime;
 	private TimeDAO timeDao;
 	private BuscarTime busca;
 	private TimeModel time, timeChange;
-			
+
 	private void create() {
 
-		setSize(550,154);
+		setSize(550, 154);
 		setTitle("Times");
 		setLayout(null);
 		setResizable(false);
@@ -30,14 +32,14 @@ public class CadastroTimes extends MasterDialogCad{
 		setVisible(true);
 
 	}
-	
+
 	public CadastroTimes(Connection conn) {
-		
+
 		super(conn);
 		timeDao = new TimeDAO(conn);
 		create();
 	}
-	
+
 	protected void actionSearch() {
 		busca = new BuscarTime(conn);
 		try {
@@ -73,10 +75,15 @@ public class CadastroTimes extends MasterDialogCad{
 	@Override
 	protected boolean actionSave() {
 		try {
+			
+			if(txtFTime.getText().trim().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Campo vazio!");
+				return false;
+			}
 			getFields();
 			if (isInserting) {
 				timeDao.createTime(timeChange);
-
+				JOptionPane.showMessageDialog(null, "Time cadastrado com sucesso!");
 			} else {
 				timeDao.updateTime(timeChange);
 			}
@@ -119,24 +126,23 @@ public class CadastroTimes extends MasterDialogCad{
 		txtFCodigoID.setText(time.getId().toString());
 		txtFTime.setText(time.getNome());
 
-
 		timeChange = new TimeModel(time);
 	}
-	
+
 	private void getFields() {
 		timeChange.setNome(txtFTime.getText());
 	}
-	
+
 	protected void subComponents() {
-		
+
 		LblCodigoID = new JLabel("Código do Time:");
 		LblCodigoID.setBounds(11, 20, 200, 100);
 		getContentPane().add(LblCodigoID);
-		
+
 		LblTime = new JLabel("Nome do time:");
 		LblTime.setBounds(33, 50, 200, 100);
-		getContentPane().add(LblTime);	
-		
+		getContentPane().add(LblTime);
+
 		txtFCodigoID = new JTextField();
 		txtFCodigoID.setBounds(130, 57, 397, 26);
 		txtFCodigoID.setName("ignore");
@@ -167,6 +173,9 @@ public class CadastroTimes extends MasterDialogCad{
 			}
 		});
 		getContentPane().add(txtFTime);
+
+		
+
 		childContainer = getContentPane();
 	}
 
