@@ -66,10 +66,14 @@ public class TorneioTimeDAO extends BaseDAO {
 		}
 	}
 
-	public void createTorneioTime(TorneioTimeModel torneioTime) throws SQLException {
-		this.insertInto("torneio_times", "id_torneio, id_time")
-		.values(torneioTime.getIdTorneio().toString()+", "+torneioTime.getIdTime().toString())
-		.commit();
+	public void createTorneioTime(ArrayList<TorneioTimeModel> torneioTimes, int torneio) throws SQLException {
+		this.insertInto("torneio_times", "id_torneio, id_time");
+		deleteTorneioTime(torneio, 0);
+		for(TorneioTimeModel torneioTime : torneioTimes) {
+			this.insertInto("torneio_times", "id_torneio, id_time")
+			.values(Integer.toString(torneio) +", "+torneioTime.getIdTime().toString())
+			.commit();
+		}
 	}
 
 	public void deleteTorneioTime(Integer idTorneio, Integer idTime) throws SQLException {
