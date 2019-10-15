@@ -34,7 +34,11 @@ public class TorneioPartidaDAO extends BaseDAO {
 							.setFase(result.getInt("fase"))
 							);
 		}
-		return torneioPartidaList;
+		if(torneioPartidaList.size()>0) {
+			return torneioPartidaList;
+		}else {
+			return null;
+		}
 	}
 
 	public TorneioPartidaModel getOneTorneioPartida(Integer id) throws SQLException {

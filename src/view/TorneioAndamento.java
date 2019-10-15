@@ -6,7 +6,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -15,8 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -42,7 +39,7 @@ import model.TorneioPartidaModel;
 @SuppressWarnings("serial")
 public class TorneioAndamento  extends JInternalFrame {
 
-	private JButton btnGerarFase, btnSalvarFase, btnCarregarTorneio;
+	private JButton btnGerarFase, btnCarregarTorneio;
 	private JTextField txtTorneio;
 
 	private ArrayList<TimeModel> times;
@@ -136,10 +133,7 @@ public class TorneioAndamento  extends JInternalFrame {
 			}
 		});
 		getContentPane().add(txtTorneio);
-
 		
-
-
 	}
 
 	private void cleanPaint() {
@@ -197,28 +191,36 @@ public class TorneioAndamento  extends JInternalFrame {
 	@SuppressWarnings("unchecked")
 	private void carregaFases(Integer idTorneio) {
 
-		ArrayList<TorneioPartidaModel> partidas = null;
+		ArrayList<TorneioPartidaModel> partidas = null, proxPartidas = null;
 
 		cleanPaint();
 
-		int j = 120;
+		int j = 0;
 		int x = 0;
+		int passoVertical = 0;
+		int y1 = 0, y2 = 0;
+		boolean aux = true;
+		int escala = 0, escalaPassoVertical = 0;
 
 		for(int i = 1; i < 6; i++) {
 
 			try {
-				partidas = torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i);				
+				partidas = (proxPartidas == null) ? torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i) : (ArrayList<TorneioPartidaModel>)proxPartidas.clone();					
 				if(partidas != null) {
+					proxPartidas = torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i + 1);	
 
 					if(partidas.size()>0) {
 						ultimaFasePartidas = (ArrayList<TorneioPartidaModel>)partidas.clone();
 					}
 
 					ultimaFase = i;
-					x = ((ultimaFase - 1) * 240) + 20;
-					j = 120;
-					int y1 = 0, y2 = 0;
-					boolean aux = true;
+					x = ((ultimaFase - 1) * 220) + 20;
+					j = j + 120;
+					escalaPassoVertical = Math.max(escalaPassoVertical * 2, 1);
+					passoVertical = escalaPassoVertical * 86;
+					y1 = 0;
+					y2 = 0;
+					aux = true;
 
 					for(TorneioPartidaModel partida : partidas) {
 
@@ -232,12 +234,12 @@ public class TorneioAndamento  extends JInternalFrame {
 						createSquare(timeDAO.getOneTime(partida.getIdTime1()), partida.getPontos1().toString(), x, j);
 						createSquare(timeDAO.getOneTime(partida.getIdTime2()), partida.getPontos2().toString(), x, j + 30);
 
-						if(!aux) {
+						if(proxPartidas!=null && !aux) {
 							createLines(x, y1, y2);
 						}
 
 						aux = !aux; 
-						j = j + 86;					
+						j = j + passoVertical;					
 
 					}
 
@@ -245,7 +247,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 						createLines(x, y1, y2);
 
-						j = 120;
+						j = (j - passoVertical) + 15;
 						GanhadorModel ganhador = ganhadorDAO.getOneGanhador(idTorneio, 0);
 						if(ganhador == null) {		
 							ganhadorDAO.createGanhador(new GanhadorModel().setIdTime(getIdVencedor(partidas.get(0))).setIdTorneio(idTorneio));
@@ -255,8 +257,13 @@ public class TorneioAndamento  extends JInternalFrame {
 								ganhadorDAO.updateGanhador(ganhador.setIdTime(getIdVencedor(partidas.get(0))));
 							}
 						}
-						createSquare(timeDAO.getOneTime(ganhador.getIdTime()), "Winner", ((ultimaFase * 240) + 20), j);
+						createSquare(timeDAO.getOneTime(ganhador.getIdTime()), "Winner", ((ultimaFase * 220) + 20), j);
 					}
+					if(i > 1) {
+						escala = (escala * 2) + 1;
+					}
+					j = ((73 * (escala + 1)) + (13 * escala)) - 30;
+					
 				}else {
 					break;
 				}
