@@ -1,0 +1,5 @@
+Erros encontrados em teste no sistema 
+
+exemplo:
+[pendente/resolvido] - descrição do erro
+
