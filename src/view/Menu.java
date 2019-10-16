@@ -67,7 +67,7 @@ public class Menu extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		
 		connection();
 
 		desktopPane = new JDesktopPane();
