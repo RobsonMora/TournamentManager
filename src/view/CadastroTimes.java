@@ -9,13 +9,11 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import dao.TimeDAO;
 import model.TimeModel;
@@ -29,7 +27,7 @@ public class CadastroTimes extends MasterDialogCad {
 	private BuscarTime busca;
 	private TimeModel time, timeChange;
 	private JButton btnLogo;
-	private String dirArquivo, arquivo;
+	private String dirArquivo;
 	
 	private void create() {
 
@@ -135,6 +133,9 @@ public class CadastroTimes extends MasterDialogCad {
 
 		txtFCodigoID.setText(time.getId().toString());
 		txtFTime.setText(time.getNome());
+		if(time.getLogo()!=null) {
+			txtLogo.setText(time.getLogo().getPath());
+		}
 
 		timeChange = new TimeModel(time);
 	}
@@ -175,7 +176,6 @@ public class CadastroTimes extends MasterDialogCad {
 
 		txtFTime = new JTextField();
 		txtFTime.setBounds(130, 87, 397, 26);
-		/* txtFTime.setName("ignore"); */
 		txtFTime.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -199,11 +199,13 @@ public class CadastroTimes extends MasterDialogCad {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "\\images\\Logos\\times"));
 				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		        int value = fileChooser.showOpenDialog(null);
-		        dirArquivo = fileChooser.getSelectedFile().getPath();
-		        txtLogo.setText(dirArquivo);
-		        arquivo = fileChooser.getSelectedFile().getName();
+		        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+		        	dirArquivo = fileChooser.getSelectedFile().getPath();
+		        	txtLogo.setText(dirArquivo);
+		        	timeChange.setLogo(fileChooser.getSelectedFile());
+		        }
 			}
 		});
 		
@@ -211,7 +213,7 @@ public class CadastroTimes extends MasterDialogCad {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getKeyCode() == e.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					txtLogo.requestFocus();
 				}
 

@@ -1,5 +1,8 @@
 package dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -164,6 +167,15 @@ public abstract class BaseDAO {
 		return (this.excecuteUpdate() > 0);			
 		
 	}
+	
+	protected Boolean commit(File logo) {
+		if(logo != null) {
+			return (this.excecuteUpdate(logo) > 0);
+		}else {
+			return (this.excecuteUpdate() > 0);
+		}
+		
+	}
 
 	protected ResultSet excecuteQuery()  {
 		PreparedStatement prepStatement = null;
@@ -188,8 +200,26 @@ public abstract class BaseDAO {
 			clean();
 			row = prepStatement.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			System.out.println(sql);
+			e.printStackTrace();
+		}	
+		return row;
+	}
+	
+	protected int excecuteUpdate(File logo) {
+		PreparedStatement prepStatement = null;
+		
+		int row = 0;
+		try {
+			prepStatement = conn.prepareStatement(this.getSql());
+			FileInputStream fis = new FileInputStream(logo);
+			prepStatement.setBinaryStream(1, fis, (int)logo.length());
+			clean();
+			row = prepStatement.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println(sql);
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}	
 		return row;
