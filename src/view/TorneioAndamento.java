@@ -150,16 +150,19 @@ public class TorneioAndamento  extends JInternalFrame {
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y, 160, 30);
 		BufferedImage image;
+		printText((time.getNome() + "               ").substring(0, 15), x + 40, y + 18);
 		try {
-			image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\Logo_gradient.png"));
+			image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\icone.png"));
 			g.drawImage(image, x+3, y+3, 25, 25, null);
+			if(!pontos.equals("Winner")) {
+				printText(pontos, x + 140, y + 18);
+			}else {
+				image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\icons\\award.png"));
+				g.drawImage(image, x + 120, y+3, 25, 25, null);
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		//TODO colocar logo
-		printText((time.getNome() + "               ").substring(0, 15), x + 40, y + 18);		
-		printText(pontos, x + ((pontos.equals("Winner"))? 110 : 140), y + 18);		
 
 	}
 
@@ -183,7 +186,8 @@ public class TorneioAndamento  extends JInternalFrame {
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g2 = (Graphics2D)getGraphics();
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);	        
+					RenderingHints.VALUE_ANTIALIAS_ON);	
+						
 			g2.drawString(text, x, y);; 
 		}		
 	}
