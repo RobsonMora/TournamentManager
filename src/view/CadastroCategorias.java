@@ -162,7 +162,6 @@ public class CadastroCategorias extends MasterDialogCad {
 
 		txtFCategoria = new JTextField();
 		txtFCategoria.setBounds(140, 87, 387, 26);
-		txtFCategoria.setName("ignore");
 		txtFCategoria.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {

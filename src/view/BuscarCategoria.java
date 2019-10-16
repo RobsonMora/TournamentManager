@@ -25,11 +25,12 @@ public class BuscarCategoria extends MasterBuscar {
 	}
 
 	protected void buscar() {
-		System.out.println("buscar");
 		try {
 			clean();
 			if (jTxtBusca.getText().isEmpty()) {
+
 				categoriaList = new CategoriasDAO(conn).getAllCategorias();
+
 				for (int i = 0; i < categoriaList.size(); i++) {
 
 					if (utils.containsIgnoreCase(categoriaList.get(i).getNome(), jTxtBusca.getText())) {
@@ -52,10 +53,10 @@ public class BuscarCategoria extends MasterBuscar {
 					System.out.println("numeros");
 				}
 			}
-
-		} catch (SQLException e1) {
-			// TODO: handle exception
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	protected void setReturn() {

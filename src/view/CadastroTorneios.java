@@ -40,7 +40,7 @@ import model.TorneioTimeModel;
 public class CadastroTorneios extends MasterDialogCad {
 
 	private JLabel LblTime, LblJogo, LblCodTorneio, LblNomeTorneio, LblObs, lblTip;
-	private JTextField txtTime, txtFCodTorneio, txtFNomeTorneio;
+	private JTextField txtFCodTorneio, txtFNomeTorneio;
 	private JTextArea txtAObs;
 	private JComboBox<String> ComboJogo;
 	private DefaultTableModel model;
@@ -54,17 +54,17 @@ public class CadastroTorneios extends MasterDialogCad {
 	private BuscarTime buscaTime;
 	private ArrayList<TimeModel> torneioTimes, torneioTimesChange;
 	private ArrayList<JogoModel> jogos = null;
-	
+
 	protected WindowAdapter eventWindowSearchTimeClosed = new WindowAdapter() {
 
 		@Override
 		public void windowClosed(WindowEvent e) {
-			
+
 			if(buscaTime.timeReturn!=null) {
 				if(!utils.tableContains(table, 0, buscaTime.timeReturn.getId().toString())){
 					torneioTimesChange.add(new TimeModel()
-									.setId(buscaTime.timeReturn.getId())
-									.setNome(buscaTime.timeReturn.getNome()));
+							.setId(buscaTime.timeReturn.getId())
+							.setNome(buscaTime.timeReturn.getNome()));
 					AtualizaTabela();
 				}else {
 					JOptionPane.showMessageDialog(null, "O time já foi adicionado");
@@ -74,15 +74,15 @@ public class CadastroTorneios extends MasterDialogCad {
 		}
 
 	};
-	
+
 	private void AtualizaTabela() {
-		
+
 		model.setRowCount(0);
-		
+
 		for(TimeModel time : torneioTimesChange) {
-			
+
 			insertTable(time);			
-			
+
 		}
 
 	}
@@ -135,7 +135,7 @@ public class CadastroTorneios extends MasterDialogCad {
 			try {
 				torneioDao.deleteTorneio(torneio.getId());
 				torneioTimeDao.deleteTorneioTime(torneioChange.getId(), 0);
-				
+
 				torneio = new TorneioModel();
 				torneioTimes = new ArrayList<TimeModel>();
 				return true;
@@ -207,15 +207,15 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		txtFCodTorneio.setText(torneio.getId().toString());
 		txtFNomeTorneio.setText(torneio.getNome());
-		
+
 
 		txtAObs.setText(torneio.getObservacao());
 		fillJogos();
 		findGrad();
-		
-		
+
+
 		try {
-			JogoModel jogo = new JogoDAO(conn).getOneJogo(torneio.getIdJogo()); 			
+			JogoModel jogo = jogoDao.getOneJogo(torneio.getIdJogo()); 			
 			ComboJogo.setSelectedItem((jogo!=null)? jogo.getNome() : "--Selecione--");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -266,23 +266,25 @@ public class CadastroTorneios extends MasterDialogCad {
 	}
 
 	private void getFields() throws SQLException {
-		
+
 		torneioChange.setNome(txtFNomeTorneio.getText());
-		torneioChange.setIdJogo(jogos.get(ComboJogo.getSelectedIndex() - 1).getId());
+		if(jogos!=null) {
+			torneioChange.setIdJogo(jogos.get(ComboJogo.getSelectedIndex() - 1).getId());
+		}
 		torneioChange.setObservacao(txtAObs.getText());
 		torneioChange.setInicio(new Date(0));
 		torneioChange.setFim(new Date(0));
 
 	}
-	
+
 	private void insertTable(TimeModel time) {
 
 		model.addRow(new String[] {time.getId().toString(), time.getNome()});		
 
 	}
-	
+
 	private boolean validaQuantidade() {
-				
+
 		switch (torneioTimesChange.size()) {
 		case 2: return true;			
 		case 4: return true;			
@@ -290,7 +292,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		case 16: return true;			
 		default: return false;
 		}
-	
+
 	}
 
 	@Override
@@ -371,7 +373,7 @@ public class CadastroTorneios extends MasterDialogCad {
 				// TODO Auto-generated method stub
 				buscaTime = new BuscarTime(conn);
 				buscaTime.addWindowListener(eventWindowSearchTimeClosed);
-				
+
 			}
 		});
 		btnAddTime.setBounds(392, 255, 135, 26);
@@ -382,26 +384,12 @@ public class CadastroTorneios extends MasterDialogCad {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					btnAdd.requestFocus();
 					btnAdd.doClick();
-					
+
 				}
 
 			}
 		});
 		getContentPane().add(btnAddTime);
-
-		txtTime = new JTextField();
-		txtTime.setBounds(100, 255, 280, 26);
-		txtTime.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					btnAddTime.requestFocus();
-				}
-
-			}
-		});
-		getContentPane().add(txtTime);
 
 		JScrollPane sp = new JScrollPane(txtAObs);
 		sp.setBounds(9, 177, 519, 70);
@@ -411,13 +399,12 @@ public class CadastroTorneios extends MasterDialogCad {
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					txtTime.requestFocus();
-					
+
 				}
 
 			}
 		});
-		
+
 		this.getContentPane().add(sp);
 
 		String colunas[] = { "Código ", "Time" };
@@ -439,7 +426,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		scrollPane.setBounds(9, 290, 519, 300);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.getContentPane().add(scrollPane);
-		
+
 		table.addMouseListener(new MouseAdapter() {
 
 			public void mousePressed(MouseEvent mouseEvent) {

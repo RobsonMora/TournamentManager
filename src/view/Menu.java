@@ -20,7 +20,7 @@ public class Menu extends JFrame {
 	public JDesktopPane desktopPane;
 	private JMenuBar menuBar;
 	private JMenu sistema, torneios, cadastros;
-	private JMenuItem sair, novo_torneio, torneio_andamento, controle_partidas, times, cadastro_jogos, categoria,
+	private JMenuItem sair, novo_torneio, torneio_andamento, controle_partidas, times, jogos, categoria,
 			testeConexao;
 	// Classes/frames
 	private Sair fSair;
@@ -28,7 +28,7 @@ public class Menu extends JFrame {
 	private CadastroTorneios fNovoTorneio;
 	private ControlePartidas fControlePartidas;
 	private CadastroTimes fTimes;
-	private CadastroJogos fCadastroJogos;
+	private CadastroJogos fJogos;
 	private CadastroCategorias fCategoria;
 	private Connection conn;
 
@@ -174,8 +174,8 @@ public class Menu extends JFrame {
 			}
 		});
 
-		cadastro_jogos = new JMenuItem("Cadastro de Jogos");
-		cadastro_jogos.addActionListener(new ActionListener() {
+		jogos = new JMenuItem("Jogos");
+		jogos.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -183,10 +183,10 @@ public class Menu extends JFrame {
 				fecharJanelaAberta();
 				janelaAberta = 6;
 
-				fCadastroJogos = new CadastroJogos(conn);
-				desktopPane.add(fCadastroJogos);
-				fCadastroJogos.setVisible(true);
-				fCadastroJogos.setPosicao();
+				fJogos = new CadastroJogos(conn);
+				desktopPane.add(fJogos);
+				fJogos.setVisible(true);
+				fJogos.setPosicao();
 
 			}
 		});
@@ -229,7 +229,7 @@ public class Menu extends JFrame {
 		cadastros = new JMenu("Cadastros");
 
 		cadastros.add(times);
-		cadastros.add(cadastro_jogos);
+		cadastros.add(jogos);
 		cadastros.add(categoria);
 
 		menuBar.add(cadastros);
@@ -301,7 +301,7 @@ public class Menu extends JFrame {
 			break;
 		
 		case 6:
-			fCadastroJogos.dispose();
+			fJogos.dispose();
 			break;
 		
 		case 7:

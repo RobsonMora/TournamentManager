@@ -31,8 +31,6 @@ public class CategoriaModel {
 	public CategoriaModel setNome(String nome) {
 		this.nome = nome;
 		return this;
-	}
-	
-	
+	}	
 
 }

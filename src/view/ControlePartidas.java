@@ -58,6 +58,7 @@ public class ControlePartidas extends JInternalFrame {
 
 		Components();
 		setVisible(true);
+		clean();
 	}
 
 	public void Components() {
@@ -296,15 +297,19 @@ public class ControlePartidas extends JInternalFrame {
 	}
 	
 	private void clean() {
+		
 		txtFtime1.setText("");
 		txtFtime2.setText("");
 		txtFTorneio.setText("");
 		lblTime1.setText("-");
 		lblTime2.setText("-");
-		paint(getGraphics());
+		if(getGraphics()!=null) {
+			paint(getGraphics());
+		}
 		partidas = null;
 		partidaAtual = null;
 		txtFTorneio.requestFocus();
+		
 	}
 
 	private void carregaPartida() {

@@ -26,7 +26,6 @@ public class BuscarJogo extends MasterBuscar {
 	}
 
 	protected void buscar() {
-		System.out.println("buscar");
 		try {
 			clean();
 			if (jTxtBusca.getText().isEmpty()) {
@@ -55,7 +54,7 @@ public class BuscarJogo extends MasterBuscar {
 			}
 
 		} catch (SQLException e1) {
-			// TODO: handle exception
+			e1.printStackTrace();
 		}
 	}
 

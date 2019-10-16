@@ -19,11 +19,13 @@ public class CadastroJogos extends MasterDialogCad {
 
 	private JLabel LblCodigoID, LblCategoria, LblJogo;
 	private JTextField txtFCodigoID, txtFNome;
-	private JComboBox<String> ComboJogo;
+	private JComboBox<String> comboCategoria;
 	private JogoDAO jogoDao;
 	private BuscarJogo busca;
 	private JogoModel jogo, jogoChange;
 	private CategoriasDAO categoriasDao;
+
+	ArrayList<CategoriaModel> categorias;
 
 	private void create() {
 
@@ -78,12 +80,12 @@ public class CadastroJogos extends MasterDialogCad {
 	@Override
 	protected boolean actionSave() {
 		try {
-			
-			if(!(ComboJogo.getSelectedIndex()>0) || txtFNome.getText().trim().isEmpty()){
+
+			if(txtFNome.getText().trim().isEmpty() || !(comboCategoria.getSelectedIndex()>0)){
 				JOptionPane.showMessageDialog(null, "Campo vazio!");
 				return false;
 			}
-			
+
 			getFields();
 			if (isInserting) {
 				jogoDao.createJogo(jogoChange);
@@ -129,42 +131,45 @@ public class CadastroJogos extends MasterDialogCad {
 	protected void fillFields() {
 
 		txtFCodigoID.setText(jogo.getId().toString());
-		txtFNome.setText(jogo.getNome());
+		txtFNome.setText(jogo.getNome());	
 
 		fillCategorias();
+		
+		try {
+			comboCategoria.setSelectedItem(categoriasDao.getOneCategoria(jogo.getIdCategoria()).getNome());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
 
 		jogoChange = new JogoModel(jogo);
+
 	}
 
 	public void fillCategorias() {
 
-		ComboJogo.removeAllItems();
-		ComboJogo.addItem("--Selecione--");
+		comboCategoria.removeAllItems();
+		comboCategoria.addItem("--Selecione--");
 
-		ArrayList<CategoriaModel> categorias = null;
+		categorias = null;
 		try {
 			categorias = categoriasDao.getAllCategorias();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (!categorias.isEmpty()) {
 			for (CategoriaModel categoria : categorias) {
-				ComboJogo.addItem(categoria.getNome());
+				comboCategoria.addItem(categoria.getNome());
 			}
 		}
 	}
 
 	private void getFields() throws SQLException {
+
 		jogoChange.setNome(txtFNome.getText());
-		ArrayList<CategoriaModel> categorias = categoriasDao.getAllCategorias();
-		int i = 0;
-		for (CategoriaModel categoria : categorias) {
-			i++;
-			if (ComboJogo.getSelectedItem().toString().equalsIgnoreCase(categoria.getNome())) {
-				jogoChange.setIdCategoria(i);
-			}
+		if(categorias != null) {
+			jogoChange.setIdCategoria(categorias.get(comboCategoria.getSelectedIndex() - 1).getId());
 		}
+
 	}
 
 	protected void subComponents() {
@@ -184,7 +189,6 @@ public class CadastroJogos extends MasterDialogCad {
 		txtFCodigoID.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					txtFNome.requestFocus();
 				}
@@ -194,13 +198,11 @@ public class CadastroJogos extends MasterDialogCad {
 		getContentPane().add(txtFCodigoID);
 
 		txtFNome = new JTextField();
-		txtFNome.setName("ignore");
 		txtFNome.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					ComboJogo.requestFocus();
+					comboCategoria.requestFocus();
 				}
 
 			}
@@ -213,20 +215,19 @@ public class CadastroJogos extends MasterDialogCad {
 		LblJogo.setBounds(27, 80, 200, 100);
 		getContentPane().add(LblJogo);
 
-		ComboJogo = new JComboBox<String>();
-		ComboJogo.addItem("--Selecione--");
-		ComboJogo.setBounds(120, 117, 407, 26);
-		ComboJogo.addKeyListener(new KeyAdapter() {
+		comboCategoria = new JComboBox<String>();
+		comboCategoria.addItem("--Selecione--");
+		comboCategoria.setBounds(120, 117, 407, 26);
+		comboCategoria.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					btnSave.doClick();
 				}
 
 			}
 		});
-		getContentPane().add(ComboJogo);
+		getContentPane().add(comboCategoria);
 		childContainer = getContentPane();
 
 	}

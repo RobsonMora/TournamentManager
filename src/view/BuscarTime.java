@@ -53,7 +53,7 @@ public class BuscarTime extends MasterBuscar {
 			}
 
 		} catch (SQLException e1) {
-			// TODO: handle exception
+			e1.printStackTrace();
 		}
 	}
 

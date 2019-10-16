@@ -17,6 +17,7 @@ public class CategoriasDAO extends BaseDAO{
 		ResultSet result = null;
 		result = this.select("*")
 				.from("categorias")
+				.orderBy("id")
 				.apply();
 		ArrayList<CategoriaModel> categoriaList = new ArrayList<CategoriaModel>();
 		while(result.next()) {
