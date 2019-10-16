@@ -26,7 +26,6 @@ public class BuscarTime extends MasterBuscar {
 	}
 
 	protected void buscar() {
-		System.out.println("buscarTime");
 		try {
 			clean();
 			if (jTxtBusca.getText().isEmpty()) {

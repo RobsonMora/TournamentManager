@@ -63,7 +63,7 @@ public class TorneioDAO extends BaseDAO {
 				((torneio.getInicioDate().compareTo(new Date(0))==0)? "" : ("," + quoteStr(torneio.getInicio())))+
 				((torneio.getFimDate().compareTo(new Date(0))==0)? "" : ("," + quoteStr(torneio.getFim())))
 				)
-		.returning("Id_torneio")
+		.returning("id")
 		.apply();
 		if(result.next()) {
 			return result.getInt(1);
@@ -79,15 +79,18 @@ public class TorneioDAO extends BaseDAO {
 		.setValue(
 				" nome = " + quoteStr(torneio.getNome())+
 				", observacao = " + quoteStr(torneio.getObservacao())+ 
+				", id_jogo = " + torneio.getIdJogo().toString() +
 						((torneio.getInicioDate().compareTo(new Date(0))==0)? "" : (" , inicio = '"+torneio.getInicioDate()+"' "))+
-						((torneio.getFimDate().compareTo(new Date(0))==0)? "" : (" , fim = '"+torneio.getFimDate()+"' ") +
-				", id_jogo = " + torneio.getIdJogo().toString())
+						((torneio.getFimDate().compareTo(new Date(0))==0)? "" : (" , fim = '"+torneio.getFimDate()+"' ")) 				
 				)
 		.where("id", "=", Integer.toString((torneio.getId())))
 		.commit();
 	}
 
 	public void deleteTorneio(Integer id) throws SQLException {
+		new TorneioTimeDAO(conn).deleteTorneioTime(id, 0);
+		new GanhadorDAO(conn).deleteGanhador(id, 0);
+		new TorneioPartidaDAO(conn).deleteTorneioPartida(id);
 		this.delete()
 		.from("torneios")
 		.where("id", "=", id.toString())

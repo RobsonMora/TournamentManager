@@ -17,6 +17,7 @@ public class JogoDAO extends BaseDAO {
 		ResultSet result = null;
 		result = this.select("*")
 				.from("jogos")
+				.orderBy("id")
 				.apply();
 		ArrayList<JogoModel> jogoList = new ArrayList<JogoModel>();
 		while(result.next()) {
@@ -29,19 +30,26 @@ public class JogoDAO extends BaseDAO {
 		return jogoList;
 	}
 
-	public JogoModel getOneJogo(Integer id) throws SQLException {
+	public JogoModel getOneJogo(Integer id) {
 		ResultSet result = null;
 		result = this.select("*")
 				.from("jogos")
 				.where("id", "=", id.toString())
 				.apply();
 		
-		if(result.next()) {
-			JogoModel jogo = new JogoModel();
-			return jogo.setId(result.getInt("id"))
-					.setNome(result.getString("nome"))
-					.setIdCategoria(result.getInt("id_categoria"));
-		}else {
+		try {
+			if(result.next()) {
+				JogoModel jogo = new JogoModel();
+				return jogo.setId(result.getInt("id"))
+						.setNome(result.getString("nome"))
+						.setIdCategoria(result.getInt("id_categoria"));
+			}else {
+				return null;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(getSql());
+			e.printStackTrace();
 			return null;
 		}
 	}

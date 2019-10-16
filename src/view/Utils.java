@@ -89,21 +89,6 @@ public class Utils {
 	}
 
 
-	// Descontinuado - Use isInstanceOfSomeTarget(Component component) 
-	// Verifica se classe esta cadastrada como um alvo para ser desabilitada
-	/*private Boolean isTarget(String componentClass) {
-
-		for(String target : targets ) {
-			if(target.equals(componentClass)) {
-				return true;
-			}
-		}
-
-		return false;
-
-	}*/
-
-
 	private boolean isInstanceOfSomeTarget(Component component) {
 
 		for(Class<?> target : targetClasses) {
@@ -138,7 +123,7 @@ public class Utils {
 
 		return coll.compare(strA, StrB) == 0;
 
-	}
+	}	
 
 	public boolean tableContains(JTable table, int column, String str) {
 		DefaultTableModel model = ((DefaultTableModel) table.getModel());
