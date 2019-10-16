@@ -26,7 +26,11 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -42,8 +46,9 @@ import model.TorneioPartidaModel;
 public class TorneioAndamento  extends JInternalFrame {
 
 	private JButton btnGerarFase, btnCarregarTorneio;
-	private JTextField txtTorneio;
-
+	private JTextField txtTorneio, txtLoadTorneio, txtLoadJogo;;
+	private JTextArea txtAObs;
+	private JLabel lblShowTorneio, lblJogo, lblObs;
 	private ArrayList<TimeModel> times;
 	private TorneioPartidaDAO torneioPartidaDAO;
 	private TorneioTimeDAO torneioTimeDAO;
@@ -94,6 +99,18 @@ public class TorneioAndamento  extends JInternalFrame {
 
 	private void componentes() {
 
+		lblShowTorneio = new JLabel("Torneio:");
+		lblShowTorneio.setBounds(250, 10, 100, 26);
+		getContentPane().add(lblShowTorneio);
+		
+		lblJogo = new JLabel("Jogo:");
+		lblJogo.setBounds(264, 40, 100, 26);
+		getContentPane().add(lblJogo);
+		
+		lblObs = new JLabel("Observação:");
+		lblObs.setBounds(700, 10, 100, 26);
+		getContentPane().add(lblObs);
+		
 		btnCarregarTorneio = new JButton(new AbstractAction("Carregar Torneio") {
 
 			@Override
@@ -142,6 +159,25 @@ public class TorneioAndamento  extends JInternalFrame {
 		});
 		getContentPane().add(txtTorneio);
 
+		txtLoadTorneio = new JTextField();
+		txtLoadTorneio.setBounds(305, 10, 385, 25);
+		txtLoadTorneio.setEditable(false);
+		txtLoadTorneio.setFocusable(false);
+		getContentPane().add(txtLoadTorneio);
+		
+		txtLoadJogo = new JTextField();
+		txtLoadJogo.setBounds(305, 40, 385, 25);
+		txtLoadJogo.setEditable(false);
+		txtLoadJogo.setFocusable(false);
+		getContentPane().add(txtLoadJogo);
+		
+		JScrollPane sp = new JScrollPane(txtAObs);
+		sp.setEnabled(true);
+		sp.setBounds(780, 10, 400, 55);
+		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		getContentPane().add(sp);
+		
+		
 	}
 
 	private void cleanPaint() {
