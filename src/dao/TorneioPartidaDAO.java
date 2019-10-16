@@ -81,10 +81,10 @@ public class TorneioPartidaDAO extends BaseDAO {
 		.commit();
 	}
 	
-	public void deleteTorneioPartida(Integer idTorneio) throws SQLException {
+	public void deleteTorneioPartida(Integer id) throws SQLException {
 		this.delete()
-		.from("torneio_partidas")		
-		.where("id_torneio", "=", idTorneio.toString())
+		.from("torneio_partidas")
+		.where("id", "=", id.toString())
 		.commit();
 	}
 

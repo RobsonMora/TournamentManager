@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
@@ -25,10 +23,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import dao.JogoDAO;
+import dao.TimeDAO;
 import dao.TorneioDAO;
 import dao.TorneioTimeDAO;
 import model.JogoModel;
@@ -46,46 +44,37 @@ public class CadastroTorneios extends MasterDialogCad {
 	private DefaultTableModel model;
 	private JTable table;
 	private JButton btnAdd;
+	private TimeDAO timeDao;
 	private JogoDAO jogoDao;
 	private TorneioDAO torneioDao;
 	private TorneioTimeDAO torneioTimeDao;
 	private TorneioModel torneio, torneioChange;
+	private String oldTorneio;
 	private BuscarTorneio busca;
 	private BuscarTime buscaTime;
-	private ArrayList<TimeModel> torneioTimes, torneioTimesChange;
-	private ArrayList<JogoModel> jogos = null;
+	private ArrayList<TorneioTimeModel> torneioTimes, torneioTimesChange;
+	private TorneioTimeModel torneioTimeAux;
 	
 	protected WindowAdapter eventWindowSearchTimeClosed = new WindowAdapter() {
 
 		@Override
 		public void windowClosed(WindowEvent e) {
 			
+			torneioTimeAux = new TorneioTimeModel();
 			if(buscaTime.timeReturn!=null) {
-				if(!utils.tableContains(table, 0, buscaTime.timeReturn.getId().toString())){
-					torneioTimesChange.add(new TimeModel()
-									.setId(buscaTime.timeReturn.getId())
-									.setNome(buscaTime.timeReturn.getNome()));
-					AtualizaTabela();
+				if(!utils.tableContains(table, 0, buscaTime.timeReturn.getNome())){
+					torneioTimeAux.setIdTime(buscaTime.timeReturn.getId());
+					torneioTimeAux.setIdTorneio(0);
+					torneioTimesChange.add(torneioTimeAux);
+					insertTable(buscaTime.timeReturn);
 				}else {
-					JOptionPane.showMessageDialog(null, "O time já foi adicionado");
+					JOptionPane.showMessageDialog(null, "Já existe");
 				}
 			}
 
 		}
 
 	};
-	
-	private void AtualizaTabela() {
-		
-		model.setRowCount(0);
-		
-		for(TimeModel time : torneioTimesChange) {
-			
-			insertTable(time);			
-			
-		}
-
-	}
 
 	private void create() {
 
@@ -103,9 +92,10 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		super(conn);
 		jogoDao = new JogoDAO(conn);
+		timeDao = new TimeDAO(conn);
 		torneioDao = new TorneioDAO(conn);
 		torneioTimeDao = new TorneioTimeDAO(conn);
-		create();		
+		create();
 
 	}
 
@@ -124,6 +114,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		if (busca.torneioReturn != null) {
 			new TorneioTimeModel();
 			torneio = busca.torneioReturn;
+			oldTorneio = torneio.getNome();
 			return true;
 		}
 		return false;
@@ -135,9 +126,6 @@ public class CadastroTorneios extends MasterDialogCad {
 			try {
 				torneioDao.deleteTorneio(torneio.getId());
 				torneioTimeDao.deleteTorneioTime(torneioChange.getId(), 0);
-				
-				torneio = new TorneioModel();
-				torneioTimes = new ArrayList<TimeModel>();
 				return true;
 			} catch (SQLException e) {
 				return false;
@@ -147,24 +135,23 @@ public class CadastroTorneios extends MasterDialogCad {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean actionSave() {
-		try {			
+		try {
 			getFields();
-			if (validaQuantidade()) {
+			if (torneioTimesChange.size() >= 0) {
 				int torneioId = torneioChange.getId();
 				if (isInserting) {
 					torneioId = torneioDao.createTorneio(torneioChange);
 				} else {
-					torneioDao.updateTorneio(torneioChange);
+					if (torneio.getNome().trim().equals(oldTorneio.trim())) {
+						torneioDao.updateTorneio(torneioChange);
+					}
+					torneioTimeDao.createTorneioTime(torneioTimesChange, torneioId);
 				}
-				torneioTimeDao.createTorneioTime(torneioTimesChange, torneioId);
-				torneio = new TorneioModel(torneioChange);
-				torneioTimes = (ArrayList<TimeModel>)torneioTimesChange.clone();
 				return true;
 			} else {
-				JOptionPane.showMessageDialog(null, "A quantidade de times precisa ser de 2, 4, 8 ou 16!");
+				JOptionPane.showMessageDialog(null, "Insira ao um time");
 				return false;
 			}
 		} catch (SQLException e) {
@@ -178,7 +165,7 @@ public class CadastroTorneios extends MasterDialogCad {
 			try {
 				torneio = new TorneioModel();
 				new TorneioTimeModel();
-				torneioTimes = new ArrayList<TimeModel>();
+				torneioTimes = new ArrayList<TorneioTimeModel>();
 				return true;
 			} catch (Exception e) {
 				return false;
@@ -201,28 +188,17 @@ public class CadastroTorneios extends MasterDialogCad {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void fillFields() {
 
-		txtFCodTorneio.setText(torneio.getId().toString());
+		txtFCodTorneio.setText(Integer.toString(torneio.getId()));
 		txtFNomeTorneio.setText(torneio.getNome());
-		
 
 		txtAObs.setText(torneio.getObservacao());
 		fillJogos();
 		findGrad();
-		
-		
-		try {
-			JogoModel jogo = new JogoDAO(conn).getOneJogo(torneio.getIdJogo()); 			
-			ComboJogo.setSelectedItem((jogo!=null)? jogo.getNome() : "--Selecione--");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		torneioChange = new TorneioModel(torneio);
-		torneioTimesChange = (ArrayList<TimeModel>)torneioTimes.clone();
 	}
 
 	public void fillJogos() {
@@ -230,7 +206,7 @@ public class CadastroTorneios extends MasterDialogCad {
 		ComboJogo.removeAllItems();
 		ComboJogo.addItem("--Selecione--");
 
-		jogos = null;
+		ArrayList<JogoModel> jogos = null;
 		try {
 			jogos = jogoDao.getAllJogos();
 		} catch (SQLException e) {
@@ -250,26 +226,41 @@ public class CadastroTorneios extends MasterDialogCad {
 	private void findGrad() {
 		try {
 			if (!torneio.getNome().trim().isEmpty()) {
-				torneioTimes = torneioTimeDao.getAllTimes(torneio.getId());
-				torneioTimesChange = (ArrayList<TimeModel>)torneioTimes.clone();
+				torneioTimes = torneioTimeDao.getAllTorneioTimes(torneio.getId());
+				torneioTimesChange = (ArrayList<TorneioTimeModel>)torneioTimes.clone();
 				fillTable();
 			}
 		} catch (SQLException e) {
 		}
 	}
 
-	private void fillTable() {
+	private void fillTable() throws SQLException {
 		model.setRowCount(0);
-		for (TimeModel time : torneioTimesChange) {
-			model.addRow(new String[] { time.getId().toString(),time.getNome() });
+		TimeModel timeAux = new TimeModel();
+		for (TorneioTimeModel timTorneioTimeModel : torneioTimesChange) {
+			timeAux = timeDao.getOneTime(timTorneioTimeModel.getIdTime());
+			model.addRow(new String[] { timeAux.getId().toString(),timeAux.getNome() });
 		}
 	}
 
 	private void getFields() throws SQLException {
 		
 		torneioChange.setNome(txtFNomeTorneio.getText());
-		torneioChange.setIdJogo(jogos.get(ComboJogo.getSelectedIndex() - 1).getId());
+		ArrayList<JogoModel> jogos = jogoDao.getAllJogos();
+		int i = 0;
+		for (JogoModel jogo : jogos) {
+			i++;
+			if (ComboJogo.getSelectedItem().toString().equalsIgnoreCase(jogo.getNome())) {
+				torneioChange.setIdJogo(i);
+			}
+		}
 		torneioChange.setObservacao(txtAObs.getText());
+		TorneioTimeModel auxTime = new TorneioTimeModel();
+		/*for (i = 0; i < model.getRowCount(); i++) {
+			auxTime.setIdTime(Integer.parseInt((String) model.getValueAt(i, 0)));
+			auxTime.setIdTorneio(torneioChange.getId());
+			torneioTimesChange.add(auxTime);
+		}*/
 		torneioChange.setInicio(new Date(0));
 		torneioChange.setFim(new Date(0));
 
@@ -279,18 +270,6 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		model.addRow(new String[] {time.getId().toString(), time.getNome()});		
 
-	}
-	
-	private boolean validaQuantidade() {
-				
-		switch (torneioTimesChange.size()) {
-		case 2: return true;			
-		case 4: return true;			
-		case 8: return true;			
-		case 16: return true;			
-		default: return false;
-		}
-	
 	}
 
 	@Override
@@ -409,36 +388,17 @@ public class CadastroTorneios extends MasterDialogCad {
 
 		String colunas[] = { "Código ", "Time" };
 
-		model = new DefaultTableModel(colunas, 0){
-			public boolean isCellEditable(int row,int column) {
-				return false;				
-			}
-		};
+		model = new DefaultTableModel(colunas, 0);
 
 		table = new JTable(model);
 		table.setBorder(BorderFactory.createLineBorder(Color.black));
 		table.setEnabled(true);
-		table.getTableHeader().setEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setSelectionBackground(Color.cyan);
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(9, 290, 519, 300);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.getContentPane().add(scrollPane);
-		
-		table.addMouseListener(new MouseAdapter() {
-
-			public void mousePressed(MouseEvent mouseEvent) {
-				JTable table =(JTable) mouseEvent.getSource();
-				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-					torneioTimesChange.remove(table.getSelectedRow());
-
-					fillTable();	            
-				}
-			}
-
-		});
+		table.getTableHeader().setEnabled(false);
 
 		lblTip = new JLabel("Duplo clique na linha para remové-la.");
 		lblTip.setBounds(11, 320, 350, 570);

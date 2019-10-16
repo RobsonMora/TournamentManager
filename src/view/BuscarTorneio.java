@@ -26,6 +26,7 @@ public class BuscarTorneio extends MasterBuscar {
 	}
 
 	protected void buscar() {
+		System.out.println("buscar");
 		try {
 			clean();
 			if (jTxtBusca.getText().isEmpty()) {
