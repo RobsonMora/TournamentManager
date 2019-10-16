@@ -36,6 +36,7 @@ public class TorneioTimeDAO extends BaseDAO {
 		result = this.select("t.id, t.nome")
 				.from("torneio_times tt")
 				.leftJoin(" times t on t.id = tt.id_time")
+				.where("tt.id_torneio", "=", idTorneio.toString())
 				.apply();
 		ArrayList<TimeModel> timeList = new ArrayList<TimeModel>();
 		while(result.next()) {
@@ -66,14 +67,15 @@ public class TorneioTimeDAO extends BaseDAO {
 		}
 	}
 
-	public void createTorneioTime(ArrayList<TorneioTimeModel> torneioTimes, int torneio) throws SQLException {
-		this.insertInto("torneio_times", "id_torneio, id_time");
+	public void createTorneioTime(ArrayList<TimeModel> torneioTimes, Integer torneio) throws SQLException {
 		deleteTorneioTime(torneio, 0);
-		for(TorneioTimeModel torneioTime : torneioTimes) {
+
+		for(TimeModel torneioTime : torneioTimes) {
 			this.insertInto("torneio_times", "id_torneio, id_time")
-			.values(Integer.toString(torneio) +", "+torneioTime.getIdTime().toString())
-			.commit();
+			.values(torneio.toString() +", "+torneioTime.getId().toString())
+			.setSql(getSql() + ";");			
 		}
+		commit();
 	}
 
 	public void deleteTorneioTime(Integer idTorneio, Integer idTime) throws SQLException {
