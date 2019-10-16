@@ -4,9 +4,12 @@ import java.awt.*;
 
 
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import database.ConnectionFactory;
@@ -252,14 +255,18 @@ public class Menu extends JFrame {
 	public Container CreateContentPane() {
 
 		JPanel contentPane = new JPanel(new BorderLayout());
-		desktopPane = new JDesktopPane() {
-			Image im = (new ImageIcon("C:\\Users\\chaucoski\\Documents\\GitHub\\TournamentManager\\images\\Logos\\logohd.png")).getImage();
+		try {
+			desktopPane = new JDesktopPane() {
+				Image im = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\logohd.png"));
+				public void paintComponent(Graphics g) {
+					g.drawImage(im, 0, 0, getWidth(), getHeight(), this);
 
-			public void paintComponent(Graphics g) {
-				g.drawImage(im, 0, 0, getWidth(), getHeight(), this);
-
-			}
-		};
+				}
+			};
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		contentPane.setOpaque(true);
 		contentPane.add(desktopPane);

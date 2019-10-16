@@ -33,7 +33,7 @@ public class CadastroTimes extends MasterDialogCad {
 	
 	private void create() {
 
-		setSize(550, 354);
+		setSize(550, 184);
 		setTitle("Times");
 		setLayout(null);
 		setResizable(false);
