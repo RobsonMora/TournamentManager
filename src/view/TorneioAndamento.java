@@ -1,11 +1,11 @@
 package view;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -152,44 +152,50 @@ public class TorneioAndamento  extends JInternalFrame {
 
 	private void createSquare(TimeModel time, String pontos, int x, int y) {
 
-		Graphics g = getGraphics();
-		g.setColor(new Color(153,255,153));
-		g.fillRect(x, y, 160, 30);
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y, 160, 30);
-		BufferedImage image;
-		printText((time.getNome() + "               ").substring(0, 15), x + 40, y + 18);
-		try {
-			if(time.getLogo() == null) {
-				image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\icone.png"));
-			}else {
-				image = ImageIO.read(time.getLogo());
+		if(getGraphics() instanceof Graphics2D) {
+			Graphics2D g = (Graphics2D)getGraphics();
+			g.setColor(new Color(153,255,153));
+			g.fillRect(x, y, 160, 30);
+			g.setColor(Color.BLACK);
+			g.setStroke(new BasicStroke(2));
+			g.drawRect(x, y, 160, 30);
+			BufferedImage image;
+			printText((time.getNome() + "               ").substring(0, 12), x + 40, y + 18);
+			try {
+				if(time.getLogo() == null) {
+					image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\icone.png"));
+				}else {
+					image = ImageIO.read(time.getLogo());
+				}
+				g.drawImage(image, x+3, y+3, 25, 25, null);
+				if(!pontos.equals("Winner")) {
+					printText(pontos, x + 140, y + 18);
+				}else {
+					image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\icons\\award.png"));
+					g.drawImage(image, x + 130, y+3, 25, 25, null);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			g.drawImage(image, x+3, y+3, 25, 25, null);
-			if(!pontos.equals("Winner")) {
-				printText(pontos, x + 140, y + 18);
-			}else {
-				image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\icons\\award.png"));
-				g.drawImage(image, x + 130, y+3, 25, 25, null);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+		}
 
 	}
 
 	private void createLines(int x, int y1, int y2) {
 
-		Graphics g = getGraphics();
-		int passo = 30;
-		x = x + 160;
-		if(y2 > 0) {
-			g.drawLine(x, y1, x + passo, y1);
-			g.drawLine(x, y2, x + passo, y2);
-			g.drawLine(x + passo, y1, x + passo , y2);
-			g.drawLine(x + passo, ((y2 - y1) / 2) + y1, x + passo + passo, ((y2 - y1) / 2) + y1);
-		}else {
-			g.drawLine(x, y1, x + passo + passo , y1);			
+		if(getGraphics() instanceof Graphics2D) {
+			Graphics2D g = (Graphics2D)getGraphics();
+			int passo = 30;
+			x = x + 160;
+			g.setStroke(new BasicStroke(3));
+			if(y2 > 0) {				
+				g.drawLine(x, y1, x + passo, y1);
+				g.drawLine(x, y2, x + passo, y2);
+				g.drawLine(x + passo, y1, x + passo , y2);
+				g.drawLine(x + passo, ((y2 - y1) / 2) + y1, x + passo + passo, ((y2 - y1) / 2) + y1);
+			}else {
+				g.drawLine(x, y1, x + passo + passo , y1);			
+			}
 		}
 
 	}
@@ -197,7 +203,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	private void printText(String text, int x, int y) {
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g2 = (Graphics2D)getGraphics();
-			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, 5));
+			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, g2.getFont().getSize()/2));
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
 
 			g2.drawString(text, x, y); 
@@ -215,7 +221,7 @@ public class TorneioAndamento  extends JInternalFrame {
 		int x = 0;
 		int passoVertical = 0;
 		int y1 = 0, y2 = 0;
-		boolean aux = true;
+		boolean aux = true, partidaFinalizada = false;
 		int escala = 0, escalaPassoVertical = 0;
 
 		for(int i = 1; i < 6; i++) {
@@ -237,6 +243,7 @@ public class TorneioAndamento  extends JInternalFrame {
 					y1 = 0;
 					y2 = 0;
 					aux = true;
+					partidaFinalizada = false;
 
 					for(TorneioPartidaModel partida : partidas) {
 
@@ -246,9 +253,10 @@ public class TorneioAndamento  extends JInternalFrame {
 						}else {
 							y2 = j + 30;							
 						}
+						partidaFinalizada = (partida.getPontos1() + partida.getPontos2()) > 0;
 
-						createSquare(timeDAO.getOneTime(partida.getIdTime1()), partida.getPontos1().toString(), x, j);
-						createSquare(timeDAO.getOneTime(partida.getIdTime2()), partida.getPontos2().toString(), x, j + 30);
+						createSquare(timeDAO.getOneTime(partida.getIdTime1()), (partidaFinalizada ? partida.getPontos1().toString() : " - "), x, j);
+						createSquare(timeDAO.getOneTime(partida.getIdTime2()), (partidaFinalizada ? partida.getPontos2().toString() : " - "), x, j + 30);
 
 						if(proxPartidas!=null && !aux) {
 							createLines(x, y1, y2);
@@ -259,7 +267,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 					}
 
-					if((partidas.size() == 1) && ((partidas.get(0).getPontos1() + partidas.get(0).getPontos2() > 0))) {
+					if((partidas.size() == 1) && partidaFinalizada) {
 
 						createLines(x, y1, y2);
 
