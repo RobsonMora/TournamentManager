@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -27,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import dao.GanhadorDAO;
 import dao.TimeDAO;
@@ -71,6 +73,12 @@ public class TorneioAndamento  extends JInternalFrame {
 				break;
 			}
 		}
+		BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
+		Container north = (Container)ui.getNorthPane();
+		north.remove(0);
+		north.validate();
+		north.repaint();
+		
 		torneioPartidaDAO = new TorneioPartidaDAO(conn);
 		torneioTimeDAO = new TorneioTimeDAO(conn);
 		ganhadorDAO = new GanhadorDAO(conn);
@@ -78,7 +86,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 		chaveContainer = new Container();
 		getContentPane().add(chaveContainer);
-
+				
 		componentes();
 		setVisible(true);		
 
@@ -150,7 +158,7 @@ public class TorneioAndamento  extends JInternalFrame {
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y, 160, 30);
 		BufferedImage image;
-		printText((time.getNome() + "               ").substring(0, 15), x + 40, y + 18);
+		printText((time.getNome() + "               ").substring(0, 15), x + 40, y + 18, null);
 		try {
 			if(time.getLogo() == null) {
 				image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\icone.png"));
@@ -159,7 +167,7 @@ public class TorneioAndamento  extends JInternalFrame {
 			}
 			g.drawImage(image, x+3, y+3, 25, 25, null);
 			if(!pontos.equals("Winner")) {
-				printText(pontos, x + 140, y + 18);
+				printText(pontos, x + 140, y + 18, new Font("Lemon/Milk", Font.PLAIN, 10));
 			}else {
 				image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\icons\\award.png"));
 				g.drawImage(image, x + 120, y+3, 25, 25, null);
@@ -186,13 +194,19 @@ public class TorneioAndamento  extends JInternalFrame {
 
 	}
 
-	private void printText(String text, int x, int y) {
+	private void printText(String text, int x, int y, Font fonte) {
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g2 = (Graphics2D)getGraphics();
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);	
-						
-			g2.drawString(text, x, y);; 
+			
+			if(fonte !=  null) {
+			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, 10));
+			}
+			else {
+			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, 10));
+			}
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+			
+			g2.drawString(text, x, y); 
 		}		
 	}
 
