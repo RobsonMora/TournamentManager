@@ -152,7 +152,11 @@ public class TorneioAndamento  extends JInternalFrame {
 		BufferedImage image;
 		printText((time.getNome() + "               ").substring(0, 15), x + 40, y + 18);
 		try {
-			image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\icone.png"));
+			if(time.getLogo() == null) {
+				image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\icone.png"));
+			}else {
+				image = ImageIO.read(time.getLogo());
+			}
 			g.drawImage(image, x+3, y+3, 25, 25, null);
 			if(!pontos.equals("Winner")) {
 				printText(pontos, x + 140, y + 18);
