@@ -241,7 +241,7 @@ public class Menu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		setUndecorated(true);
-		/* setContentPane(CreateContentPane()); */
+		setContentPane(CreateContentPane()); 
 		/* FramePrincipal(); */
 		ImageIcon imagemTituloJanela = new ImageIcon("Images/48x48/icon.jpg");
 		setIconImage(imagemTituloJanela.getImage());
@@ -249,6 +249,23 @@ public class Menu extends JFrame {
 		/* FramePrincipal(); */
 	}
 
+	public Container CreateContentPane() {
+
+		JPanel contentPane = new JPanel(new BorderLayout());
+		desktopPane = new JDesktopPane() {
+			Image im = (new ImageIcon("C:\\Users\\chaucoski\\Documents\\GitHub\\TournamentManager\\images\\Logos\\logohd.png")).getImage();
+
+			public void paintComponent(Graphics g) {
+				g.drawImage(im, 0, 0, getWidth(), getHeight(), this);
+
+			}
+		};
+
+		contentPane.setOpaque(true);
+		contentPane.add(desktopPane);
+		return contentPane;
+	}
+	
 	public void mostrarJanela(boolean o) {
 
 		setVisible(o);

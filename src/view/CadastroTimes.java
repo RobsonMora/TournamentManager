@@ -1,29 +1,39 @@
 package view;
 
 import java.awt.Dimension;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import dao.TimeDAO;
 import model.TimeModel;
 
 @SuppressWarnings("serial")
 public class CadastroTimes extends MasterDialogCad {
 
-	private JLabel LblCodigoID, LblTime;
-	private JTextField txtFCodigoID, txtFTime;
+	private JLabel LblCodigoID, LblTime, LblLogo;
+	private JTextField txtFCodigoID, txtFTime, txtLogo;
 	private TimeDAO timeDao;
 	private BuscarTime busca;
 	private TimeModel time, timeChange;
-
+	private JButton btnLogo;
+	private String dirArquivo, arquivo;
+	
 	private void create() {
 
-		setSize(550, 154);
+		setSize(550, 354);
 		setTitle("Times");
 		setLayout(null);
 		setResizable(false);
@@ -135,8 +145,12 @@ public class CadastroTimes extends MasterDialogCad {
 
 	protected void subComponents() {
 
+		LblLogo = new JLabel("Logo:");
+		LblLogo.setBounds(81, 80, 200, 100);
+		getContentPane().add(LblLogo);
+										
 		LblCodigoID = new JLabel("Código do Time:");
-		LblCodigoID.setBounds(11, 20, 200, 100);
+		LblCodigoID.setBounds(22, 20, 200, 100);
 		getContentPane().add(LblCodigoID);
 
 		LblTime = new JLabel("Nome do time:");
@@ -174,7 +188,38 @@ public class CadastroTimes extends MasterDialogCad {
 		});
 		getContentPane().add(txtFTime);
 
+		txtLogo = new JTextField();
+		txtLogo.setBounds(130, 117, 265, 26);
+		getContentPane().add(txtLogo);
 		
+		btnLogo = new JButton("Buscar");
+		btnLogo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		        int value = fileChooser.showOpenDialog(null);
+		        dirArquivo = fileChooser.getSelectedFile().getPath();
+		        txtLogo.setText(dirArquivo);
+		        arquivo = fileChooser.getSelectedFile().getName();
+			}
+		});
+		
+		btnLogo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == e.VK_ENTER) {
+					txtLogo.requestFocus();
+				}
+
+			}
+		});
+		
+		btnLogo.setBounds(407, 117, 120, 26);
+		getContentPane().add(btnLogo);
 
 		childContainer = getContentPane();
 	}
