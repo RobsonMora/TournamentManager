@@ -6,16 +6,20 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -75,11 +79,11 @@ public class ControlePartidas extends JInternalFrame {
 		txtFTorneio.setBounds(70, 40, 187, 26);
 		txtFTorneio.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent pE) {
-			
+
 				txtFTorneio.selectAll();
-            }
+			}
 		});
-		
+
 		txtFTorneio.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
@@ -91,7 +95,7 @@ public class ControlePartidas extends JInternalFrame {
 		});
 		getContentPane().add(txtFTorneio);
 
-		lblTime1 = new JLabel("teste");
+		lblTime1 = new JLabel("-");
 		lblTime1.setBounds(32, 310, 195, 26);
 		lblTime1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTime1.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -101,24 +105,36 @@ public class ControlePartidas extends JInternalFrame {
 		txtFtime1.setBounds(32, 332, 195, 26);
 		txtFtime1.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent pE) {
-			
+
 				txtFtime1.selectAll();
-            }
+			}
 		});
 		txtFtime1.addFocusListener(new FocusAdapter() {
 
 			@Override
 			public void focusLost(FocusEvent e) {
+				if(txtFtime1.getText().trim().isEmpty()) {
+					txtFtime1.setText("0");
+				}
 				if (partidaAtual != null) {
 					partidaAtual.setPontos1(Integer.parseInt(txtFtime1.getText()));
 				}
 			}
 
 		});
+		txtFtime1.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
+		});
 		txtFtime1.setEnabled(false);
 		getContentPane().add(txtFtime1);
 
-		lblTime2 = new JLabel("teste");
+		lblTime2 = new JLabel("-");
 		lblTime2.setBounds(292, 310, 195, 26);
 		lblTime2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTime2.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -128,18 +144,30 @@ public class ControlePartidas extends JInternalFrame {
 		txtFtime2.setBounds(292, 332, 195, 26);
 		txtFtime2.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent pE) {
-			
+
 				txtFtime2.selectAll();
-            }
+			}
 		});
 		txtFtime2.addFocusListener(new FocusAdapter() {
 
 			public void focusLost(FocusEvent e) {
+				if(txtFtime2.getText().trim().isEmpty()) {
+					txtFtime2.setText("0");
+				}
 				if (partidaAtual != null) {
 					partidaAtual.setPontos2(Integer.parseInt(txtFtime2.getText()));
 				}
 			}
 
+		});
+		txtFtime2.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+					e.consume();
+				}
+			}
 		});
 		txtFtime2.setEnabled(false);
 		getContentPane().add(txtFtime2);
@@ -225,12 +253,22 @@ public class ControlePartidas extends JInternalFrame {
 
 				for (TorneioPartidaModel partida : partidas) {
 
-					try {
-						torneioPartidaDAO.updateTorneioPartida(partida);
-					} catch (SQLException e1) {
-						e1.printStackTrace();
+					if(partida.getPontos1() == partida.getPontos2()) {
+						JOptionPane.showMessageDialog(null, "Não pode haver empates!");
+						return;
 					}
 
+				}
+
+				try {
+					for (TorneioPartidaModel partida : partidas) {
+
+						torneioPartidaDAO.updateTorneioPartida(partida);
+
+					}
+					clean();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
 				}
 
 			}
@@ -256,6 +294,18 @@ public class ControlePartidas extends JInternalFrame {
 		carregaPartida();
 
 	}
+	
+	private void clean() {
+		txtFtime1.setText("");
+		txtFtime2.setText("");
+		txtFTorneio.setText("");
+		lblTime1.setText("-");
+		lblTime2.setText("-");
+		paint(getGraphics());
+		partidas = null;
+		partidaAtual = null;
+		txtFTorneio.requestFocus();
+	}
 
 	private void carregaPartida() {
 		partidaAtual = partidas.get(posicao);
@@ -267,10 +317,10 @@ public class ControlePartidas extends JInternalFrame {
 
 		try {
 			time = timeDAO.getOneTime(partidaAtual.getIdTime1());
-
+			paint(getGraphics());
 			if (time != null) {
 
-				// TODO set logo
+				panel1.getGraphics().drawImage(ImageIO.read((time.getLogo()==null)? new File(System.getProperty("user.dir") + "\\images\\Logos\\Logo_gradient.png"):time.getLogo()), 0, 0, panel1.getWidth(), panel1.getHeight(), null);
 				lblTime1.setText(time.getNome());
 				txtFtime1.setText(partidaAtual.getPontos1().toString());
 
@@ -280,13 +330,16 @@ public class ControlePartidas extends JInternalFrame {
 
 			if (time != null) {
 
-				// TODO set logo
+				panel2.getGraphics().drawImage(ImageIO.read((time.getLogo()==null)? new File(System.getProperty("user.dir") + "\\images\\Logos\\Logo_gradient.png"):time.getLogo()), 0, 0, panel2.getWidth(), panel2.getHeight(), null);
 				lblTime2.setText(time.getNome());
 				txtFtime2.setText(partidaAtual.getPontos2().toString());
 
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
