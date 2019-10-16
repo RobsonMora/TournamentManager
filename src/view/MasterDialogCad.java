@@ -11,6 +11,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
@@ -191,6 +192,8 @@ public class MasterDialogCad extends JInternalFrame {
 		btnAdd.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAdd.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnAdd.setBounds(130, 10, 120, 35);
+		
+		
 		// getContentPane().add(btnAdd);
 
 		// Botao Delete

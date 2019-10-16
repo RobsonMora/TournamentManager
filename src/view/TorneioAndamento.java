@@ -145,7 +145,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	private void createSquare(TimeModel time, String pontos, int x, int y) {
 
 		Graphics g = getGraphics();
-		g.setColor(Color.GREEN);
+		g.setColor(new Color(153,255,153));
 		g.fillRect(x, y, 160, 30);
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y, 160, 30);

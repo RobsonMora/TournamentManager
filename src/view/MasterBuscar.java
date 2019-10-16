@@ -36,7 +36,7 @@ public class MasterBuscar extends JFrame {
 		this.conn = conn;
 		utils = new Utils();
 		setSize(453, 400);
-		setTitle("Buscar Aluno");
+		setTitle("Buscar Time");
 		setLayout(null);
 		setResizable(false);
 		setLocationRelativeTo(null);

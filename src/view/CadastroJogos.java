@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import dao.CategoriasDAO;
 import dao.JogoDAO;
@@ -77,9 +78,16 @@ public class CadastroJogos extends MasterDialogCad {
 	@Override
 	protected boolean actionSave() {
 		try {
+			
+			if(!(ComboJogo.getSelectedIndex()>0) || txtFNome.getText().trim().isEmpty()){
+				JOptionPane.showMessageDialog(null, "Campo vazio!");
+				return false;
+			}
+			
 			getFields();
 			if (isInserting) {
 				jogoDao.createJogo(jogoChange);
+				JOptionPane.showMessageDialog(null, "Jogo cadastrado com sucesso!");
 
 			} else {
 				jogoDao.updateJogo(jogoChange);

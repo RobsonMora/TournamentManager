@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import dao.CategoriasDAO;
@@ -75,10 +76,14 @@ public class CadastroCategorias extends MasterDialogCad {
 	@Override
 	protected boolean actionSave() {
 		try {
+			if(txtFCategoria.getText().trim().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Campo vazio!");
+				return false;
+			}
 			getFields();
 			if (isInserting) {
 				categoriaDao.createCategoria(categoriaChange);
-
+				JOptionPane.showMessageDialog(null, "Categoria cadastrada com sucesso!");
 			} else {
 				categoriaDao.updateCategoria(categoriaChange);
 			}
