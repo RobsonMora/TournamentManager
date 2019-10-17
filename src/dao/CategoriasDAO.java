@@ -44,6 +44,23 @@ public class CategoriasDAO extends BaseDAO{
 			return null;
 		}
 	}
+	
+	public boolean existsDependencies(Integer idCategoria) {
+		try {
+			ResultSet result = this.select("1").
+					from("jogos").
+					where("id_categoria", "=", idCategoria.toString()).
+					limit(1).
+					apply();	
+			if(result.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}		
+	}
 
 	public void createCategoria(CategoriaModel categoria) throws SQLException {
 		this.insertInto("categorias", "nome")

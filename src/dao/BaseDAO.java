@@ -125,6 +125,11 @@ public abstract class BaseDAO {
 		setSql(getSql() + " RETURNING "+ statement);
 		return this;
 	}
+	
+	protected BaseDAO limit(Integer rows) {
+		setSql(getSql()+ " LIMIT "+ rows + " "); 
+		return this;
+	}
 
 	private String getGroup() {
 		return group;
