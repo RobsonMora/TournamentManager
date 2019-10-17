@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
+import dao.JogoDAO;
 import dao.TorneioDAO;
 import model.TorneioModel;
 @SuppressWarnings("serial")
@@ -43,9 +44,10 @@ public class BuscarTorneio extends MasterBuscar {
 			} else {
 				if (jTxtBusca.getText().matches("[0123456789]+")) {
 					torneioList = new ArrayList<TorneioModel>();
-					TorneioModel timeResult = torneioDao.getOneTorneio(Integer.parseInt(jTxtBusca.getText().trim()));
-					if (timeResult != null) {
-						torneioList.add(timeResult);
+					TorneioModel torneiomodel = new TorneioModel();
+					torneiomodel = new TorneioDAO(conn).getOneTorneio(Integer.parseInt(jTxtBusca.getText()));
+					if (torneiomodel != null) {
+						torneioList.add(torneiomodel);
 						InsertRow(Integer.toString(torneioList.get(0).getId()), torneioList.get(0).getNome());
 					}
 				} else {

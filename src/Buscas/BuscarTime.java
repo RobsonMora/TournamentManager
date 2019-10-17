@@ -42,9 +42,10 @@ public class BuscarTime extends MasterBuscar {
 			} else {
 				if (jTxtBusca.getText().matches("[0123456789]+")) {
 					timeList = new ArrayList<TimeModel>();
-					TimeModel timeResult = timeDao.getOneTime(Integer.parseInt(jTxtBusca.getText().trim()));
-					if (timeResult != null) {
-						timeList.add(timeResult);
+					TimeModel timemodel = new TimeModel();
+					timemodel = new TimeDAO(conn).getOneTime(Integer.parseInt(jTxtBusca.getText()));
+					if (timemodel != null) {
+						timeList.add(timemodel);
 						InsertRow(Integer.toString(timeList.get(0).getId()), timeList.get(0).getNome());
 					}
 				} else {

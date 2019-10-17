@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import dao.JogoDAO;
@@ -42,11 +43,10 @@ public class BuscarJogo extends MasterBuscar {
 				}
 			} else {
 				if (jTxtBusca.getText().matches("[0123456789]+")) {
-					jogoList = new ArrayList<JogoModel>();
-					JogoModel jogoResult = jogoDao.getOneJogo(Integer.parseInt(jTxtBusca.getText().trim()));
-					if (jogoResult != null) {
-						jogoList.add(jogoResult);
-						InsertRow(Integer.toString(jogoList.get(0).getId()), jogoList.get(0).getNome());
+					JogoModel jogoReturn = new JogoModel();
+					jogoReturn = new JogoDAO(conn).getOneJogo(Integer.parseInt(jTxtBusca.getText()));
+					if (jogoReturn != null) {
+						InsertRow(Integer.toString(jogoReturn.getId()), jogoReturn.getNome());
 					}
 				} else {
 					System.out.println("numeros");

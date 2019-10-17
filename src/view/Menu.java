@@ -112,7 +112,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		novo_torneio = new JMenuItem("Cadastro de Torneio");
+		novo_torneio = new JMenuItem("Torneio");
 		novo_torneio.addActionListener(new ActionListener() {
 
 			@Override
@@ -133,7 +133,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		times = new JMenuItem("Cadastro de Times");
+		times = new JMenuItem("Times");
 		times.addActionListener(new ActionListener() {
 
 			@Override
@@ -150,7 +150,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		jogos = new JMenuItem("Cadastro de Jogos");
+		jogos = new JMenuItem("Jogos");
 		jogos.addActionListener(new ActionListener() {
 
 			@Override
@@ -167,7 +167,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		categoria = new JMenuItem("Cadastro de Categorias");
+		categoria = new JMenuItem("Categorias");
 		categoria.addActionListener(new ActionListener() {
 
 			@Override

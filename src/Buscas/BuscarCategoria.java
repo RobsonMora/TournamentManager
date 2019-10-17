@@ -44,9 +44,10 @@ public class BuscarCategoria extends MasterBuscar {
 			} else {
 				if (jTxtBusca.getText().matches("[0123456789]+")) {
 					categoriaList = new ArrayList<CategoriaModel>();
-					CategoriaModel categoriaResult = categoriaDao.getOneCategoria(Integer.parseInt(jTxtBusca.getText().trim()));
-					if (categoriaResult != null) {
-						categoriaList.add(categoriaResult);
+					CategoriaModel categoriamodel = new CategoriaModel();
+					categoriamodel = new CategoriasDAO(conn).getOneCategoria(Integer.parseInt(jTxtBusca.getText().trim()));
+					if (categoriamodel != null) {
+						categoriaList.add(categoriamodel);
 						InsertRow(Integer.toString(categoriaList.get(0).getId()), categoriaList.get(0).getNome());
 					}
 				} else {

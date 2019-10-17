@@ -1,11 +1,13 @@
 package view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -23,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import dao.TimeDAO;
 import dao.TorneioPartidaDAO;
@@ -52,7 +55,14 @@ public class ControlePartidas extends JInternalFrame {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
-
+		for(Component c : getComponents()){
+			if (c instanceof BasicInternalFrameTitlePane){
+				for (MouseMotionListener m : c.getMouseMotionListeners()){
+					c.removeMouseMotionListener(m);
+				}
+				break;
+			}
+		}
 		torneioPartidaDAO = new TorneioPartidaDAO(conn);
 		timeDAO = new TimeDAO(conn);
 

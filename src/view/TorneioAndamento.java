@@ -284,7 +284,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	private void printText(String text, int x, int y) {
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g2 = (Graphics2D)getGraphics();
-			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, 5));
+			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, 12));
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
 
 			g2.drawString(text, x, y); 
