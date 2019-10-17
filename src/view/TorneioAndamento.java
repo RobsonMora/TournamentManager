@@ -262,9 +262,11 @@ public class TorneioAndamento  extends JInternalFrame {
 		try {
 			TorneioModel torneio = torneioDAO.getOneTorneio(idTorneio);
 
-			txtLoadTorneio.setText(torneio.getNome());
-			txtLoadJogo.setText(new JogoDAO(torneioDAO.getConn()).getOneJogo(torneio.getIdJogo()).getNome());
-			txtAObs.setText(torneio.getObservacao());
+			if(torneio != null) {
+				txtLoadTorneio.setText(torneio.getNome());
+				txtLoadJogo.setText(new JogoDAO(torneioDAO.getConn()).getOneJogo(torneio.getIdJogo()).getNome());
+				txtAObs.setText(torneio.getObservacao());
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -276,7 +278,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	private void printText(String text, int x, int y) {
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g2 = (Graphics2D)getGraphics();
-			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, g2.getFont().getSize()));
+			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, 5));
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
 
 			g2.drawString(text, x, y); 
@@ -290,27 +292,30 @@ public class TorneioAndamento  extends JInternalFrame {
 
 		cleanPaint();
 
-		int j = 0;
-		int x = 0;
-		int passoVertical = 0;
-		int y1 = 0, y2 = 0;
+		int j = 0, y1 = 0, y2 = 0, x = 0, base = 0, passoVertical = 0;
 		boolean aux = true, partidaFinalizada = false;
 		int escala = 0, escalaPassoVertical = 0;
+				
 
 		for(int i = 1; i < 6; i++) {
 
 			try {
 				partidas = (proxPartidas == null) ? torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i) : (ArrayList<TorneioPartidaModel>)proxPartidas.clone();					
 				if(partidas != null) {
+					
 					proxPartidas = torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i + 1);	
 
 					if(partidas.size()>0) {
 						ultimaFasePartidas = (ArrayList<TorneioPartidaModel>)partidas.clone();
 					}
-
+					
+					if(base == 0) {
+						int borda = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane().getPreferredSize().height;
+						base = borda + ((((this.getHeight() + borda) / 2) - ((partidas.size()/2) * 60)) - ((partidas.size()>1) ? ((partidas.size()/2) * 26) + 13 : 60));
+					}
 					ultimaFase = i;
 					x = ((ultimaFase - 1) * 220) + 250;
-					j = j + 28;
+					j = j + base;
 					escalaPassoVertical = Math.max(escalaPassoVertical * 2, 1);
 					passoVertical = escalaPassoVertical * 86;
 					y1 = 0;
