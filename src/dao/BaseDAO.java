@@ -13,6 +13,10 @@ import database.ConnectionFactory;
 
 public abstract class BaseDAO {
 
+	public Connection getConn() {
+		return conn;
+	}
+
 	public BaseDAO(Connection conn) {
 
 		this.conn = conn;
