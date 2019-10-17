@@ -35,11 +35,14 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import dao.GanhadorDAO;
+import dao.JogoDAO;
 import dao.TimeDAO;
+import dao.TorneioDAO;
 import dao.TorneioPartidaDAO;
 import dao.TorneioTimeDAO;
 import model.GanhadorModel;
 import model.TimeModel;
+import model.TorneioModel;
 import model.TorneioPartidaModel;
 
 @SuppressWarnings("serial")
@@ -54,6 +57,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	private TorneioTimeDAO torneioTimeDAO;
 	private GanhadorDAO ganhadorDAO;
 	private TimeDAO timeDAO;
+	private TorneioDAO torneioDAO;
 
 	private Container chaveContainer;
 
@@ -64,7 +68,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 	public TorneioAndamento(Connection conn){
 
-		setSize(1200, 800);
+		setSize(1300, 700);
 		setTitle("Torneios em Andamento");
 		setLayout(null); 
 		setResizable(false);
@@ -84,6 +88,7 @@ public class TorneioAndamento  extends JInternalFrame {
 		north.validate();
 		north.repaint();
 
+		torneioDAO = new TorneioDAO(conn);
 		torneioPartidaDAO = new TorneioPartidaDAO(conn);
 		torneioTimeDAO = new TorneioTimeDAO(conn);
 		ganhadorDAO = new GanhadorDAO(conn);
@@ -102,22 +107,24 @@ public class TorneioAndamento  extends JInternalFrame {
 		lblShowTorneio = new JLabel("Torneio:");
 		lblShowTorneio.setBounds(250, 10, 100, 26);
 		getContentPane().add(lblShowTorneio);
-		
+
 		lblJogo = new JLabel("Jogo:");
 		lblJogo.setBounds(264, 40, 100, 26);
 		getContentPane().add(lblJogo);
-		
+
 		lblObs = new JLabel("Observação:");
 		lblObs.setBounds(700, 10, 100, 26);
 		getContentPane().add(lblObs);
-		
+
 		btnCarregarTorneio = new JButton(new AbstractAction("Carregar Torneio") {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				ultimaFasePartidas = null;
-				if(!txtTorneio.getText().isEmpty()) {						
+				if(!txtTorneio.getText().isEmpty()) {
+					carregarTorneio(Integer.parseInt(txtTorneio.getText()));
+
 					carregaFases(Integer.parseInt(txtTorneio.getText()));					
 				}
 
@@ -164,20 +171,34 @@ public class TorneioAndamento  extends JInternalFrame {
 		txtLoadTorneio.setEditable(false);
 		txtLoadTorneio.setFocusable(false);
 		getContentPane().add(txtLoadTorneio);
-		
+
 		txtLoadJogo = new JTextField();
 		txtLoadJogo.setBounds(305, 40, 385, 25);
 		txtLoadJogo.setEditable(false);
 		txtLoadJogo.setFocusable(false);
 		getContentPane().add(txtLoadJogo);
-		
+
+		txtAObs = new JTextArea();
+		txtAObs.addFocusListener(new FocusAdapter() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				if(!txtAObs.getText().trim().isEmpty()) {
+				}
+
+			}
+
+		});
+
 		JScrollPane sp = new JScrollPane(txtAObs);
 		sp.setEnabled(true);
 		sp.setBounds(780, 10, 400, 55);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
 		getContentPane().add(sp);
-		
-		
+
+
 	}
 
 	private void cleanPaint() {
@@ -236,10 +257,26 @@ public class TorneioAndamento  extends JInternalFrame {
 
 	}
 
+	private void carregarTorneio(Integer idTorneio) {
+
+		try {
+			TorneioModel torneio = torneioDAO.getOneTorneio(idTorneio);
+
+			txtLoadTorneio.setText(torneio.getNome());
+			txtLoadJogo.setText(new JogoDAO(torneioDAO.getConn()).getOneJogo(torneio.getIdJogo()).getNome());
+			txtAObs.setText(torneio.getObservacao());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
+	}
+
 	private void printText(String text, int x, int y) {
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g2 = (Graphics2D)getGraphics();
-			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, g2.getFont().getSize()/2));
+			g2.setFont(new Font("Lemon/Milk", Font.PLAIN, g2.getFont().getSize()));
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
 
 			g2.drawString(text, x, y); 
@@ -272,8 +309,8 @@ public class TorneioAndamento  extends JInternalFrame {
 					}
 
 					ultimaFase = i;
-					x = ((ultimaFase - 1) * 220) + 20;
-					j = j + 120;
+					x = ((ultimaFase - 1) * 220) + 250;
+					j = j + 28;
 					escalaPassoVertical = Math.max(escalaPassoVertical * 2, 1);
 					passoVertical = escalaPassoVertical * 86;
 					y1 = 0;
@@ -317,7 +354,7 @@ public class TorneioAndamento  extends JInternalFrame {
 								ganhadorDAO.updateGanhador(ganhador.setIdTime(getIdVencedor(partidas.get(0))));
 							}
 						}
-						createSquare(timeDAO.getOneTime(ganhador.getIdTime()), "Winner", ((ultimaFase * 220) + 20), j);
+						createSquare(timeDAO.getOneTime(ganhador.getIdTime()), "Winner", ((ultimaFase * 220) + 250), j);
 					}
 					if(i > 1) {
 						escala = (escala * 2) + 1;
@@ -375,7 +412,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 			}else {			
 
-				ResultSet result = torneioPartidaDAO.freeSqlQuery(" select 1 as valor from torneio_partidas where pontos_1 is null and fase = "+ultimaFasePartidas.get(0).getFase());
+				ResultSet result = torneioPartidaDAO.freeSqlQuery(" select 1 as valor from torneio_partidas where id_torneio = "+idTorneio.toString()+" and pontos_1 is null and fase = "+ultimaFasePartidas.get(0).getFase());
 				if(result.next()) {
 					if(result.getInt(1) == 1) {
 						return;
