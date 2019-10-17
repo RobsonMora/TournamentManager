@@ -179,6 +179,12 @@ public class ControlePartidas extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
+					
+					if(txtFTorneio.getText().trim().isEmpty()){
+						JOptionPane.showMessageDialog(null, "Campo vazio!");
+						return;
+					}
+					
 					ResultSet result = torneioPartidaDAO.freeSqlQuery(
 							" select MAX(fase) from torneio_partidas where id_torneio = " + txtFTorneio.getText());
 
@@ -195,7 +201,7 @@ public class ControlePartidas extends JInternalFrame {
 
 							}
 						}
-
+						
 					}
 
 				} catch (SQLException e1) {
@@ -248,10 +254,13 @@ public class ControlePartidas extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				
 				if (partidas == null) {
-					return;
+					
+						JOptionPane.showMessageDialog(null, "Informe um torneio com partidas válidas!");
+						return;
 				}
-
+				
 				for (TorneioPartidaModel partida : partidas) {
 
 					if(partida.getPontos1() == partida.getPontos2()) {
