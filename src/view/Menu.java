@@ -3,7 +3,6 @@ package view;
 import java.awt.*;
 
 import java.awt.event.*;
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -64,6 +63,7 @@ public class Menu extends JFrame {
 
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 			UIManager.put("nimbusBase", new Color(255, 145, 77));
+			UIManager.put("nimbusBlueGrey", new Color(255, 145, 77));
 					
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -344,20 +344,6 @@ public class Menu extends JFrame {
 		comp.setForeground(Color.black);
 	}
 
-<<<<<<< HEAD
-	private static JComponent Test() {
-		JLayeredPane layeredPane = new JLayeredPane();
-		return layeredPane;
-
-	}
-	
-	private void btnInterno() {
-		
-	
-	}
-	
-=======
->>>>>>> 251e43fe5e8fabe30770715ced27765c65f7fa82
 	private void fecharJanelaAberta() {
 
 		switch (janelaAberta) {
