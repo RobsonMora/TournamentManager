@@ -80,15 +80,19 @@ public class CadastroTimes extends MasterDialogCad {
 			return false;
 		}
 	}
+	
+	@Override
+	protected boolean checkRequired() {
+		if(txtFTime.getText().trim().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	protected boolean actionSave() {
 		try {
-			
-			if(txtFTime.getText().trim().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Campo vazio!");
-				return false;
-			}
+						
 			getFields();
 			if (isInserting) {
 				timeDao.createTime(timeChange);

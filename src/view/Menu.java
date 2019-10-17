@@ -341,12 +341,6 @@ public class Menu extends JFrame {
 		comp.setForeground(Color.black);
 	}
 
-	private static JComponent Test() {
-		JLayeredPane layeredPane = new JLayeredPane();
-		return layeredPane;
-
-	}
-
 	private void fecharJanelaAberta() {
 
 		switch (janelaAberta) {
