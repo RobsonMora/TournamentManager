@@ -23,8 +23,8 @@ public class Menu extends JFrame {
 	// Painéis e items do menu
 	public JDesktopPane desktopPane;
 	private JMenuBar menuBar;
-	private JMenu sistema, torneios, cadastros;
-	private JMenuItem sair, novo_torneio, torneio_andamento, controle_partidas, times, jogos, categoria,
+	private JMenu sistema, cadastros;
+	private JMenuItem sair, novo_torneio, times, jogos, categoria,
 			testeConexao;
 	// Classes/frames
 	private Sair fSair;
@@ -128,43 +128,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		btnBracket = new JButton();
-		btnBracket.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				
-				
-				fecharJanelaAberta();
-				janelaAberta = 3;
-				
-				fTorneioAndamento = new TorneioAndamento(conn);
-				desktopPane.add(fTorneioAndamento);
-				
-				fTorneioAndamento.setVisible(true);
-				fTorneioAndamento.setPosicao();
-
-			}
-		});
-
-		controle_partidas = new JMenuItem("Controle de Partidas");
-		controle_partidas.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-
-				fecharJanelaAberta();
-				janelaAberta = 4;
-
-				fControlePartidas = new ControlePartidas(conn);
-				desktopPane.add(fControlePartidas);
-				fControlePartidas.setVisible(true);
-				fControlePartidas.setPosicao();
-				
-
-			}
-		});
-
+		
 		times = new JMenuItem("Cadastro de Times");
 		times.addActionListener(new ActionListener() {
 
@@ -261,6 +225,23 @@ public class Menu extends JFrame {
 		setIconImage(imagemTituloJanela.getImage());
 				
 		btnBracket = new JButton(null,new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\bracketf.png"));
+		btnBracket.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				
+				
+				fecharJanelaAberta();
+				janelaAberta = 3;
+				
+				fTorneioAndamento = new TorneioAndamento(conn);
+				desktopPane.add(fTorneioAndamento);
+				
+				fTorneioAndamento.setVisible(true);
+				fTorneioAndamento.setPosicao();
+
+			}
+		});
 		btnBracket.setBounds(10, 10, 170, 170);
 		btnBracket.setBackground(Color.BLACK);
 		btnBracket.setEnabled(true);
@@ -268,10 +249,25 @@ public class Menu extends JFrame {
 		desktopPane.add(btnBracket);
 		/* btnBracket.setVisible(true); */
 		
-		btnControlePartida = new JButton();
 		btnControlePartida = new JButton(null,new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\004.png"));
+		btnControlePartida.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+
+				fecharJanelaAberta();
+				janelaAberta = 4;
+
+				fControlePartidas = new ControlePartidas(conn);
+				desktopPane.add(fControlePartidas);
+				fControlePartidas.setVisible(true);
+				fControlePartidas.setPosicao();
+				
+
+			}
+		});
 		btnControlePartida.setBounds(200, 10, 170, 170);
-		btnControlePartida.setBackground(new Color(255,145,77));
+		btnControlePartida.setBackground(Color.BLACK);
 		btnControlePartida.setEnabled(true);
 		btnControlePartida.setVisible(true);
 		desktopPane.add(btnControlePartida);
