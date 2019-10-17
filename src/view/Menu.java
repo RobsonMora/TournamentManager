@@ -77,14 +77,6 @@ public class Menu extends JFrame {
 
 		desktopPane = new JDesktopPane();
 		
-		btnBracket = new JButton("Buscar");
-		btnBracket.setBounds(10, 500, 120, 35);
-		/* btnBracket.addComponentListener((ComponentListener) btnBracket); */
-		btnBracket.setEnabled(true);
-		btnBracket.setVisible(true);
-		desktopPane.add(btnBracket);
-		/* btnBracket.setVisible(true); */
-
 		testeConexao = new JMenuItem("Testar Conexão");
 		testeConexao.addActionListener(new AbstractAction() {
 
@@ -136,17 +128,19 @@ public class Menu extends JFrame {
 			}
 		});
 
-		torneio_andamento = new JMenuItem("Torneios em andamento");
-		torneio_andamento.addActionListener(new ActionListener() {
+		btnBracket = new JButton();
+		btnBracket.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-
+				
+				
 				fecharJanelaAberta();
 				janelaAberta = 3;
-
+				
 				fTorneioAndamento = new TorneioAndamento(conn);
 				desktopPane.add(fTorneioAndamento);
+				
 				fTorneioAndamento.setVisible(true);
 				fTorneioAndamento.setPosicao();
 
@@ -166,11 +160,12 @@ public class Menu extends JFrame {
 				desktopPane.add(fControlePartidas);
 				fControlePartidas.setVisible(true);
 				fControlePartidas.setPosicao();
+				
 
 			}
 		});
 
-		times = new JMenuItem("Times");
+		times = new JMenuItem("Cadastro de Times");
 		times.addActionListener(new ActionListener() {
 
 			@Override
@@ -187,7 +182,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		jogos = new JMenuItem("Jogos");
+		jogos = new JMenuItem("Cadastro de Jogos");
 		jogos.addActionListener(new ActionListener() {
 
 			@Override
@@ -204,7 +199,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		categoria = new JMenuItem("Categorias");
+		categoria = new JMenuItem("Cadastro de Categorias");
 		categoria.addActionListener(new ActionListener() {
 
 			@Override
@@ -231,16 +226,20 @@ public class Menu extends JFrame {
 
 		menuBar.add(sistema);
 
-		torneios = new JMenu("Torneios");
-
-		torneios.add(novo_torneio);
-		torneios.add(torneio_andamento);
-		torneios.add(controle_partidas);
-
-		menuBar.add(torneios);
-
+		/*
+		 * torneios = new JMenu("Torneios");
+		 * 
+		 * 
+		 * torneios.add(torneio_andamento); torneios.add(controle_partidas);
+		 * 
+		 * menuBar.add(torneios);
+		 */
+		
+		
+		
 		cadastros = new JMenu("Cadastros");
 
+		cadastros.add(novo_torneio);
 		cadastros.add(times);
 		cadastros.add(jogos);
 		cadastros.add(categoria);
@@ -261,7 +260,6 @@ public class Menu extends JFrame {
 		ImageIcon imagemTituloJanela = new ImageIcon("images\\\\Logos\\\\icone.png");
 		setIconImage(imagemTituloJanela.getImage());
 				
-		btnBracket = new JButton();
 		btnBracket = new JButton(null,new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\bracketf.png"));
 		btnBracket.setBounds(10, 10, 170, 170);
 		btnBracket.setBackground(Color.BLACK);
