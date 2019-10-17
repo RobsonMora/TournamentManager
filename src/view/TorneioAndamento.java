@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -217,7 +218,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g = (Graphics2D)getGraphics();
-			g.setColor(new Color(153,255,153));
+			g.setColor(new Color(255,145, 77));
 			g.fillRect(x, y, 160, 30);
 			g.setColor(Color.BLACK);
 			g.setStroke(new BasicStroke(2));

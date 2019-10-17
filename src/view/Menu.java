@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -62,6 +63,8 @@ public class Menu extends JFrame {
 		try {
 
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.put("nimbusBase", new Color(255, 145, 77));
+					
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -69,8 +72,7 @@ public class Menu extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			// TODO Auto-generated catch block			e1.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -224,7 +226,8 @@ public class Menu extends JFrame {
 		setContentPane(CreateContentPane());
 		ImageIcon imagemTituloJanela = new ImageIcon("images\\\\Logos\\\\icone.png");
 		setIconImage(imagemTituloJanela.getImage());
-
+		
+		
 		btnBracket = new JButton(null, new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\bracketf.png"));
 		btnBracket.addActionListener(new ActionListener() {
 
@@ -346,7 +349,12 @@ public class Menu extends JFrame {
 		return layeredPane;
 
 	}
-
+	
+	private void btnInterno() {
+		
+	
+	}
+	
 	private void fecharJanelaAberta() {
 
 		switch (janelaAberta) {
