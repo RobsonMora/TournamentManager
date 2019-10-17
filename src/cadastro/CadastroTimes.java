@@ -1,4 +1,4 @@
-package view;
+package cadastro;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import Buscas.BuscarTime;
 import dao.TimeDAO;
 import model.TimeModel;
 

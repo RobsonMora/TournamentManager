@@ -1,4 +1,4 @@
-package view;
+package cadastro;
 
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
@@ -10,6 +10,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import Buscas.BuscarJogo;
 import dao.CategoriasDAO;
 import dao.JogoDAO;
 import model.CategoriaModel;

@@ -1,4 +1,4 @@
-package view;
+package Buscas;
 
 import java.awt.Color;
 
@@ -19,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
+
+import view.Utils;
 @SuppressWarnings("serial")
 
 public class MasterBuscar extends JFrame {

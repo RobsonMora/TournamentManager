@@ -1,4 +1,4 @@
-package view;
+package Buscas;
 
 import java.sql.Connection;
 
@@ -12,7 +12,7 @@ import model.JogoModel;
 @SuppressWarnings("serial")
 public class BuscarJogo extends MasterBuscar {
 
-	JogoModel jogoReturn;
+	public JogoModel jogoReturn;
 	private ArrayList<JogoModel> jogoList;
 	private JogoDAO jogoDao;
 

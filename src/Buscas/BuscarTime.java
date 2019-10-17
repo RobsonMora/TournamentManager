@@ -1,4 +1,4 @@
-package view;
+package Buscas;
 
 import java.sql.Connection;
 
@@ -12,7 +12,7 @@ import model.TimeModel;
 @SuppressWarnings("serial")
 public class BuscarTime extends MasterBuscar {
 
-	TimeModel timeReturn;
+	public TimeModel timeReturn;
 	private ArrayList<TimeModel> timeList;
 	private TimeDAO timeDao;
 

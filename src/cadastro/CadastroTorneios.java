@@ -1,4 +1,4 @@
-package view;
+package cadastro;
 
 import java.awt.Color;
 
@@ -28,6 +28,9 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
+
+import Buscas.BuscarTime;
+import Buscas.BuscarTorneio;
 import dao.JogoDAO;
 import dao.TorneioDAO;
 import dao.TorneioTimeDAO;

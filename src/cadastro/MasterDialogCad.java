@@ -1,4 +1,4 @@
-package view;
+package cadastro;
 
 import java.awt.Container;
 import java.awt.Cursor;
@@ -11,8 +11,11 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+
+import view.Utils;
 
 @SuppressWarnings("serial")
 public class MasterDialogCad extends JInternalFrame {
@@ -35,10 +38,12 @@ public class MasterDialogCad extends JInternalFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			try {
-				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				if (actionDelete()) {
-					setFieldsEnabled(false);
-					clean();
+				if(JOptionPane.showConfirmDialog(null, "Deseja Realmente deletar este registro?") == 0){
+					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					if (actionDelete()) {
+						setFieldsEnabled(false);
+						clean();
+					}
 				}
 			} finally {
 				setCursor(Cursor.getDefaultCursor());
@@ -191,8 +196,8 @@ public class MasterDialogCad extends JInternalFrame {
 		btnAdd.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAdd.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnAdd.setBounds(130, 10, 120, 35);
-		
-		
+
+
 		// getContentPane().add(btnAdd);
 
 		// Botao Delete

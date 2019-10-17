@@ -1,4 +1,4 @@
-package view;
+package Buscas;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import model.CategoriaModel;
 @SuppressWarnings("serial")
 public class BuscarCategoria extends MasterBuscar {
 
-	CategoriaModel categoriaReturn;
+	public CategoriaModel categoriaReturn;
 	private ArrayList<CategoriaModel> categoriaList;
 	private CategoriasDAO categoriaDao;
 

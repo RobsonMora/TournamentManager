@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import cadastro.CadastroCategorias;
+import cadastro.CadastroJogos;
+import cadastro.CadastroTimes;
+import cadastro.CadastroTorneios;
 import database.ConnectionFactory;
 @SuppressWarnings("serial")
 public class Menu extends JFrame {

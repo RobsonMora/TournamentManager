@@ -1,4 +1,4 @@
-package view;
+package cadastro;
 
 import java.awt.Dimension;
 
@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import Buscas.BuscarCategoria;
 import dao.CategoriasDAO;
 import model.CategoriaModel;
 @SuppressWarnings("serial")
@@ -63,8 +64,13 @@ public class CadastroCategorias extends MasterDialogCad {
 	protected boolean actionDelete() {
 		if ((categoria != null) && (!isInserting)) {
 			try {
-				categoriaDao.deleteCategoria(categoria.getId());
-				return true;
+				if(!categoriaDao.existsDependencies(categoria.getId())) {
+					categoriaDao.deleteCategoria(categoria.getId());
+					return true;
+				}else {
+					JOptionPane.showMessageDialog(null, "Existem jogos cadastrados com essa categoria");
+					return false;
+				}
 			} catch (SQLException e) {
 				return false;
 			}
