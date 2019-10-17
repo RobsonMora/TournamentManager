@@ -78,18 +78,22 @@ public class CadastroCategorias extends MasterDialogCad {
 			return false;
 		}
 	}
+	
+	@Override
+	protected boolean checkRequired() {
+		if(txtFCategoria.getText().trim().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Campo vazio!");
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	protected boolean actionSave() {
-		try {
-			if(txtFCategoria.getText().trim().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Campo vazio!");
-				return false;
-			}
+		try {			
 			getFields();
 			if (isInserting) {
 				categoriaDao.createCategoria(categoriaChange);
-				JOptionPane.showMessageDialog(null, "Categoria cadastrada com sucesso!");
 			} else {
 				categoriaDao.updateCategoria(categoriaChange);
 			}
