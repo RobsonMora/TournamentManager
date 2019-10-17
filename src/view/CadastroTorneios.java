@@ -151,11 +151,17 @@ public class CadastroTorneios extends MasterDialogCad {
 	@Override
 	protected boolean actionSave() {
 		try {			
+			
+			if(txtFCodTorneio.getText().trim().isEmpty() || txtFNomeTorneio.getText().trim().isEmpty() || txtAObs.getText().trim().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Campo vazio!");
+				return false;
+			}
 			getFields();
 			if (validaQuantidade()) {
 				int torneioId = torneioChange.getId();
 				if (isInserting) {
 					torneioId = torneioDao.createTorneio(torneioChange);
+					JOptionPane.showMessageDialog(null, "Jogo cadastrado com sucesso!");
 				} else {
 					torneioDao.updateTorneio(torneioChange);
 				}
@@ -384,7 +390,6 @@ public class CadastroTorneios extends MasterDialogCad {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					btnAdd.requestFocus();
 					btnAdd.doClick();
-
 				}
 
 			}
