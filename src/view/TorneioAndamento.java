@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -51,7 +52,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	private JButton btnGerarFase, btnCarregarTorneio;
 	private JTextField txtTorneio, txtLoadTorneio, txtLoadJogo;;
 	private JTextArea txtAObs;
-	private JLabel lblShowTorneio, lblJogo, lblObs;
+	private JLabel lblPartida, lblShowTorneio, lblJogo, lblObs;
 	private ArrayList<TimeModel> times;
 	private TorneioPartidaDAO torneioPartidaDAO;
 	private TorneioTimeDAO torneioTimeDAO;
@@ -105,17 +106,22 @@ public class TorneioAndamento  extends JInternalFrame {
 	private void componentes() {
 
 		lblShowTorneio = new JLabel("Torneio:");
-		lblShowTorneio.setBounds(250, 10, 100, 26);
+		lblShowTorneio.setBounds(21, 100, 100, 26);
 		getContentPane().add(lblShowTorneio);
 
 		lblJogo = new JLabel("Jogo:");
-		lblJogo.setBounds(264, 40, 100, 26);
+		lblJogo.setBounds(21, 160, 100, 26);
 		getContentPane().add(lblJogo);
 
 		lblObs = new JLabel("Observação:");
-		lblObs.setBounds(700, 10, 100, 26);
+		lblObs.setBounds(21, 220, 100, 26);
 		getContentPane().add(lblObs);
-
+		
+		lblPartida = new JLabel();
+		lblPartida.setBounds(7, 80, 230, 400);
+		lblPartida.setBorder(BorderFactory.createTitledBorder("Informações"));
+		getContentPane().add(lblPartida);
+		
 		btnCarregarTorneio = new JButton(new AbstractAction("Carregar Torneio") {
 
 			@Override
@@ -130,7 +136,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 			}
 		});
-		btnCarregarTorneio.setBounds(70,10, 140, 25);
+		btnCarregarTorneio.setBounds(70,10, 164, 26);
 		getContentPane().add(btnCarregarTorneio);
 
 		btnGerarFase = new JButton(new AbstractAction("Gera Prox. Fase") {
@@ -144,7 +150,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 			}
 		});
-		btnGerarFase.setBounds(10, 40, 200, 25);
+		btnGerarFase.setBounds(10, 45, 224, 26);
 		getContentPane().add(btnGerarFase);
 
 		txtTorneio = new JTextField();
@@ -167,13 +173,13 @@ public class TorneioAndamento  extends JInternalFrame {
 		getContentPane().add(txtTorneio);
 
 		txtLoadTorneio = new JTextField();
-		txtLoadTorneio.setBounds(305, 10, 385, 25);
+		txtLoadTorneio.setBounds(21, 130, 200, 25);
 		txtLoadTorneio.setEditable(false);
 		txtLoadTorneio.setFocusable(false);
 		getContentPane().add(txtLoadTorneio);
 
 		txtLoadJogo = new JTextField();
-		txtLoadJogo.setBounds(305, 40, 385, 25);
+		txtLoadJogo.setBounds(21, 190, 200, 25);
 		txtLoadJogo.setEditable(false);
 		txtLoadJogo.setFocusable(false);
 		getContentPane().add(txtLoadJogo);
@@ -193,7 +199,7 @@ public class TorneioAndamento  extends JInternalFrame {
 
 		JScrollPane sp = new JScrollPane(txtAObs);
 		sp.setEnabled(true);
-		sp.setBounds(780, 10, 400, 55);
+		sp.setBounds(21, 250, 200, 212);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		getContentPane().add(sp);
