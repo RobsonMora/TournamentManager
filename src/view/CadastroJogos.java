@@ -134,12 +134,14 @@ public class CadastroJogos extends MasterDialogCad {
 		txtFNome.setText(jogo.getNome());	
 
 		fillCategorias();
-		
-		try {
-			comboCategoria.setSelectedItem(categoriasDao.getOneCategoria(jogo.getIdCategoria()).getNome());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}	
+
+		if(jogo.getIdCategoria() > 0) {
+			try {
+				comboCategoria.setSelectedItem(categoriasDao.getOneCategoria(jogo.getIdCategoria()).getNome());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
 
 		jogoChange = new JogoModel(jogo);
 
