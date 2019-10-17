@@ -80,19 +80,20 @@ public class CadastroJogos extends MasterDialogCad {
 	}
 
 	@Override
+	protected boolean checkRequired() {
+		if(txtFNome.getText().trim().isEmpty() || !(comboCategoria.getSelectedIndex()>0)){
+			JOptionPane.showMessageDialog(null, "Campo vazio!");
+			return false;
+		} 
+		return true;	
+	}
+
+	@Override
 	protected boolean actionSave() {
 		try {
-
-			if(txtFNome.getText().trim().isEmpty() || !(comboCategoria.getSelectedIndex()>0)){
-				JOptionPane.showMessageDialog(null, "Campo vazio!");
-				return false;
-			}
-
 			getFields();
 			if (isInserting) {
 				jogoDao.createJogo(jogoChange);
-				JOptionPane.showMessageDialog(null, "Jogo cadastrado com sucesso!");
-
 			} else {
 				jogoDao.updateJogo(jogoChange);
 			}

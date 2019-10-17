@@ -150,21 +150,22 @@ public class CadastroTorneios extends MasterDialogCad {
 		}
 	}
 
+	protected boolean checkRequired() {
+		if(txtFCodTorneio.getText().trim().isEmpty() || txtFNomeTorneio.getText().trim().isEmpty() || txtAObs.getText().trim().isEmpty()) {			
+			return false;
+		}
+		return true;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean actionSave() {
 		try {			
-			
-			if(txtFCodTorneio.getText().trim().isEmpty() || txtFNomeTorneio.getText().trim().isEmpty() || txtAObs.getText().trim().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Campo vazio!");
-				return false;
-			}
 			getFields();
 			if (validaQuantidade()) {
 				int torneioId = torneioChange.getId();
 				if (isInserting) {
 					torneioId = torneioDao.createTorneio(torneioChange);
-					JOptionPane.showMessageDialog(null, "Jogo cadastrado com sucesso!");
 				} else {
 					torneioDao.updateTorneio(torneioChange);
 				}

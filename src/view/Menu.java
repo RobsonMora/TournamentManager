@@ -344,6 +344,7 @@ public class Menu extends JFrame {
 		comp.setForeground(Color.black);
 	}
 
+<<<<<<< HEAD
 	private static JComponent Test() {
 		JLayeredPane layeredPane = new JLayeredPane();
 		return layeredPane;
@@ -355,6 +356,8 @@ public class Menu extends JFrame {
 	
 	}
 	
+=======
+>>>>>>> 251e43fe5e8fabe30770715ced27765c65f7fa82
 	private void fecharJanelaAberta() {
 
 		switch (janelaAberta) {

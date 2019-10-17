@@ -51,6 +51,10 @@ public class MasterDialogCad extends JInternalFrame {
 		}
 	};
 
+	protected boolean checkRequired() {
+		return true;
+	}
+
 	protected AbstractAction actAdd = new AbstractAction() {
 
 		@Override
@@ -93,12 +97,19 @@ public class MasterDialogCad extends JInternalFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-				if (actionSave()) {
-					if (isInserting) {
-						btnCancel.doClick();
-						clean();
+				if(checkRequired()) {
+					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					if (actionSave()) {
+						if (isInserting) {
+							btnCancel.doClick();
+							clean();
+						}
+						JOptionPane.showMessageDialog(null, "Registro salvo com sucesso!");
+					} else {
+						JOptionPane.showMessageDialog(null, "Falha ao salvar registro!");
 					}
+				}else {
+					JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
 				}
 			} finally {
 				setCursor(Cursor.getDefaultCursor());
