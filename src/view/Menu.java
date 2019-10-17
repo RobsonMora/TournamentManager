@@ -35,7 +35,8 @@ public class Menu extends JFrame {
 	private CadastroJogos fJogos;
 	private CadastroCategorias fCategoria;
 	private Connection conn;
-
+	private JButton btnBracket, btnControlePartida;
+	
 	private int janelaAberta = 0;
 
 	protected Connection connection() {
@@ -54,7 +55,7 @@ public class Menu extends JFrame {
 		return conn;
 	}
 
-	public Menu(String Perfil, String Usuario) {
+	public Menu() {
 
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -75,6 +76,14 @@ public class Menu extends JFrame {
 		connection();
 
 		desktopPane = new JDesktopPane();
+		
+		btnBracket = new JButton("Buscar");
+		btnBracket.setBounds(10, 500, 120, 35);
+		/* btnBracket.addComponentListener((ComponentListener) btnBracket); */
+		btnBracket.setEnabled(true);
+		btnBracket.setVisible(true);
+		desktopPane.add(btnBracket);
+		/* btnBracket.setVisible(true); */
 
 		testeConexao = new JMenuItem("Testar Conexão");
 		testeConexao.addActionListener(new AbstractAction() {
@@ -211,7 +220,7 @@ public class Menu extends JFrame {
 
 			}
 		});
-
+				
 		setContentPane(desktopPane);
 
 		menuBar = new JMenuBar();
@@ -239,7 +248,7 @@ public class Menu extends JFrame {
 		menuBar.add(cadastros);
 
 		new JMenu("Processos");
-
+						
 		setJMenuBar(menuBar);
 		setTitle("Tournament Manager");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -251,6 +260,24 @@ public class Menu extends JFrame {
 		setContentPane(CreateContentPane()); 
 		ImageIcon imagemTituloJanela = new ImageIcon("images\\\\Logos\\\\icone.png");
 		setIconImage(imagemTituloJanela.getImage());
+				
+		btnBracket = new JButton();
+		btnBracket = new JButton(null,new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\bracketf.png"));
+		btnBracket.setBounds(10, 10, 170, 170);
+		btnBracket.setBackground(Color.BLACK);
+		btnBracket.setEnabled(true);
+		btnBracket.setVisible(true);
+		desktopPane.add(btnBracket);
+		/* btnBracket.setVisible(true); */
+		
+		btnControlePartida = new JButton();
+		btnControlePartida = new JButton(null,new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\004.png"));
+		btnControlePartida.setBounds(200, 10, 170, 170);
+		btnControlePartida.setBackground(new Color(255,145,77));
+		btnControlePartida.setEnabled(true);
+		btnControlePartida.setVisible(true);
+		desktopPane.add(btnControlePartida);
+		
 		setVisible(true);
 	}
 
@@ -274,11 +301,7 @@ public class Menu extends JFrame {
 		contentPane.add(desktopPane);
 		return contentPane;
 	}
-	
-	public void mostrarJanela(boolean o) {
 
-		setVisible(o);
-	}
 
 	private void fecharJanelaAberta() {
 		
@@ -311,7 +334,7 @@ public class Menu extends JFrame {
 		case 7:
 			fCategoria.dispose();
 			break;
-			
+				
 		default:
 
 			break;
@@ -320,6 +343,6 @@ public class Menu extends JFrame {
 
 	public static void main(String args[]) {
 
-		new Menu("Completo", "admin");
+		new Menu();
 	}
 }

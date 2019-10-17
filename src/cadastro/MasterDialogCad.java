@@ -190,8 +190,7 @@ public class MasterDialogCad extends JInternalFrame {
 		// getContentPane().add(btnSearch);
 
 		// Botao Add
-		btnAdd = new JButton("Adicionar",
-				new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\adicionar.png"));
+		btnAdd = new JButton("Adicionar",new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\adicionar.png"));
 		btnAdd.addActionListener(actAdd);
 		btnAdd.setHorizontalAlignment(SwingConstants.LEFT);
 		btnAdd.setHorizontalTextPosition(SwingConstants.RIGHT);
