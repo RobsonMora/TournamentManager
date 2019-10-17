@@ -2,7 +2,6 @@ package view;
 
 import java.awt.*;
 
-
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -11,21 +10,24 @@ import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicMenuBarUI;
 
 import cadastro.CadastroCategorias;
 import cadastro.CadastroJogos;
 import cadastro.CadastroTimes;
 import cadastro.CadastroTorneios;
 import database.ConnectionFactory;
+
 @SuppressWarnings("serial")
 public class Menu extends JFrame {
 
 	// Painéis e items do menu
 	public JDesktopPane desktopPane;
+	public JLayeredPane layeredPane;
+
 	private JMenuBar menuBar;
 	private JMenu sistema, cadastros;
-	private JMenuItem sair, novo_torneio, times, jogos, categoria,
-			testeConexao;
+	private JMenuItem sair, novo_torneio, times, jogos, categoria, testeConexao;
 	// Classes/frames
 	private Sair fSair;
 	private TorneioAndamento fTorneioAndamento;
@@ -36,7 +38,7 @@ public class Menu extends JFrame {
 	private CadastroCategorias fCategoria;
 	private Connection conn;
 	private JButton btnBracket, btnControlePartida;
-	
+
 	private int janelaAberta = 0;
 
 	protected Connection connection() {
@@ -58,6 +60,7 @@ public class Menu extends JFrame {
 	public Menu() {
 
 		try {
+
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -72,11 +75,11 @@ public class Menu extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		connection();
 
 		desktopPane = new JDesktopPane();
-		
+
 		testeConexao = new JMenuItem("Testar Conexão");
 		testeConexao.addActionListener(new AbstractAction() {
 
@@ -128,7 +131,6 @@ public class Menu extends JFrame {
 			}
 		});
 
-		
 		times = new JMenuItem("Cadastro de Times");
 		times.addActionListener(new ActionListener() {
 
@@ -179,7 +181,7 @@ public class Menu extends JFrame {
 
 			}
 		});
-				
+
 		setContentPane(desktopPane);
 
 		menuBar = new JMenuBar();
@@ -198,9 +200,7 @@ public class Menu extends JFrame {
 		 * 
 		 * menuBar.add(torneios);
 		 */
-		
-		
-		
+
 		cadastros = new JMenu("Cadastros");
 
 		cadastros.add(novo_torneio);
@@ -211,7 +211,7 @@ public class Menu extends JFrame {
 		menuBar.add(cadastros);
 
 		new JMenu("Processos");
-						
+
 		setJMenuBar(menuBar);
 		setTitle("Tournament Manager");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -220,23 +220,22 @@ public class Menu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		setUndecorated(true);
-		setContentPane(CreateContentPane()); 
+		customizeMenuBar();
+		setContentPane(CreateContentPane());
 		ImageIcon imagemTituloJanela = new ImageIcon("images\\\\Logos\\\\icone.png");
 		setIconImage(imagemTituloJanela.getImage());
-				
-		btnBracket = new JButton(null,new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\bracketf.png"));
+
+		btnBracket = new JButton(null, new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\bracketf.png"));
 		btnBracket.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				
-				
+
 				fecharJanelaAberta();
 				janelaAberta = 3;
-				
+
 				fTorneioAndamento = new TorneioAndamento(conn);
 				desktopPane.add(fTorneioAndamento);
-				
 				fTorneioAndamento.setVisible(true);
 				fTorneioAndamento.setPosicao();
 
@@ -248,8 +247,9 @@ public class Menu extends JFrame {
 		btnBracket.setVisible(true);
 		desktopPane.add(btnBracket);
 		/* btnBracket.setVisible(true); */
-		
-		btnControlePartida = new JButton(null,new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\004.png"));
+
+		btnControlePartida = new JButton(null,
+				new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\004.png"));
 		btnControlePartida.addActionListener(new ActionListener() {
 
 			@Override
@@ -262,7 +262,6 @@ public class Menu extends JFrame {
 				desktopPane.add(fControlePartidas);
 				fControlePartidas.setVisible(true);
 				fControlePartidas.setPosicao();
-				
 
 			}
 		});
@@ -271,7 +270,7 @@ public class Menu extends JFrame {
 		btnControlePartida.setEnabled(true);
 		btnControlePartida.setVisible(true);
 		desktopPane.add(btnControlePartida);
-		
+
 		setVisible(true);
 	}
 
@@ -281,6 +280,7 @@ public class Menu extends JFrame {
 		try {
 			desktopPane = new JDesktopPane() {
 				Image im = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\Logos\\logohd.png"));
+
 				public void paintComponent(Graphics g) {
 					g.drawImage(im, 0, 0, getWidth(), getHeight(), this);
 
@@ -296,15 +296,65 @@ public class Menu extends JFrame {
 		return contentPane;
 	}
 
+	private void customizeMenuBar() {
+
+		menuBar.setUI(new BasicMenuBarUI() {
+
+			@Override
+			public void paint(Graphics g, JComponent c) {
+				g.setColor(new Color(255, 145, 77));
+				g.fillRect(0, 0, c.getWidth(), c.getHeight());
+			}
+
+		});
+
+		MenuElement[] menus = menuBar.getSubElements();
+
+		for (MenuElement menuElement : menus) {
+
+			JMenu menu = (JMenu) menuElement.getComponent();
+			changeComponentColors(menu);
+			menu.setOpaque(true);
+
+			MenuElement[] menuElements = menu.getSubElements();
+
+			for (MenuElement popupMenuElement : menuElements) {
+
+				JPopupMenu popupMenu = (JPopupMenu) popupMenuElement.getComponent();
+				popupMenu.setBorder(null);
+
+				MenuElement[] menuItens = popupMenuElement.getSubElements();
+
+				for (MenuElement menuItemElement : menuItens) {
+
+					JMenuItem menuItem = (JMenuItem) menuItemElement.getComponent();
+					changeComponentColors(menuItem);
+					menuItem.setOpaque(true);
+
+				}
+			}
+		}
+	}
+
+	private void changeComponentColors(Component comp) {
+		comp.setBackground(new Color(255, 145, 77));
+		comp.setForeground(Color.black);
+	}
+
+	private static JComponent Test() {
+		JLayeredPane layeredPane = new JLayeredPane();
+		return layeredPane;
+
+	}
 
 	private void fecharJanelaAberta() {
-		
+
 		switch (janelaAberta) {
-		
+
 		case 1:
 			fSair.dispose();
 			break;
-		
+
 		case 2:
 			fNovoTorneio.dispose();
 			break;
@@ -316,19 +366,19 @@ public class Menu extends JFrame {
 		case 4:
 			fControlePartidas.dispose();
 			break;
-		
+
 		case 5:
 			fTimes.dispose();
 			break;
-		
+
 		case 6:
 			fJogos.dispose();
 			break;
-		
+
 		case 7:
 			fCategoria.dispose();
 			break;
-				
+
 		default:
 
 			break;
