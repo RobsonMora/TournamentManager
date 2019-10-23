@@ -14,6 +14,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +38,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
+import Buscas.BuscarTorneio;
 import dao.GanhadorDAO;
 import dao.JogoDAO;
 import dao.TimeDAO;
@@ -49,7 +53,7 @@ import model.TorneioPartidaModel;
 @SuppressWarnings("serial")
 public class TorneioAndamento  extends JInternalFrame {
 
-	private JButton btnGerarFase, btnCarregarTorneio;
+	private JButton btnGerarFase, btnCarregarTorneio, btnBuscar;
 	private JTextField txtTorneio, txtLoadTorneio, txtLoadJogo;;
 	private JTextArea txtAObs;
 	private JLabel lblPartida, lblShowTorneio, lblJogo, lblObs;
@@ -59,6 +63,7 @@ public class TorneioAndamento  extends JInternalFrame {
 	private GanhadorDAO ganhadorDAO;
 	private TimeDAO timeDAO;
 	private TorneioDAO torneioDAO;
+	private BuscarTorneio busca;
 
 	private Container chaveContainer;
 
@@ -116,12 +121,12 @@ public class TorneioAndamento  extends JInternalFrame {
 		lblObs = new JLabel("Observação:");
 		lblObs.setBounds(21, 220, 100, 26);
 		getContentPane().add(lblObs);
-		
+
 		lblPartida = new JLabel();
 		lblPartida.setBounds(7, 80, 230, 400);
 		lblPartida.setBorder(BorderFactory.createTitledBorder("Informações"));
 		getContentPane().add(lblPartida);
-		
+
 		btnCarregarTorneio = new JButton(new AbstractAction("Carregar Torneio") {
 
 			@Override
@@ -129,15 +134,35 @@ public class TorneioAndamento  extends JInternalFrame {
 
 				ultimaFasePartidas = null;
 				if(!txtTorneio.getText().isEmpty()) {
+
 					carregarTorneio(Integer.parseInt(txtTorneio.getText()));
 
-					carregaFases(Integer.parseInt(txtTorneio.getText()));					
+					carregaFases(Integer.parseInt(txtTorneio.getText()));
 				}
 
 			}
 		});
 		btnCarregarTorneio.setBounds(70,10, 164, 26);
 		getContentPane().add(btnCarregarTorneio);
+		
+		btnBuscar = new JButton(new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				busca = new BuscarTorneio(torneioDAO.getConn());
+				busca.addWindowListener(new WindowAdapter() {
+					
+					@Override
+					public void windowClosed(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+				
+			}
+		});
 
 		btnGerarFase = new JButton(new AbstractAction("Gera Prox. Fase") {
 
@@ -213,11 +238,15 @@ public class TorneioAndamento  extends JInternalFrame {
 
 	}
 
-	private void createSquare(TimeModel time, String pontos, int x, int y) {
+	private void createSquare(TimeModel time, String pontos, int x, int y, boolean winner) {
 
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g = (Graphics2D)getGraphics();
-			g.setColor(new Color(255,145, 77));
+			if(winner) {
+				g.setColor(new Color(125,255, 77));				
+			}else {
+				g.setColor(new Color(255,145, 77));
+			}
 			g.fillRect(x, y, 160, 30);
 			g.setColor(Color.BLACK);
 			g.setStroke(new BasicStroke(2));
@@ -237,29 +266,28 @@ public class TorneioAndamento  extends JInternalFrame {
 					image = ImageIO.read(new File(System.getProperty("user.dir") + "\\images\\icons\\award.png"));
 					g.drawImage(image, x + 130, y+3, 25, 25, null);
 				}
-			} catch (IOException e) {
+			} catch (IOException e) {				
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	private void createLines(int x, int y1, int y2) {
 
 		if(getGraphics() instanceof Graphics2D) {
 			Graphics2D g = (Graphics2D)getGraphics();
-			int passo = 30;
+			int passo = 30, meio = (y2 - y1) / 2;
 			x = x + 160;
 			g.setStroke(new BasicStroke(3));
-			if(y2 > 0) {				
+			if(y2 > 0) {			
 				g.drawLine(x, y1, x + passo, y1);
-				g.drawLine(x, y2, x + passo, y2);
+				g.drawLine(x, y2, x + passo, y2);				
+				g.drawLine(x + passo, meio + y1, x + passo + passo, meio + y1);
 				g.drawLine(x + passo, y1, x + passo , y2);
-				g.drawLine(x + passo, ((y2 - y1) / 2) + y1, x + passo + passo, ((y2 - y1) / 2) + y1);
 			}else {
 				g.drawLine(x, y1, x + passo + passo , y1);			
 			}
-		}
+		} 
 
 	}
 
@@ -298,23 +326,23 @@ public class TorneioAndamento  extends JInternalFrame {
 
 		cleanPaint();
 
-		int j = 0, y1 = 0, y2 = 0, x = 0, base = 0, passoVertical = 0;
+		int j = 0, y1 = 0, y2 = 0, x = 0, base = 0, passoVertical = 0, posVencedor = 0;
 		boolean aux = true, partidaFinalizada = false;
 		int escala = 0, escalaPassoVertical = 0;
-				
+
 
 		for(int i = 1; i < 6; i++) {
 
 			try {
 				partidas = (proxPartidas == null) ? torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i) : (ArrayList<TorneioPartidaModel>)proxPartidas.clone();					
 				if(partidas != null) {
-					
+
 					proxPartidas = torneioPartidaDAO.getAllTorneioPartidas(idTorneio, i + 1);	
 
 					if(partidas.size()>0) {
 						ultimaFasePartidas = (ArrayList<TorneioPartidaModel>)partidas.clone();
 					}
-					
+
 					if(base == 0) {
 						int borda = ((javax.swing.plaf.basic.BasicInternalFrameUI) getUI()).getNorthPane().getPreferredSize().height;
 						base = borda + ((((this.getHeight() + borda) / 2) - ((partidas.size()/2) * 60)) - ((partidas.size()>1) ? ((partidas.size()/2) * 26) + 13 : 60));
@@ -337,10 +365,11 @@ public class TorneioAndamento  extends JInternalFrame {
 						}else {
 							y2 = j + 30;							
 						}
-						partidaFinalizada = (partida.getPontos1() + partida.getPontos2()) > 0;
+						partidaFinalizada = isFinished(partida);						
+						posVencedor = getPosVencedor(partida);
 
-						createSquare(timeDAO.getOneTime(partida.getIdTime1()), (partidaFinalizada ? partida.getPontos1().toString() : " - "), x, j);
-						createSquare(timeDAO.getOneTime(partida.getIdTime2()), (partidaFinalizada ? partida.getPontos2().toString() : " - "), x, j + 30);
+						createSquare(timeDAO.getOneTime(partida.getIdTime1()), (partidaFinalizada ? partida.getPontos1().toString() : " - "), x, j, posVencedor == 1);
+						createSquare(timeDAO.getOneTime(partida.getIdTime2()), (partidaFinalizada ? partida.getPontos2().toString() : " - "), x, j + 30, posVencedor == 2);
 
 						if(proxPartidas!=null && !aux) {
 							createLines(x, y1, y2);
@@ -365,7 +394,7 @@ public class TorneioAndamento  extends JInternalFrame {
 								ganhadorDAO.updateGanhador(ganhador.setIdTime(getIdVencedor(partidas.get(0))));
 							}
 						}
-						createSquare(timeDAO.getOneTime(ganhador.getIdTime()), "Winner", ((ultimaFase * 220) + 250), j);
+						createSquare(timeDAO.getOneTime(ganhador.getIdTime()), "Winner", ((ultimaFase * 220) + 250), j, true);
 					}
 					if(i > 1) {
 						escala = (escala * 2) + 1;
@@ -380,7 +409,7 @@ public class TorneioAndamento  extends JInternalFrame {
 				e.printStackTrace();
 			}
 		}
-	}
+	}	
 
 	private void iniciaPartidas(Integer idTorneio) {
 		try {
@@ -401,6 +430,24 @@ public class TorneioAndamento  extends JInternalFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
+	}
+
+	private boolean isFinished(TorneioPartidaModel partida) {
+
+		return 	(partida.getPontos1() + partida.getPontos2()) > 0;
+	}
+
+	private int getPosVencedor(TorneioPartidaModel partida) {
+
+		if(isFinished(partida)) {
+			if(getIdVencedor(partida) == partida.getIdTime1()) {
+				return 1;
+			}else {
+				return 2;
+			}
+		}
+
+		return 0;
 	}
 
 	private Integer getIdVencedor(TorneioPartidaModel partida) {
