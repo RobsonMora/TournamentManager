@@ -37,8 +37,9 @@ public class Menu extends JFrame {
 	private CadastroJogos fJogos;
 	private CadastroCategorias fCategoria;
 	private Connection conn;
-	private JButton btnBracket, btnControlePartida;
-
+	private JButton btnBracket, btnControlePartida, btnRanking;
+	private Ranking fRanking;
+	
 	private int janelaAberta = 0;
 
 	protected Connection connection() {
@@ -53,8 +54,11 @@ public class Menu extends JFrame {
 		}
 	}
 
+	
+	
 	public Connection getConn() {
 		return conn;
+				
 	}
 
 	public Menu() {
@@ -273,6 +277,32 @@ public class Menu extends JFrame {
 		btnControlePartida.setEnabled(true);
 		btnControlePartida.setVisible(true);
 		desktopPane.add(btnControlePartida);
+		
+		btnRanking = new JButton(null,
+				new ImageIcon(System.getProperty("user.dir") + "\\images\\icons\\008.png"));
+		btnRanking.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+
+				fecharJanelaAberta();
+				janelaAberta = 4;
+
+				fRanking = new Ranking();
+				desktopPane.add(fRanking);
+				fRanking.setVisible(true);
+				fRanking.setPosicao();
+
+			}
+		});
+		btnRanking.setBounds(390, 10, 170, 170);
+		btnRanking.setBackground(Color.BLACK);
+		btnRanking.setEnabled(true);
+		btnRanking.setVisible(true);
+		desktopPane.add(btnRanking);
+		
+		
+		
 
 		setVisible(true);
 	}
