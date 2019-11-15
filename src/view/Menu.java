@@ -288,7 +288,7 @@ public class Menu extends JFrame {
 				fecharJanelaAberta();
 				janelaAberta = 8;
 
-				fRanking = new Ranking();
+				fRanking = new Ranking(conn);
 				desktopPane.add(fRanking);
 				fRanking.setVisible(true);
 				fRanking.setPosicao();

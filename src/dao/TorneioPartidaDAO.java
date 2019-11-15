@@ -87,5 +87,4 @@ public class TorneioPartidaDAO extends BaseDAO {
 		.where("id_torneio", "=", idTorneio.toString())
 		.commit();
 	}
-
 }
