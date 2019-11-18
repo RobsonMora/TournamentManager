@@ -48,6 +48,9 @@ CREATE TABLE public.times
     id serial NOT NULL,
     nome text COLLATE pg_catalog."default" NOT NULL,
     logo bytea,
+    vitorias integer,
+    derrotas integer,
+    pontos integer,
     CONSTRAINT time_pk PRIMARY KEY (id)
 )
 
