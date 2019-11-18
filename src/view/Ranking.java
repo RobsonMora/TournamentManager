@@ -53,7 +53,7 @@ public class Ranking extends JInternalFrame {
 		
 	public void calcRank() {
 		
-		String colunas1[] = { "Posição", "Nome do Time", "Pontos" };
+		String colunas1[] = { "Posicao", "Nome do Time", "Pontos", "KD" };
 		model = new DefaultTableModel(colunas1, 20);
 		tblRank = new JTable(model);
 		tblRank.setBorder(BorderFactory.createLineBorder(Color.black));
