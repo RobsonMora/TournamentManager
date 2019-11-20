@@ -16,7 +16,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +53,7 @@ import model.TorneioPartidaModel;
 public class TorneioAndamento  extends JInternalFrame {
 
 	private JButton btnGerarFase, btnCarregarTorneio, btnBuscar;
-	private JTextField txtTorneio, txtLoadTorneio, txtLoadJogo;;
+	private JTextField txtTorneio, txtLoadTorneio, txtLoadJogo;
 	private JTextArea txtAObs;
 	private JLabel lblPartida, lblShowTorneio, lblJogo, lblObs;
 	private ArrayList<TimeModel> times;
@@ -145,6 +144,7 @@ public class TorneioAndamento  extends JInternalFrame {
 		btnCarregarTorneio.setBounds(70,10, 164, 26);
 		getContentPane().add(btnCarregarTorneio);
 		
+		
 		btnBuscar = new JButton(new AbstractAction() {
 			
 			@Override
@@ -155,14 +155,13 @@ public class TorneioAndamento  extends JInternalFrame {
 					
 					@Override
 					public void windowClosed(WindowEvent e) {
-						// TODO Auto-generated method stub
-						
 					}
 					
 				});
 				
 			}
 		});
+		btnBuscar.setBounds(0, 0, 0, 0);
 
 		btnGerarFase = new JButton(new AbstractAction("Gera Prox. Fase") {
 

@@ -283,7 +283,7 @@ public class ControlePartidas extends JInternalFrame {
 				try {
 					for (TorneioPartidaModel partida : partidas) {
 
-						torneioPartidaDAO.updateTorneioPartida(partida);
+						torneioPartidaDAO.updateTorneioPartida(partida, timeDAO);
 
 					}
 					clean();
