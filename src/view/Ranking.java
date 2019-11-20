@@ -2,9 +2,9 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
@@ -13,23 +13,17 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
-import dao.GanhadorDAO;
 import dao.TimeDAO;
-import dao.TorneioDAO;
-import dao.TorneioPartidaDAO;
-import dao.TorneioTimeDAO;
-import model.GanhadorModel;
-import model.TorneioPartidaModel;
+import model.TimeModel;
 
+
+@SuppressWarnings("serial")
 public class Ranking extends JInternalFrame {
 		
-	private TorneioPartidaDAO torneioPartidaDAO;
-	private TorneioTimeDAO torneioTimeDAO;
-	private GanhadorDAO ganhadorDAO;
-	private TimeDAO timeDAO;
-	private TorneioDAO torneioDAO;
+	
 	private JTable tblRank;
 	protected DefaultTableModel model;
+	private TimeDAO timeDAO;
 	
 	public Ranking(Connection conn) {
 
@@ -39,14 +33,11 @@ public class Ranking extends JInternalFrame {
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setClosable(true);
-		
-		torneioDAO = new TorneioDAO(conn);
-		torneioPartidaDAO = new TorneioPartidaDAO(conn);
-		torneioTimeDAO = new TorneioTimeDAO(conn);
-		ganhadorDAO = new GanhadorDAO(conn);
 		timeDAO = new TimeDAO(conn);
 		
+		
 		calcRank();
+		fillTable();
 		
 		setVisible(true);
 	}
@@ -67,7 +58,26 @@ public class Ranking extends JInternalFrame {
 		this.getContentPane().add(scrollPane);
 		tblRank.getTableHeader().setEnabled(false);
 	
+	}
+	
+	private void fillTable() {
+		
+		try {
+			ArrayList<TimeModel> timeModels = timeDAO.getAllTimes();
+			model.setRowCount(0);
+			for(TimeModel timeModel : timeModels) {				
+				if(timeModel != null) {
+					model.addRow(new String[] {timeModel.getId().toString(),
+											   timeModel.getNome(), 
+										       timeModel.getPontos().toString(), 
+										       timeModel.getVitorias().toString() + "/" + timeModel.getDerrotas().toString()});
+				}				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		
+	}
 
 	public void setPosicao() {
 

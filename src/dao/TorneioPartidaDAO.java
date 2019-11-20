@@ -71,7 +71,7 @@ public class TorneioPartidaDAO extends BaseDAO {
 		.commit();
 	}
 
-	public void updateTorneioPartida(TorneioPartidaModel torneioPartida) throws SQLException {
+	public void updateTorneioPartida(TorneioPartidaModel torneioPartida, TimeDAO timeDAO) throws SQLException {
 		this.update("torneio_partidas")
 		.setValue(
 				"  pontos_1 = "+torneioPartida.getPontos1()+
@@ -79,6 +79,16 @@ public class TorneioPartidaDAO extends BaseDAO {
 				)
 		.where("id", "=", torneioPartida.getId().toString())
 		.commit();
+		
+		if(torneioPartida.getPontos1() > torneioPartida.getPontos2()) {			
+			timeDAO.addVitoria(torneioPartida.getIdTime1());		
+			timeDAO.addDerrota(torneioPartida.getIdTime2());		
+		}else {
+			timeDAO.addVitoria(torneioPartida.getIdTime2());		
+			timeDAO.addDerrota(torneioPartida.getIdTime1());					
+		}
+		
+		
 	}
 	
 	public void deleteTorneioPartida(Integer idTorneio) throws SQLException {
